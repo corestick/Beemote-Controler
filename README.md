@@ -1,2 +1,2 @@
-Beemote-Controler
+Beemote-Controller
 =================
