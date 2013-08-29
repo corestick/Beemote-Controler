@@ -18,4 +18,13 @@
         android:layout_marginTop="34dp"
         android:text="TVList" />
 
+    <Button
+        android:id="@+id/btnTouchPad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnTVList"
+        android:layout_below="@+id/btnTVList"
+        android:layout_marginTop="71dp"
+        android:text="TouchPad" />
+
 </RelativeLayout>

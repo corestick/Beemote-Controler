@@ -16,13 +16,23 @@ public class Beemote extends Activity {
         setContentView(R.layout.activity_beemote);
         
         Button btnTVList = (Button) findViewById(R.id.btnTVList);
-        
         btnTVList.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getApplicationContext(), TVList.class);
+				startActivity(intent);
+			}
+		});
+        
+        Button btnTouchPad = (Button) findViewById(R.id.btnTouchPad);
+        btnTouchPad.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getApplicationContext(), TouchPad.class);
 				startActivity(intent);
 			}
 		});
