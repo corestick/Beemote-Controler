@@ -1,0 +1,17 @@
+package com.latebutlucky.beemote_controller;
+
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class BeemoteProvider {
+
+	static private BeemoteProvider dbHelper = new BeemoteProvider();
+	
+	private BeemoteProvider() {
+		
+	}
+	
+	public BeemoteProvider getInstance() {
+		return dbHelper;
+	}
+	
+}

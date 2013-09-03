@@ -49,14 +49,14 @@ import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
  * @author snopy.lee
  * 
  */
-class A2AClientDefault extends A2AClient {
+public class A2AClientDefault extends A2AClient {
 	List<A2ATVInfo> infos = new ArrayList<A2ATVInfo>();
 	List<A2ATVInfo> tmpList = null;
 	Handler handler = null;
 	SimpleHttpServer httpServer = null;
 	Context context = null;
 
-	HttpClient httpclient = null;
+	public HttpClient httpclient = null;
 
 	public A2AClientDefault() {
 		super();
@@ -264,6 +264,8 @@ class A2AClientDefault extends A2AClient {
 			int ret = UDAPManager.requestPairing(a2atvInfo.ipAddress, a2atvInfo.port, passcode,
 					httpServer.getServerPort());
 			A2ACmdError error = parseError(ret);
+				
+			
 			if (error == A2ACmdError.A2ACmdErrorOK) {
 				a2atvInfo.isConnected = true;
 				httpclient = new DefaultHttpClient();

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,7 +43,9 @@ public class TVList extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.enableDefaults();
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_tvlist);
 
 		mA2AClient = A2AClientManager.getDefaultClient();
@@ -64,6 +67,7 @@ public class TVList extends Activity {
 							Log.e("CSnopy", item + "");
 							if (item != null && item instanceof A2ATVInfo) {
 								mA2AClient.setCurrentTV((A2ATVInfo) item);
+								
 								showPairingDialog();
 								
 							}
@@ -155,7 +159,7 @@ public class TVList extends Activity {
 		
 		// 페어링 코드 보기
 		try {
-			A2AClientManager.getDefaultClient().showPasscode();
+			mA2AClient.showPasscode();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -173,7 +177,7 @@ public class TVList extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				try {
-					A2ACmdError ret = A2AClientManager.getDefaultClient().connect(edtPairingCode.getText().toString());
+					A2ACmdError ret = mA2AClient.connect(edtPairingCode.getText().toString());
 					Log.e("RRR", "페어링 결과 : " + ret);
 					TVList.this.finish();
 					

@@ -1,0 +1,13 @@
+package com.latebutlucky.beemote_controller;
+
+public class DBHelper {
+
+	static public DBHelper dbHelper = new DBHelper();
+	
+	private DBHelper() {
+		
+	}
+	
+	
+	
+}
