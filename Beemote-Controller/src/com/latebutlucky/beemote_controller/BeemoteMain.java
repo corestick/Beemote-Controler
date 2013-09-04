@@ -1,5 +1,7 @@
 package com.latebutlucky.beemote_controller;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +10,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import com.lge.tv.a2a.client.A2AClientManager;
 
 public class BeemoteMain extends Activity {
 
@@ -51,32 +54,32 @@ public class BeemoteMain extends Activity {
 			}
 		});
 
-		// Button btnTouchPad = (Button) findViewById(R.id.btnTouchPad);
-		// btnTouchPad.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// Intent intent = new Intent(getApplicationContext(),
-		// TouchPad.class);
-		// startActivity(intent);
-		// }
-		// });
-		//
-		// Button btnUp = (Button) findViewById(R.id.btnup);
-		// btnUp.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// try {
-		// A2AClientManager.getDefaultClient().handleKey();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// });
+		Button btnTouchPad = (Button) findViewById(R.id.btnTouchPad);
+		btnTouchPad.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getApplicationContext(),
+						TouchPad.class);
+				startActivity(intent);
+			}
+		});
+
+		Button btnUp = (Button) findViewById(R.id.btnup);
+		btnUp.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					A2AClientManager.getDefaultClient().handleKey();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 
 	}
 
