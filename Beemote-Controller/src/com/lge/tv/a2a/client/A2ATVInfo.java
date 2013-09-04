@@ -56,6 +56,10 @@ public class A2ATVInfo {
 	public String getMacAddress() {
 		return macAddress;
 	}
+	
+	public int getPort() {
+		return port;
+	}
 
 	@Override
 	public String toString() {

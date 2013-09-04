@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <qualifiedTypeNameHistroy/>
+=======
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="com.lge.tv.a2a.client.A2ATVInfo"/>
+<fullyQualifiedTypeName name="com.lge.tv.a2a.client.A2AClientDefault"/>
+<fullyQualifiedTypeName name="org.apache.http.util.EntityUtils"/>
+<fullyQualifiedTypeName name="android.os.Build"/>
+<fullyQualifiedTypeName name="android.os.Build.VERSION"/>
+<fullyQualifiedTypeName name="android.os.StrictMode"/>
+<fullyQualifiedTypeName name="android.os.StrictMode.ThreadPolicy"/>
+<fullyQualifiedTypeName name="android.os.StrictMode.ThreadPolicy.Builder"/>
+<fullyQualifiedTypeName name="com.latebutlucky.beemote_controller.ColumnInfo"/>
+<fullyQualifiedTypeName name="com.latebutlucky.beemote_controller.BeemoteProvider.DBHelper"/>
+<fullyQualifiedTypeName name="java.util.Locale"/>
+</qualifiedTypeNameHistroy>
+>>>>>>> origin/Ryu1

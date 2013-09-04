@@ -1,0 +1,11 @@
+package com.latebutlucky.beemote_controller;
+
+public class DBInfo {
+
+	private DBInfo() {
+		
+	}
+	
+	
+	
+}

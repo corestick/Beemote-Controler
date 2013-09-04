@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+<<<<<<< HEAD
 	<item value="2" key="TypeHierarchyViewPart.hierarchyview"/>
 	<item value="false" key="TypeHierarchyViewPart.qualifiednames"/>
 	<item value="3" key="TypeHierarchyViewPart.orientation"/>
 	<item value="false" key="TypeHierarchyViewPart.linkeditors"/>
+=======
+>>>>>>> origin/Ryu1
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
 	</section>
@@ -18,10 +21,17 @@
 	</section>
 	<section name="JavaElementSearchActions">
 	</section>
+<<<<<<< HEAD
+=======
+	<section name="BuildPathsPropertyPage">
+		<item value="3" key="pageIndex"/>
+	</section>
+>>>>>>> origin/Ryu1
 	<section name="RefactoringWizard.preview">
 		<item value="400" key="height"/>
 		<item value="600" key="width"/>
 	</section>
+<<<<<<< HEAD
 	<section name="NewClassWizardPage">
 		<item value="false" key="create_constructor"/>
 		<item value="true" key="create_unimplemented"/>
@@ -32,5 +42,22 @@
 	<section name="RenameInformationPopup">
 	</section>
 	<section name="quick_assist_proposal_size">
+=======
+	<section name="quick_assist_proposal_size">
+	</section>
+	<section name="NewClassWizardPage">
+		<item value="false" key="create_constructor"/>
+		<item value="false" key="create_main"/>
+		<item value="true" key="create_unimplemented"/>
+	</section>
+	<section name="RenameInformationPopup">
+	</section>
+	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="*" key="patterns"/>
+		<item value="false" key="updateQualifiedNames"/>
+		<item value="1" key="updateSimilarElementsMatchStrategy"/>
+		<item value="false" key="updateTextualMatches"/>
+		<item value="false" key="updateSimilarElements"/>
+>>>>>>> origin/Ryu1
 	</section>
 </section>

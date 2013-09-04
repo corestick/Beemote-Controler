@@ -1,0 +1,27 @@
+package com.latebutlucky.beemote_controller;
+
+public class DBInfo {
+
+	int screen;
+	
+	int idx;
+	
+	// 채널, 어플, 검색어, 추가기능
+	int type;
+	
+	int channel;
+	
+	String appId;
+	String AppName;
+	String contentId;
+	
+	String keyword;
+	
+	String functionKey;
+	
+	
+	
+	
+	
+	
+}

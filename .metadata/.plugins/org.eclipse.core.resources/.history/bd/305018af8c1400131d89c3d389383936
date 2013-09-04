@@ -1,0 +1,67 @@
+package com.latebutlucky.beemote_controller;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class BeemoteDB {
+
+	private static final String DATABASE_NAME = "beemote.db";
+
+	private static final int DATABASE_VERSION = 4;
+
+	static final String TABLE_BEEMOTE = "beemote";
+
+	public static DBHelper dbHelper;
+
+	public BeemoteDB(Context context) {
+		dbHelper = new DBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	public void insert(ItemInfo info) {
+		SQLiteDatabase db;
+		String sql;
+
+		db = dbHelper.getWritableDatabase();
+		sql = String.format("INSERT INTO " + DATABASE_NAME + "VALUES (NULL, "
+				+ "'%d'" + ", " + "'%d'" + ", " + "'%d'" + ", " + "'%d'" + ", "
+				+ "'%d'" + ", " + "'%s'" + ", " + "'%s'" + ", " + "'%s'" + ", "
+				+ "'%s'" + ");", info.screenIdx, info.beemoteIdx,
+				info.beemoteType, info.channelNo, info.appId, info.AppName,
+				info.contentId, info.keyWord, info.functionKey);
+		db.execSQL(sql);
+	}
+
+	public class DBHelper extends SQLiteOpenHelper {
+
+		public DBHelper(Context context, String name, CursorFactory factory,
+				int version) {
+			super(context, name, factory, version);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			// TODO Auto-generated method stub
+			db.execSQL("CREATE TABLE " + TABLE_BEEMOTE + "(" + ColumnInfo.ID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ ColumnInfo.SCREEN_IDX + " INTEGER " + ", "
+					+ ColumnInfo.BEEMOTE_IDX + " INTEGER " + ", "
+					+ ColumnInfo.BEEMOTE_TYPE + " INTEGER " + ", "
+					+ ColumnInfo.CHANNEL_NUMBER + " INTEGER " + ", "
+					+ ColumnInfo.APP_ID + " INTEGER " + ", "
+					+ ColumnInfo.APP_NAME + " TEXT " + ", "
+					+ ColumnInfo.CONTENT_ID + " INTEGER " + ", "
+					+ ColumnInfo.KEYWORD + " TEXT " + ", "
+					+ ColumnInfo.FUNCTION_KEY + " INTEGER " + ");");
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			// TODO Auto-generated method stub
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_BEEMOTE);
+			onCreate(db);
+		}
+	}
+}

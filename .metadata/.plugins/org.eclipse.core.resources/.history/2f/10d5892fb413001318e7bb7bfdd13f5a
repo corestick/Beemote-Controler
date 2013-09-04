@@ -1,0 +1,27 @@
+package com.latebutlucky.beemote_controller;
+
+public class DBInfo {
+
+	static final String SCREEN = "screen";
+	
+	static final String IDX = "idx";
+	
+	// 채널, 어플, 검색어, 추가기능
+	static final String BEEMOTE_TYPE = "type";
+	
+	static final String CHANNEL = "channel";
+	
+	static final String APPID = "appId";
+	static final String APPNAME = "AppName";
+	static final String CONTENTID = "contentId";
+	
+	static final String KEYWORD = "keyWord";
+	
+	static final String FUNCTION_KEY = "functionKey";
+	
+	
+	
+	
+	
+	
+}
