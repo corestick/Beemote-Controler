@@ -115,7 +115,7 @@ public class SimpleHttpServer {
 			while (!Thread.interrupted() && !isStop) {
 				try {
 					// Set up HTTP connection
-					Socket socket = this.serversocket.accept();
+					Socket socket = this.serversocket.accept();					
 					DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
 					System.out.println("Incoming connection from " + socket.getInetAddress());
 					conn.bind(socket, this.params);
@@ -128,6 +128,7 @@ public class SimpleHttpServer {
 					break;
 				} catch (IOException e) {
 					e.printStackTrace();
+					System.err.println("RRRR22222");
 					System.err.println("I/O error initialising connection thread: " + e.getMessage());
 					break;
 				}
@@ -163,10 +164,11 @@ public class SimpleHttpServer {
 			HttpContext context = new BasicHttpContext(null);
 			try {
 				while (!Thread.interrupted() && this.conn.isOpen()) {
+					System.err.println("RRRR444");
 					this.httpservice.handleRequest(this.conn, context);
 				}
 			} catch (ConnectionClosedException ex) {
-				System.err.println("Client closed connection");
+				System.err.println("Client closed connection"+ex.getMessage());
 			} catch (IOException ex) {
 				System.err.println("I/O error: " + ex.getMessage());
 			} catch (HttpException ex) {

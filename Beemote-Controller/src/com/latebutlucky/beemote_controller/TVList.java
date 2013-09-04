@@ -43,7 +43,7 @@ public class TVList extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		StrictMode.enableDefaults();
+//		StrictMode.enableDefaults();
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_tvlist);
