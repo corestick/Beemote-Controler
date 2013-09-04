@@ -1,4 +1,5 @@
-package com.latebutlucky.beemote_controller;
+package com.latebutlucky.beemote_view;
+
 
 
 import android.content.Context;

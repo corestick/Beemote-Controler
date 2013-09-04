@@ -1,9 +1,10 @@
-package com.latebutlucky.beemote_controller;
+package com.latebutlucky.beemote_view;
 
 import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
 
 import android.opengl.GLU;
 import android.opengl.GLSurfaceView.Renderer;

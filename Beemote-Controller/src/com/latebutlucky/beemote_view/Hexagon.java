@@ -1,4 +1,4 @@
-package com.latebutlucky.beemote_controller;
+package com.latebutlucky.beemote_view;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

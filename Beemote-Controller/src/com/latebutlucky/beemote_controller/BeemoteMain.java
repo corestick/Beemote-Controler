@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.latebutlucky.beemote_view.BeeView;
+import com.latebutlucky.beemote_view.SlidingView;
 import com.lge.tv.a2a.client.A2AClientManager;
 
 public class BeemoteMain extends Activity {

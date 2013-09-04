@@ -1,4 +1,7 @@
-package com.latebutlucky.beemote_controller;
+package com.latebutlucky.beemote_view;
+
+import com.latebutlucky.beemote_controller.R;
+import com.latebutlucky.beemote_controller.R.drawable;
 
 import android.content.Context; 
 import android.graphics.Bitmap; 
