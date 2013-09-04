@@ -14,16 +14,10 @@ public class ColumnInfo {
 	static final String CHANNEL_NUMBER = "channelNo";
 	
 	static final String APP_ID = "appId";
-	static final String APP_NAME = "AppName";
+	static final String APP_NAME = "appName";
 	static final String CONTENT_ID = "contentId";
 	
 	static final String KEYWORD = "keyWord";
 	
 	static final String FUNCTION_KEY = "functionKey";
-	
-	
-	
-	
-	
-	
 }
