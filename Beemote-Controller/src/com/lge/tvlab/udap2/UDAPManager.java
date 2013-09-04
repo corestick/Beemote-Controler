@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
+import com.lge.tv.a2a.client.A2AClientDefault;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDPSearchMsg;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDPSocket;
@@ -23,7 +24,7 @@ public class UDAPManager {
 	int timeOut;
 	SSDPSearcher searchThread = null;
 	Discoverable discoverable = null;
-	static HttpClient client = new DefaultHttpClient();
+	static HttpClient client = A2AClientDefault.getThreadsafeClient();
 	
 	public UDAPManager() {
 	}
