@@ -47,71 +47,71 @@ public class Beemote extends Activity {
 			}
 		});
         
-        Button btnSelect = (Button) findViewById(R.id.btnSelect);
-        btnSelect.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				itemList = beemoteDB.select();
-			}
-		});
+//        Button btnSelect = (Button) findViewById(R.id.btnSelect);
+//        btnSelect.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				
+//				itemList = beemoteDB.select();
+//			}
+//		});
         
         
-        Button btnInsert = (Button) findViewById(R.id.btnInsert);
-        btnInsert.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				ItemInfo info = new ItemInfo();
-				info.screenIdx = 3;
-				info.beemoteIdx = 3;
-				info.appId = 44;
-				info.appName = "ÆÄÆÄÆÄ½m12";
-				info.contentId = "12";
-				
-				beemoteDB.insert(info);
-			}
-		});
-        
-        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
-        btnUpdate.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				ItemInfo info = new ItemInfo();
-				info.screenIdx = 3;
-				info.beemoteIdx = 3;
-				info.appId = 55;
-				info.appName = "ÆÄÆÄÆÄ½m12333";
-				info.contentId = "12333";
-				
-				beemoteDB.update(info);
-			}
-		});
-        
-        Button btnDelete = (Button) findViewById(R.id.btnDelete);
-        btnDelete.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				for(int i = 0; i < itemList.size(); i++)
-				{
-					if(itemList.get(i).screenIdx == 2 && itemList.get(i).beemoteIdx == 2)
-					{
-						beemoteDB.delete(itemList.get(i));
-						break;
-					}
-				}
-			}
-		});
+//        Button btnInsert = (Button) findViewById(R.id.btnInsert);
+//        btnInsert.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				
+//				ItemInfo info = new ItemInfo();
+//				info.screenIdx = 3;
+//				info.beemoteIdx = 3;
+//				info.appId = 44;
+//				info.appName = "ÆÄÆÄÆÄ½m12";
+//				info.contentId = "12";
+//				
+//				beemoteDB.insert(info);
+//			}
+//		});
+//        
+//        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
+//        btnUpdate.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				
+//				ItemInfo info = new ItemInfo();
+//				info.screenIdx = 3;
+//				info.beemoteIdx = 3;
+//				info.appId = 55;
+//				info.appName = "ÆÄÆÄÆÄ½m12333";
+//				info.contentId = "12333";
+//				
+//				beemoteDB.update(info);
+//			}
+//		});
+//        
+//        Button btnDelete = (Button) findViewById(R.id.btnDelete);
+//        btnDelete.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				
+//				for(int i = 0; i < itemList.size(); i++)
+//				{
+//					if(itemList.get(i).screenIdx == 2 && itemList.get(i).beemoteIdx == 2)
+//					{
+//						beemoteDB.delete(itemList.get(i));
+//						break;
+//					}
+//				}
+//			}
+//		});
     }
 
     @Override
