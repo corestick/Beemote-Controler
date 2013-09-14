@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <Button
+        android:id="@+id/selmenu_btn2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/selmenu_btn1"
+        android:layout_toRightOf="@+id/selmenu_btn1"
+        android:text="2" />
+
+    <Button
+        android:id="@+id/selmenu_btn4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/selmenu_btn2"
+        android:layout_toLeftOf="@+id/selmenu_btn2"
+        android:text="4" />
+
+    <Button
+        android:id="@+id/selmenu_btn3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/selmenu_btn4"
+        android:layout_alignParentLeft="true"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/selmenu_btn1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/selmenu_btn3"
+        android:text="1" />
+
+</RelativeLayout>

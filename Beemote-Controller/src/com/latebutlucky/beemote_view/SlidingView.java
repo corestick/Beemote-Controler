@@ -1,7 +1,9 @@
 package com.latebutlucky.beemote_view;
 
+
 import com.latebutlucky.beemote_controller.R;
 import com.latebutlucky.beemote_controller.R.drawable;
+
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,83 +19,97 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 import android.widget.Toast;
 
-/* ¿©·¯ È­¸éÀ» ±¸ÇöÇÒ¶§ ¿©·¯°³ÀÇ ¿¢Æ¼ºñÆ¼°¡ ºÙ´Â°Í¾Æ´Ï¶ó  
- * viewgroupÀÇ childview ·Î ³Ö¾îµÎ°í ½ºÅ©·ÑÀ» ÅëÇØ È­¸é ÀüÈ¯ È¿°ú¸¦ ÀÌ·ç´Â ¹æ½ÄÀÌ´Ù. 
- * µû¶ó¼­ viewgroup À» »ó¼Ó¹Ş°í È­¸é¿¡ ³Ö°íÀÚÇÏ´Â layoutÀº addview() Å¬·¡½º¸¦ ÅëÇØ »ğÀÔÇÑ´Ù. 
+
+/* ì—¬ëŸ¬ í™”ë©´ì„ êµ¬í˜„í• ë•Œ ì—¬ëŸ¬ê°œì˜ ì—‘í‹°ë¹„í‹°ê°€ ë¶™ëŠ”ê²ƒì•„ë‹ˆë¼  
+ * viewgroupì˜ childview ë¡œ ë„£ì–´ë‘ê³  ìŠ¤í¬ë¡¤ì„ í†µí•´ í™”ë©´ ì „í™˜ íš¨ê³¼ë¥¼ ì´ë£¨ëŠ” ë°©ì‹ì´ë‹¤. 
+ * ë”°ë¼ì„œ viewgroup ì„ ìƒì†ë°›ê³  í™”ë©´ì— ë„£ê³ ìí•˜ëŠ” layoutì€ addview() í´ë˜ìŠ¤ë¥¼ í†µí•´ ì‚½ì…í•œë‹¤. 
  */
 public class SlidingView extends ViewGroup {
 	private static final String TAG = "SlidingView";
 
-	// µå·¡±× ¼Óµµ¿Í ¹æÇâÀ» ÆÇ´ÜÇÏ´Â Å¬·¡½º
+
+	// ë“œë˜ê·¸ ì†ë„ì™€ ë°©í–¥ì„ íŒë‹¨í•˜ëŠ” í´ë˜ìŠ¤
 	private VelocityTracker mVelocityTracker = null;
 
-	// È­¸é ÀüÈ¯À» À§ÇÑ µå·¡±× ¼ÓµµÀÇ ÃÖ¼Ò°ª pixel/s (100 Á¤µµÀ¸·Î ¼Óµµ·Î ÀÌµ¿ÇÏ¸é È­¸éÀüÈ¯À¸·Î ÀÎ½Ä)
+
+	// í™”ë©´ ì „í™˜ì„ ìœ„í•œ ë“œë˜ê·¸ ì†ë„ì˜ ìµœì†Œê°’ pixel/s (100 ì •ë„ìœ¼ë¡œ ì†ë„ë¡œ ì´ë™í•˜ë©´ í™”ë©´ì „í™˜ìœ¼ë¡œ ì¸ì‹)
 	private static final int SNAP_VELOCITY = 100;
 
+
 	/*
-	 * È­¸é¿¡ ´ëÇÑ ÅÍÄ¡ÀÌº¥Æ®°¡ È­¸éÀüÈ¯À» À§ÇÑ ÅÍÄ¡ÀÎ°¡? Çö È­¸éÀÇ À§Á¬µ¿ÀÛÀ» À§ÇÑ ÅÍÄ¡ÀÎ°¡? ±¸ºĞÇÏ´Â °ª (´©¸¥»óÅÂ¿¡¼­ 10px
-	 * ÀÌµ¿ÇÏ¸é È­¸é ÀÌµ¿À¸·Î ÀÎ½Ä)
+	 * í™”ë©´ì— ëŒ€í•œ í„°ì¹˜ì´ë²¤íŠ¸ê°€ í™”ë©´ì „í™˜ì„ ìœ„í•œ í„°ì¹˜ì¸ê°€? í˜„ í™”ë©´ì˜ ìœ„ì ¯ë™ì‘ì„ ìœ„í•œ í„°ì¹˜ì¸ê°€? êµ¬ë¶„í•˜ëŠ” ê°’ (ëˆ„ë¥¸ìƒíƒœì—ì„œ 10px
+	 * ì´ë™í•˜ë©´ í™”ë©´ ì´ë™ìœ¼ë¡œ ì¸ì‹)
 	 */
 	private int mTouchSlop = 10;
 
-	private Bitmap mWallpaper = null; // ¹è°æÈ­¸éÀ» À§ÇÑ ºñÆ®¸Ê
+
+	private Bitmap mWallpaper = null; // ë°°ê²½í™”ë©´ì„ ìœ„í•œ ë¹„íŠ¸ë§µ
 	private Paint mPaint = null;
 
+
 	/*
-	 * È­¸é ÀÚµ¿ ÀüÈ²À» À§ÇÑ ÇÙ½É Å¬·¡½º ( È­¸é µå·¡±×ÈÄ ¼ÕÀ» ¶ÂÀ»¶§ È­¸é ÀüÈ¯ÀÌ³ª ¿ø·¡ È­¸éÀ¸·Î ÀÚµ¿À¸·Î ½ºÅ©·Ñ µÇ´Â µ¿ÀÛÀ» ±¸ÇöÇÏ´Â
-	 * Å¬·¡½º)
+	 * í™”ë©´ ìë™ ì „í™©ì„ ìœ„í•œ í•µì‹¬ í´ë˜ìŠ¤ ( í™”ë©´ ë“œë˜ê·¸í›„ ì†ì„ ë—ì„ë•Œ í™”ë©´ ì „í™˜ì´ë‚˜ ì›ë˜ í™”ë©´ìœ¼ë¡œ ìë™ìœ¼ë¡œ ìŠ¤í¬ë¡¤ ë˜ëŠ” ë™ì‘ì„ êµ¬í˜„í•˜ëŠ”
+	 * í´ë˜ìŠ¤)
 	 */
 	private Scroller mScroller = null;
-	private PointF mLastPoint = null; // ¸¶Áö¸· ÅÍÄ¡ ÁöÁ¡À» ÀúÀåÇÏ´Â Å¬·¡½º
-	private int mCurPage = 0; // ÇöÀç È­¸é ÆäÀÌÁö
+	private PointF mLastPoint = null; // ë§ˆì§€ë§‰ í„°ì¹˜ ì§€ì ì„ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
+	private int mCurPage = 0; // í˜„ì¬ í™”ë©´ í˜ì´ì§€
 
-	private int mCurTouchState; // ÇöÀç ÅÍÄ¡ÀÇ »óÅÂ
-	private static final int TOUCH_STATE_SCROLLING = 0; // ÇöÀç ½ºÅ©·Ñ ÁßÀÌ¶ó´Â »óÅÂ
-	private static final int TOUCH_STATE_NORMAL = 1; // ÇöÀç ½ºÅ©·Ñ »óÅÂ°¡ ¾Æ´Ô
+
+	private int mCurTouchState; // í˜„ì¬ í„°ì¹˜ì˜ ìƒíƒœ
+	private static final int TOUCH_STATE_SCROLLING = 0; // í˜„ì¬ ìŠ¤í¬ë¡¤ ì¤‘ì´ë¼ëŠ” ìƒíƒœ
+	private static final int TOUCH_STATE_NORMAL = 1; // í˜„ì¬ ìŠ¤í¬ë¡¤ ìƒíƒœê°€ ì•„ë‹˜
+
 
 	private Toast mToast;
+
 
 	public SlidingView(Context context) {
 		super(context);
 		init();
 	}
 
+
 	public SlidingView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
+
 
 	public SlidingView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 
+
 	private void init() {
 		mWallpaper = BitmapFactory.decodeResource(getResources(),
-				R.drawable.ic_launcher); // ¹è°æÈ­¸é ºÒ·¯¿À±â
+				R.drawable.ic_launcher); // ë°°ê²½í™”ë©´ ë¶ˆëŸ¬ì˜¤ê¸°
 		mPaint = new Paint();
-		mScroller = new Scroller(getContext()); // ½ºÅ©·Ñ·¯ Å¬·¡½º »ı¼º
+		mScroller = new Scroller(getContext()); // ìŠ¤í¬ë¡¤ëŸ¬ í´ë˜ìŠ¤ ìƒì„±
 		mLastPoint = new PointF();
 	}
 
-	// Â÷ÀÏµåºäÀÇ Å©±â¸¦ ÁöÁ¤ÇÏ´Â Äİ¹é ¸Ş¼­µå
+
+	// ì°¨ì¼ë“œë·°ì˜ í¬ê¸°ë¥¼ ì§€ì •í•˜ëŠ” ì½œë°± ë©”ì„œë“œ
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		Log.d(TAG, "onMeasure");
 		for (int i = 0; i < getChildCount(); i++) {
-			// °¢ Â÷ÀÏµåºäÀÇ Å©±â´Â µ¿ÀÏÇÏ°Ô ¼³Á¤
+			// ê° ì°¨ì¼ë“œë·°ì˜ í¬ê¸°ëŠ” ë™ì¼í•˜ê²Œ ì„¤ì •
 			getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);
 		}
 	}
 
-	// Â÷ÀÏµåºäÀÇ À§Ä¡¸¦ ÁöÁ¤ÇÏ´Â Äİ¹é ¸Ş¼­µå
+
+	// ì°¨ì¼ë“œë·°ì˜ ìœ„ì¹˜ë¥¼ ì§€ì •í•˜ëŠ” ì½œë°± ë©”ì„œë“œ
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		Log.d(TAG, "onLayout");
-		// ÇÙ½É ±¸Çö ºÎºĞÀ¸·Î½á
-		// Â÷ÀÏµåºäµéÀ» °ãÄ¡Áö ¾Ê°Ô ¿·À¸·Î Â÷·Ê´ë·Î ³ª¿­ÇØ¼­ ¹èÄ¡ÇÑ´Ù.
-		// ¿·À¸·Î Â÷·Ê´ë·Î ¹èÄ¡¸¦ ÇØ³ö¾ß ½ºÅ©·ÑÀ» ÅëÇØ ¿·À¸·Î ÀÌµ¿ÇÏ´Â°ÍÀÌ °¡´ÉÇØÁø´Ù.
+		// í•µì‹¬ êµ¬í˜„ ë¶€ë¶„ìœ¼ë¡œì¨
+		// ì°¨ì¼ë“œë·°ë“¤ì„ ê²¹ì¹˜ì§€ ì•Šê²Œ ì˜†ìœ¼ë¡œ ì°¨ë¡€ëŒ€ë¡œ ë‚˜ì—´í•´ì„œ ë°°ì¹˜í•œë‹¤.
+		// ì˜†ìœ¼ë¡œ ì°¨ë¡€ëŒ€ë¡œ ë°°ì¹˜ë¥¼ í•´ë†”ì•¼ ìŠ¤í¬ë¡¤ì„ í†µí•´ ì˜†ìœ¼ë¡œ ì´ë™í•˜ëŠ”ê²ƒì´ ê°€ëŠ¥í•´ì§„ë‹¤.
 		for (int i = 0; i < getChildCount(); i++) {
 			int child_left = getChildAt(i).getMeasuredWidth() * i;
 			getChildAt(i).layout(child_left, t,
@@ -102,57 +118,67 @@ public class SlidingView extends ViewGroup {
 		}
 	}
 
-	// viewgroup Å¬·¡½ºÀÇ onDraw ¸Ş¼­µå¶ó »ı°¢ÇÏ¸é µÇ°Ú´Ù.
+
+	// viewgroup í´ë˜ìŠ¤ì˜ onDraw ë©”ì„œë“œë¼ ìƒê°í•˜ë©´ ë˜ê² ë‹¤.
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		canvas.drawBitmap(mWallpaper, 0, 0, mPaint); // ¹ÙÅÁÈ­¸éÀ» ±×¸®°í
+		canvas.drawBitmap(mWallpaper, 0, 0, mPaint); // ë°”íƒ•í™”ë©´ì„ ê·¸ë¦¬ê³ 
 		for (int i = 0; i < getChildCount(); i++) {
-			drawChild(canvas, getChildAt(i), 100); // Â÷ÀÏµå ºäµéÀ» ÇÏ³ªÇÏ³ª ±×¸°´Ù.
+			drawChild(canvas, getChildAt(i), 100); // ì°¨ì¼ë“œ ë·°ë“¤ì„ í•˜ë‚˜í•˜ë‚˜ ê·¸ë¦°ë‹¤.
 		}
 	}
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.d(TAG, "event Action : " + event.getAction());
 
+
 		if (mVelocityTracker == null)
 			mVelocityTracker = VelocityTracker.obtain();
 
-		// ÅÍÄ¡µÇ´Â ¸ğµç ÁÂÇ¥µéÀ» ÀúÀåÇÏ¿©, ÅÍÄ¡ µå·¡±× ¼Óµµ¸¦ ÆÇ´ÜÇÏ´Â ±âÃÊ¸¦ ¸¸µë
+
+		// í„°ì¹˜ë˜ëŠ” ëª¨ë“  ì¢Œí‘œë“¤ì„ ì €ì¥í•˜ì—¬, í„°ì¹˜ ë“œë˜ê·¸ ì†ë„ë¥¼ íŒë‹¨í•˜ëŠ” ê¸°ì´ˆë¥¼ ë§Œë“¬
 		mVelocityTracker.addMovement(event);
+
 
 		switch (event.getAction()) {
 
+
 		case MotionEvent.ACTION_DOWN:
-			// ÇöÀç È­¸éÀÌ ÀÚµ¿ ½ºÅ©·Ñ ÁßÀÌ¶ó¸é (ACTION_UP ÀÇ mScroller ºÎºĞ ÂüÁ¶)
+			// í˜„ì¬ í™”ë©´ì´ ìë™ ìŠ¤í¬ë¡¤ ì¤‘ì´ë¼ë©´ (ACTION_UP ì˜ mScroller ë¶€ë¶„ ì°¸ì¡°)
 			if (!mScroller.isFinished()) {
-				mScroller.abortAnimation(); // ÀÚµ¿½ºÅ©·Ñ ÁßÁöÇÏ°í ÅÍÄ¡ ÁöÁ¡¿¡ ¸ØÃç¼­ÀÕÀ»°Í
+				mScroller.abortAnimation(); // ìë™ìŠ¤í¬ë¡¤ ì¤‘ì§€í•˜ê³  í„°ì¹˜ ì§€ì ì— ë©ˆì¶°ì„œì‡ì„ê²ƒ
 			}
-			mLastPoint.set(event.getX(), event.getY()); // ÅÍÄ¡ÁöÁ¡ ÀúÀå
+			mLastPoint.set(event.getX(), event.getY()); // í„°ì¹˜ì§€ì  ì €ì¥
 			break;
 
+
 		case MotionEvent.ACTION_MOVE:
-			// ÀÌÀü ÅÍÄ¡ÁöÁ¡°ú ÇöÀç ÅÍÄ¡ÁöÁ¡ÀÇ Â÷ÀÌ¸¦ ±¸ÇØ¼­ È­¸é ½ºÅ©·Ñ ÇÏ´Âµ¥ ÀÌ¿ë
+			// ì´ì „ í„°ì¹˜ì§€ì ê³¼ í˜„ì¬ í„°ì¹˜ì§€ì ì˜ ì°¨ì´ë¥¼ êµ¬í•´ì„œ í™”ë©´ ìŠ¤í¬ë¡¤ í•˜ëŠ”ë° ì´ìš©
 			if (mCurPage != 0 && mCurPage !=2) {
 				int x = (int) (event.getX() - mLastPoint.x);
-				scrollBy(-x, 0); // Â÷ÀÌ¸¸Å­ È­¸é ½ºÅ©·Ñ
-				invalidate(); // ´Ù½Ã ±×¸®±â
+				scrollBy(-x, 0); // ì°¨ì´ë§Œí¼ í™”ë©´ ìŠ¤í¬ë¡¤
+				invalidate(); // ë‹¤ì‹œ ê·¸ë¦¬ê¸°
 				mLastPoint.set(event.getX(), event.getY());
 			}
 			break;
 
-		case MotionEvent.ACTION_UP:
-			// pixel/ms ´ÜÀ§·Î µå·¡±× ¼Óµµ¸¦ ±¸ÇÒ°ÍÀÎ°¡ ÁöÁ¤ (1ÃÊ·Î ÁöÁ¤)
-			// onInterceptTouchEvent ¸Ş¼­µå¿¡¼­ ÅÍÄ¡ÁöÁ¡À» ÀúÀåÇØµĞ °ÍÀ» Åä´ë·Î ÇÑ´Ù.
-			mVelocityTracker.computeCurrentVelocity(1000);
-			int v = (int) mVelocityTracker.getXVelocity(); // x Ãà ÀÌµ¿ ¼Óµµ¸¦ ±¸ÇÔ
 
-			int gap = getScrollX() - mCurPage * getWidth(); // µå·¡±× ÀÌµ¿ °Å¸® Ã¼Å©
+		case MotionEvent.ACTION_UP:
+			// pixel/ms ë‹¨ìœ„ë¡œ ë“œë˜ê·¸ ì†ë„ë¥¼ êµ¬í• ê²ƒì¸ê°€ ì§€ì • (1ì´ˆë¡œ ì§€ì •)
+			// onInterceptTouchEvent ë©”ì„œë“œì—ì„œ í„°ì¹˜ì§€ì ì„ ì €ì¥í•´ë‘” ê²ƒì„ í† ëŒ€ë¡œ í•œë‹¤.
+			mVelocityTracker.computeCurrentVelocity(1000);
+			int v = (int) mVelocityTracker.getXVelocity(); // x ì¶• ì´ë™ ì†ë„ë¥¼ êµ¬í•¨
+
+
+			int gap = getScrollX() - mCurPage * getWidth(); // ë“œë˜ê·¸ ì´ë™ ê±°ë¦¬ ì²´í¬
 			Log.d(TAG, "mVelocityTracker : " + v);
 			int nextPage = mCurPage;
 
-			// µå·¡±× ¼Óµµ°¡ SNAP_VELOCITY º¸´Ù ³ô°Å´Ï È­¸é ¹İÀÌ»ó µå·¡±× ÇßÀ¸¸é
-			// È­¸éÀüÈ¯ ÇÒ°ÍÀÌ¶ó°í nextPage º¯¼ö¸¦ ÅëÇØ ÀúÀå.
+
+			// ë“œë˜ê·¸ ì†ë„ê°€ SNAP_VELOCITY ë³´ë‹¤ ë†’ê±°ë‹ˆ í™”ë©´ ë°˜ì´ìƒ ë“œë˜ê·¸ í–ˆìœ¼ë©´
+			// í™”ë©´ì „í™˜ í• ê²ƒì´ë¼ê³  nextPage ë³€ìˆ˜ë¥¼ í†µí•´ ì €ì¥.
 			if ((v > SNAP_VELOCITY || gap < -getWidth() / 2) && mCurPage > 0) {
 				nextPage--;
 			} else if ((v < -SNAP_VELOCITY || gap > getWidth() / 2)
@@ -160,21 +186,24 @@ public class SlidingView extends ViewGroup {
 				nextPage++;
 			}
 
+
 			int move = 0;
-			if (mCurPage != nextPage) { // È­¸é ÀüÈ¯ ½ºÅ©·Ñ °è»ê
-				// ÇöÀç ½ºÅ©·Ñ ÁöÁ¡¿¡¼­ È­¸éÀüÈ¯À» À§ÇØ ÀÌµ¿ÇØ¾ßÇÏ´Â ÁöÁ¡°úÀÇ °Å¸® °è»ê
+			if (mCurPage != nextPage) { // í™”ë©´ ì „í™˜ ìŠ¤í¬ë¡¤ ê³„ì‚°
+				// í˜„ì¬ ìŠ¤í¬ë¡¤ ì§€ì ì—ì„œ í™”ë©´ì „í™˜ì„ ìœ„í•´ ì´ë™í•´ì•¼í•˜ëŠ” ì§€ì ê³¼ì˜ ê±°ë¦¬ ê³„ì‚°
 				move = getChildAt(0).getWidth() * nextPage - getScrollX();
-			} else { // ¿ø·¡ È­¸é º¹±Í ½ºÅ©·Ñ °è»ê
-				// È­¸é ÀüÈ¯ ÇÏÁö ¾ÊÀ»°ÍÀÌ¸ç ¿ø·¡ ÆäÀÌÁö·Î µ¹¾Æ°¡±â À§ÇÑ ÀÌµ¿ÇØ¾ßÇÏ´Â °Å¸® °è»ê
+			} else { // ì›ë˜ í™”ë©´ ë³µê·€ ìŠ¤í¬ë¡¤ ê³„ì‚°
+				// í™”ë©´ ì „í™˜ í•˜ì§€ ì•Šì„ê²ƒì´ë©° ì›ë˜ í˜ì´ì§€ë¡œ ëŒì•„ê°€ê¸° ìœ„í•œ ì´ë™í•´ì•¼í•˜ëŠ” ê±°ë¦¬ ê³„ì‚°
 				move = getWidth() * mCurPage - getScrollX();
 			}
 
-			// ÇÙ½É!! ÇöÀç ½ºÅ©·Ñ ÁöÁ¡°ú ÀÌµ¿ÇÏ°íÀÚ ÇÏ´Â ÃÖÁ¾ ¸ñÇ¥ ½ºÅ©·Ñ ÁöÁ¡À» ¼³Á¤ÇÏ´Â ¸Ş¼­µå
-			// ÇöÀç ÁöÁ¡¿¡¼­ ¸ñÇ¥ ÁöÁ¡±îÁö ½ºÅ©·Ñ·Î ÀÌµ¿ÇÏ±â À§ÇÑ Áß°£°ªµéÀ» ÀÚµ¿À¸·Î ±¸ÇØÁØ´Ù.
-			// ¸¶Áö¸· ÀÎÀÚ´Â ¸ñÇ¥ ÁöÁ¡±îÁö ½ºÅ©·Ñ µÇ´Â ½Ã°£À» ÁöÁ¤ÇÏ´Â °Í. ¹Ğ¸®¼¼ÄÁµå ´ÜÀ§ÀÌ´Ù.
-			// ¸¶Áö¸· ÀÎÀÚÀÇ ½Ã°£µ¿¾È Áß°£ ½ºÅ©·Ñ °ªµéÀ» ¾ò¾î È­¸é¿¡ °è¼Ó ½ºÅ©·ÑÀ» ÇØÁØ´Ù.
-			// ±×·¯¸é ½ºÅ©·Ñ ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ µÇ´Â°ÍÃ³·³ º¸ÀÎ´Ù. (computeScroll() ÂüÁ¶)
+
+			// í•µì‹¬!! í˜„ì¬ ìŠ¤í¬ë¡¤ ì§€ì ê³¼ ì´ë™í•˜ê³ ì í•˜ëŠ” ìµœì¢… ëª©í‘œ ìŠ¤í¬ë¡¤ ì§€ì ì„ ì„¤ì •í•˜ëŠ” ë©”ì„œë“œ
+			// í˜„ì¬ ì§€ì ì—ì„œ ëª©í‘œ ì§€ì ê¹Œì§€ ìŠ¤í¬ë¡¤ë¡œ ì´ë™í•˜ê¸° ìœ„í•œ ì¤‘ê°„ê°’ë“¤ì„ ìë™ìœ¼ë¡œ êµ¬í•´ì¤€ë‹¤.
+			// ë§ˆì§€ë§‰ ì¸ìëŠ” ëª©í‘œ ì§€ì ê¹Œì§€ ìŠ¤í¬ë¡¤ ë˜ëŠ” ì‹œê°„ì„ ì§€ì •í•˜ëŠ” ê²ƒ. ë°€ë¦¬ì„¸ì»¨ë“œ ë‹¨ìœ„ì´ë‹¤.
+			// ë§ˆì§€ë§‰ ì¸ìì˜ ì‹œê°„ë™ì•ˆ ì¤‘ê°„ ìŠ¤í¬ë¡¤ ê°’ë“¤ì„ ì–»ì–´ í™”ë©´ì— ê³„ì† ìŠ¤í¬ë¡¤ì„ í•´ì¤€ë‹¤.
+			// ê·¸ëŸ¬ë©´ ìŠ¤í¬ë¡¤ ì• ë‹ˆë©”ì´ì…˜ì´ ë˜ëŠ”ê²ƒì²˜ëŸ¼ ë³´ì¸ë‹¤. (computeScroll() ì°¸ì¡°)
 			mScroller.startScroll(getScrollX(), 0, move, 0, Math.abs(move));
+
 
 			if (mToast != null) {
 				mToast.setText("page : " + nextPage);
@@ -186,41 +215,45 @@ public class SlidingView extends ViewGroup {
 			invalidate();
 			mCurPage = nextPage;
 
-			// ÅÍÄ¡°¡ ³¡³µÀ¸´Ï ÀúÀåÇØµÎ¾ú´ø ÅÍÄ¡ Á¤º¸µé »èÁ¦ÇÏ°í
-			// ÅÍÄ¡»óÅÂ´Â ÀÏ¹İÀ¸·Î º¯°æ
+
+			// í„°ì¹˜ê°€ ëë‚¬ìœ¼ë‹ˆ ì €ì¥í•´ë‘ì—ˆë˜ í„°ì¹˜ ì •ë³´ë“¤ ì‚­ì œí•˜ê³ 
+			// í„°ì¹˜ìƒíƒœëŠ” ì¼ë°˜ìœ¼ë¡œ ë³€ê²½
 			mCurTouchState = TOUCH_STATE_NORMAL;
 			mVelocityTracker.recycle();
 			mVelocityTracker = null;
 			break;
 		}
 
+
 		return true;
 	}
 
-	// ¿ÏÀü ÇÙ½É!! ÀÎ Äİ¹é ¸Ş¼­µå. ½ºÅ©·Ñ µÉ¶§¸¶´Ù ¹«Á¶°Ç °è¼Ó ½ÇÇàµÊ.
+
+	// ì™„ì „ í•µì‹¬!! ì¸ ì½œë°± ë©”ì„œë“œ. ìŠ¤í¬ë¡¤ ë ë•Œë§ˆë‹¤ ë¬´ì¡°ê±´ ê³„ì† ì‹¤í–‰ë¨.
 	@Override
 	public void computeScroll() {
 		super.computeScroll();
-		// onTouchEvent ¿¡¼­ ÁöÁ¤µÈ mScroller ÀÇ ¸ñÇ¥ ½ºÅ©·Ñ ÁöÁ¡À¸·Î ½ºÅ©·ÑÇÏ´Âµ¥, ÇÊ¿äÇÑ Áß°£ ÁÂÇ¥ °ªµéÀ»
-		// ¾ò±â À§ÇÑ ¸Ş¼­µå·Î¼­, Áß°£ ÁÂÇ¥°ªÀ» ¾òÀ»¼ö ÀÖÀ¸¸é true ¸¦ ¸®ÅÏ
+		// onTouchEvent ì—ì„œ ì§€ì •ëœ mScroller ì˜ ëª©í‘œ ìŠ¤í¬ë¡¤ ì§€ì ìœ¼ë¡œ ìŠ¤í¬ë¡¤í•˜ëŠ”ë°, í•„ìš”í•œ ì¤‘ê°„ ì¢Œí‘œ ê°’ë“¤ì„
+		// ì–»ê¸° ìœ„í•œ ë©”ì„œë“œë¡œì„œ, ì¤‘ê°„ ì¢Œí‘œê°’ì„ ì–»ì„ìˆ˜ ìˆìœ¼ë©´ true ë¥¼ ë¦¬í„´
 		if (mScroller.computeScrollOffset()) {
-			// °ªÀ» ¾òÀ»¼ö ÀÖ´Ù¸é. getCurrX,getCurrY À» ÅëÇØ Àü´ŞµÇ´Âµ¥,
-			// ÀÌ´Â ¸ñÇ¥ ÁöÁ¡À¸·Î ½ºÅ©·ÑÇÏ±â À§ÇÑ Áß°£ ÁÂÇ¥°ªµéÀ» Scroller Å¬·¡½º°¡ ÀÚµ¿À¸·Î °è»êÇÑ °ªÀÌ´Ù.
-			// scrollTo() ¸¦ ÅëÇØ È­¸éÀ» Áß°£ ÁöÁ¡À¸·Î ½ºÅ©·Ñ ÇÏ°í,
-			// ¾Õ¼­ ¸»Çßµí ½ºÅ©·ÑÀÌ µÇ¸é ÀÚµ¿À¸·Î computeScroll() ¸Ş¼­µå°¡ È£ÃâµÇ±â ¶§¹®¿¡
-			// ¸ñÇ¥ ½ºÅ©·Ñ ÁöÁ¡¿¡ µµÂøÇÒ‹š±îÁö computeScroll() ¸Ş¼­µå°¡ È£ÃâµÇ°í ½ºÅ©·Ñ µÇ°í È£ÃâµÇ°í ¹İº¹.
-			// µû¶ó¼­ È­¸é¿¡ ½ºÅ©·Ñ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ±¸ÇöµÈ°ÍÃ³·³ º¸ÀÌ°Ô µÊ.
+			// ê°’ì„ ì–»ì„ìˆ˜ ìˆë‹¤ë©´. getCurrX,getCurrY ì„ í†µí•´ ì „ë‹¬ë˜ëŠ”ë°,
+			// ì´ëŠ” ëª©í‘œ ì§€ì ìœ¼ë¡œ ìŠ¤í¬ë¡¤í•˜ê¸° ìœ„í•œ ì¤‘ê°„ ì¢Œí‘œê°’ë“¤ì„ Scroller í´ë˜ìŠ¤ê°€ ìë™ìœ¼ë¡œ ê³„ì‚°í•œ ê°’ì´ë‹¤.
+			// scrollTo() ë¥¼ í†µí•´ í™”ë©´ì„ ì¤‘ê°„ ì§€ì ìœ¼ë¡œ ìŠ¤í¬ë¡¤ í•˜ê³ ,
+			// ì•ì„œ ë§í–ˆë“¯ ìŠ¤í¬ë¡¤ì´ ë˜ë©´ ìë™ìœ¼ë¡œ computeScroll() ë©”ì„œë“œê°€ í˜¸ì¶œë˜ê¸° ë•Œë¬¸ì—
+			// ëª©í‘œ ìŠ¤í¬ë¡¤ ì§€ì ì— ë„ì°©í• Â‹Âšê¹Œì§€ computeScroll() ë©”ì„œë“œê°€ í˜¸ì¶œë˜ê³  ìŠ¤í¬ë¡¤ ë˜ê³  í˜¸ì¶œë˜ê³  ë°˜ë³µ.
+			// ë”°ë¼ì„œ í™”ë©´ì— ìŠ¤í¬ë¡¤ ì• ë‹ˆë©”ì´ì…˜ì„ êµ¬í˜„ëœê²ƒì²˜ëŸ¼ ë³´ì´ê²Œ ë¨.
 			scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
 			invalidate();
 		}
 	}
 
-	// ViewGroup ÀÇ childview µé¿¡°Ô ÅÍÄ¡ÀÌº¥Æ®¸¦ ÁÙ°ÍÀÎÁö ¾Æ´Ï¸é º»ÀÎ¿¡°Ô ÅÍÄ¡ÀÌº¥Æ®¸¦ ÁÙ°ÍÀÎÁö
-	// ÆÇ´ÜÇÏ´Â Äİ¹é ¸Ş¼­µå ( ÅÍÄ¡ ÀÌºóÆ® ¹ß»ı½Ã °¡Àå¸ÕÀú ½ÇÇà µÊ )
-	// ¸®ÅÏ°ªÀ¸·Î true ¸¦ ÁÖ°Ô µÇ¸é viewgroupÀÇ onTouchEvent ¸Ş¼­µå°¡ ½ÇÇàµÇ°í
-	// false ¸¦ ÁÖ¸é ViewGroup ÀÇ onTouchEventÀº ½ÇÇàµÇÁö ¾Ê°í childview ¿¡°Ô
-	// ÅÍÄ¡ ÀÌº¥Æ²¸£ ³Ñ°ÜÁÖ°Ô µÈ´Ù. µû¶ó¼­, È­Àü ÀüÈ¯ ÇÒ°ÍÀÎ°¡? Â÷ÀÏµåºäÀÇ ¹öÆ°ÀÌ³ª ¿©Å¸ À§Á¬À» ÄÁÆ®·Ñ
-	// ÇÏ´Â µ¿ÀÛÀÎ°¡? ¸¦ ±¸ºĞÇÏ´Â ·ÎÁ÷ÀÌ ¿©±â¼­ ÇÊ¿äÇÏ´Ù.
+
+	// ViewGroup ì˜ childview ë“¤ì—ê²Œ í„°ì¹˜ì´ë²¤íŠ¸ë¥¼ ì¤„ê²ƒì¸ì§€ ì•„ë‹ˆë©´ ë³¸ì¸ì—ê²Œ í„°ì¹˜ì´ë²¤íŠ¸ë¥¼ ì¤„ê²ƒì¸ì§€
+	// íŒë‹¨í•˜ëŠ” ì½œë°± ë©”ì„œë“œ ( í„°ì¹˜ ì´ë¹ˆíŠ¸ ë°œìƒì‹œ ê°€ì¥ë¨¼ì € ì‹¤í–‰ ë¨ )
+	// ë¦¬í„´ê°’ìœ¼ë¡œ true ë¥¼ ì£¼ê²Œ ë˜ë©´ viewgroupì˜ onTouchEvent ë©”ì„œë“œê°€ ì‹¤í–‰ë˜ê³ 
+	// false ë¥¼ ì£¼ë©´ ViewGroup ì˜ onTouchEventì€ ì‹¤í–‰ë˜ì§€ ì•Šê³  childview ì—ê²Œ
+	// í„°ì¹˜ ì´ë²¤í‹€ë¥´ ë„˜ê²¨ì£¼ê²Œ ëœë‹¤. ë”°ë¼ì„œ, í™”ì „ ì „í™˜ í• ê²ƒì¸ê°€? ì°¨ì¼ë“œë·°ì˜ ë²„íŠ¼ì´ë‚˜ ì—¬íƒ€ ìœ„ì ¯ì„ ì»¨íŠ¸ë¡¤
+	// í•˜ëŠ” ë™ì‘ì¸ê°€? ë¥¼ êµ¬ë¶„í•˜ëŠ” ë¡œì§ì´ ì—¬ê¸°ì„œ í•„ìš”í•˜ë‹¤.
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		Log.d(TAG, "onInterceptTouchEvent : " + ev.getAction());
@@ -228,28 +261,31 @@ public class SlidingView extends ViewGroup {
 		int x = (int) ev.getX();
 		int y = (int) ev.getY();
 
+
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
-			// Scroller°¡ ÇöÀç ¸ñÇ¥ÁöÁ¡±îÁö ½ºÅ©·Ñ µÇ¾úÁö´Â ÆÇ´ÜÇÏ´Â isFinished() ¸¦ ÅëÇØ
-			// È­¸éÀÌ ÀÚµ¿ ½ºÅ©·Ñ µÇ´Â µµÁß¿¡ ÅÍÄ¡¸¦ ÇÑ°ÍÀÎÁö ¾Æ´ÑÁö¸¦ È®ÀÎÇÏ¿©,
-			// ÀÚ½Ä¿¡°Ô ÀÌº¥Æ®¸¦ Àü´ŞÇØ ÁÙ°ÇÁö¸¦ ÆÇ´ÜÇÑ´Ù.
+			// Scrollerê°€ í˜„ì¬ ëª©í‘œì§€ì ê¹Œì§€ ìŠ¤í¬ë¡¤ ë˜ì—ˆì§€ëŠ” íŒë‹¨í•˜ëŠ” isFinished() ë¥¼ í†µí•´
+			// í™”ë©´ì´ ìë™ ìŠ¤í¬ë¡¤ ë˜ëŠ” ë„ì¤‘ì— í„°ì¹˜ë¥¼ í•œê²ƒì¸ì§€ ì•„ë‹Œì§€ë¥¼ í™•ì¸í•˜ì—¬,
+			// ìì‹ì—ê²Œ ì´ë²¤íŠ¸ë¥¼ ì „ë‹¬í•´ ì¤„ê±´ì§€ë¥¼ íŒë‹¨í•œë‹¤.
 			mCurTouchState = mScroller.isFinished() ? TOUCH_STATE_NORMAL
 					: TOUCH_STATE_SCROLLING;
-			mLastPoint.set(x, y); // ÅÍÄ¡ ÁöÁ¡ ÀúÀå
+			mLastPoint.set(x, y); // í„°ì¹˜ ì§€ì  ì €ì¥
 			break;
 		case MotionEvent.ACTION_MOVE:
-			// ÀÚ½ÄºäÀÇ ÀÌº¥Æ®ÀÎ°¡ ¾Æ´Ï¸é È­¸éÀüÈ¯ µ¿ÀÛ ÀÌº¥Æ®¸¦ ÆÇ´ÜÇÏ´Â ±âÁØÀÇ ±âº»ÀÌ µÇ´Â
-			// µå·¡±× ÀÌµ¿ °Å¸®¸¦ Ã¼Å© °è»êÇÑ´Ù.
+			// ìì‹ë·°ì˜ ì´ë²¤íŠ¸ì¸ê°€ ì•„ë‹ˆë©´ í™”ë©´ì „í™˜ ë™ì‘ ì´ë²¤íŠ¸ë¥¼ íŒë‹¨í•˜ëŠ” ê¸°ì¤€ì˜ ê¸°ë³¸ì´ ë˜ëŠ”
+			// ë“œë˜ê·¸ ì´ë™ ê±°ë¦¬ë¥¼ ì²´í¬ ê³„ì‚°í•œë‹¤.
 			int move_x = Math.abs(x - (int) mLastPoint.x);
-			// ¸¸¾à Ã³À½ ÅÍÄ¡ÁöÁ¡¿¡¼­ mTouchSlop ¸¸Å­ ÀÌµ¿µÇ¸é È­¸éÀüÈ¯À» À§ÇÑ µ¿ÀÛÀ¸·Î ÆÇ´Ü
+			// ë§Œì•½ ì²˜ìŒ í„°ì¹˜ì§€ì ì—ì„œ mTouchSlop ë§Œí¼ ì´ë™ë˜ë©´ í™”ë©´ì „í™˜ì„ ìœ„í•œ ë™ì‘ìœ¼ë¡œ íŒë‹¨
 			if (move_x > mTouchSlop) {
-				mCurTouchState = TOUCH_STATE_SCROLLING; // ÇöÀç »óÅÂ ½ºÅ©·Ñ »óÅÂ·Î ÀüÈ¯
+				mCurTouchState = TOUCH_STATE_SCROLLING; // í˜„ì¬ ìƒíƒœ ìŠ¤í¬ë¡¤ ìƒíƒœë¡œ ì „í™˜
 				mLastPoint.set(x, y);
 			}
 			break;
 		}
 
-		// ÇöÀç »óÅÂ°¡ ½ºÅ©·Ñ ÁßÀÌ¶ó¸é true¸¦ ¸®ÅÏÇÏ¿© viewgroupÀÇ onTouchEvent °¡ ½ÇÇàµÊ
+
+		// í˜„ì¬ ìƒíƒœê°€ ìŠ¤í¬ë¡¤ ì¤‘ì´ë¼ë©´ trueë¥¼ ë¦¬í„´í•˜ì—¬ viewgroupì˜ onTouchEvent ê°€ ì‹¤í–‰ë¨
 		return mCurTouchState == TOUCH_STATE_SCROLLING;
 	}
 }
+
