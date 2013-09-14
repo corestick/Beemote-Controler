@@ -12,152 +12,152 @@
 
     <Button
         android:id="@+id/bee_btn11"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignLeft="@+id/bee_btn8"
         android:layout_below="@+id/bee_btn10"
         android:text="11" />
 
     <Button
         android:id="@+id/bee_btn12"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignLeft="@+id/bee_btn8"
         android:layout_below="@+id/bee_btn11"
         android:text="12" />
 
     <Button
         android:id="@+id/bee_btn16"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn15"
         android:layout_alignLeft="@+id/bee_btn15"
         android:text="16" />
 
     <Button
         android:id="@+id/bee_btn18"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn17"
         android:layout_alignLeft="@+id/bee_btn17"
         android:text="18" />
 
     <Button
         android:id="@+id/bee_btn19"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignLeft="@+id/bee_btn18"
         android:layout_below="@+id/bee_btn18"
         android:text="19" />
 
     <Button
         android:id="@+id/bee_btn15"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn14"
         android:layout_alignLeft="@+id/bee_btn13"
         android:text="15" />
 
     <Button
         android:id="@+id/bee_btn3"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn2"
         android:layout_alignLeft="@+id/bee_btn1"
         android:text="3" />
 
     <Button
         android:id="@+id/bee_btn7"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn6"
         android:layout_alignLeft="@+id/bee_btn4"
         android:text="7" />
 
     <Button
         android:id="@+id/bee_btn5"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn4"
         android:layout_alignLeft="@+id/bee_btn4"
         android:text="5" />
 
     <Button
         android:id="@+id/bee_btn6"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn5"
         android:layout_alignLeft="@+id/bee_btn4"
         android:text="6" />
 
     <Button
         android:id="@+id/bee_btn14"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn13"
         android:layout_alignLeft="@+id/bee_btn13"
         android:text="14" />
 
     <Button
         android:id="@+id/bee_btn17"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="93dp"
         android:layout_marginLeft="220dp"
         android:text="17" />
 
     <Button
         android:id="@+id/bee_btn13"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="170dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginLeft="165dp"
         android:text="13" />
 
     <Button
         android:id="@+id/bee_btn4"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="70dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginLeft="55dp"
         android:text="4" />
 
     <Button
         android:id="@+id/bee_btn9"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn8"
         android:layout_alignLeft="@+id/bee_btn8"
         android:text="9" />
 
     <Button
         android:id="@+id/bee_btn8"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-		android:layout_marginTop="30dp"		
-        android:layout_marginLeft="120dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+		android:layout_marginTop="25dp"		
+        android:layout_marginLeft="110dp"
         android:text="8" />
 
     <Button
         android:id="@+id/bee_btn10"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/bee_btn9"
         android:layout_alignLeft="@+id/bee_btn8"
         android:text="10" />
 
     <Button
         android:id="@+id/bee_btn1"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="20dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="93dp"
+        android:layout_marginLeft="0dp"
         android:text="1" />
 
     <Button
         android:id="@+id/bee_btn2"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignLeft="@+id/bee_btn1"
         android:layout_below="@+id/bee_btn1"
         android:text="2" />

@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 public class BeeView extends RelativeLayout implements View.OnClickListener {
+	
 	ShapeDrawable shapeRed;
 	ShapeDrawable shapeGreen;
 	Button[] btn = new Button[19];
@@ -72,12 +73,12 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 	}
 
 	public void drawHaxgon(Path p) {
-		p.moveTo(2.25f, 0f);
-		p.lineTo(6.75f, 0f);
-		p.lineTo(9f, 3.825f);
-		p.lineTo(6.75f, 7.65f);
-		p.lineTo(2.25f, 7.65f);
-		p.lineTo(0, 3.825f);
+		p.moveTo(2.5f, 0f);
+		p.lineTo(7.5f, 0f);
+		p.lineTo(10f, 4.5f);
+		p.lineTo(7.5f, 9f);
+		p.lineTo(2.5f, 9f);
+		p.lineTo(0, 4.5f);
 
 	}
 
@@ -87,6 +88,10 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		// TODO Auto-generated method stub
 		int left = v.getLeft() - 70;
 		int top = v.getTop() - 75;
+		if(left <0)
+			left =0;
+		else if (left > 300)
+			left = 300;
 		btnMenu.setPadding(left, top, 0, 0);
 		btnMenu.setVisibleState();
 
