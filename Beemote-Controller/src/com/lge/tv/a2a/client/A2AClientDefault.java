@@ -271,24 +271,25 @@ public class A2AClientDefault extends A2AClient {
 									int msgType = 0;
 									String contents = EntityUtils
 											.toString(entity);
-									if (contents.indexOf(MAGIC_STR) > 0) {
-										try {
-											msgType = Integer.parseInt(contents.substring(
-													0,
-													contents.indexOf(MAGIC_STR)));
-											contents = contents
-													.substring(contents
-															.indexOf(MAGIC_STR)
-															+ MAGIC_STR
-																	.length());
-										} catch (Exception e) {
-										}
-									}
-
-									if (messageListener != null) {
-										messageListener.onRecieveMessage(
-												msgType, contents);
-									}
+									Log.e("InString", contents);
+//									if (contents.indexOf(MAGIC_STR) > 0) {
+//										try {
+//											msgType = Integer.parseInt(contents.substring(
+//													0,
+//													contents.indexOf(MAGIC_STR)));
+//											contents = contents
+//													.substring(contents
+//															.indexOf(MAGIC_STR)
+//															+ MAGIC_STR
+//																	.length());
+//										} catch (Exception e) {
+//										}
+//									}
+//
+//									if (messageListener != null) {
+//										messageListener.onRecieveMessage(
+//												msgType, contents);
+//									}
 
 									response.setStatusCode(HttpStatus.SC_OK);
 								}
