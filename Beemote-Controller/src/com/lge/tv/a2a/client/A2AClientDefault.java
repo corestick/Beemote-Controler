@@ -244,9 +244,9 @@ public class A2AClientDefault extends A2AClient {
 			if (httpServer != null) {
 				httpServer.stopServer();
 			}
-
+			
 			HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
-			registry.register("/udap/api/apptoapp/event/*",
+			registry.register("/udap/api/event",
 					new HttpRequestHandler() {
 						final String MAGIC_STR = "~*(a)$^$(a)*~";
 
@@ -267,7 +267,7 @@ public class A2AClientDefault extends A2AClient {
 										.getEntity();
 
 								if (entity != null) {
-
+									Log.e("inin", "in");
 									int msgType = 0;
 									String contents = EntityUtils
 											.toString(entity);
@@ -637,7 +637,7 @@ public class A2AClientDefault extends A2AClient {
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleKeyInput</name>"
 								+ "<value>"
-								+ "24"
+								+ "1"
 								+ "</value>"
 								+ "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");

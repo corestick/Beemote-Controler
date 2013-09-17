@@ -1,10 +1,10 @@
 package com.latebutlucky.beemote_view;
 
+import java.io.IOException;
 import java.util.HashMap;
 
-import com.latebutlucky.beemote_controller.R;
-
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
@@ -16,10 +16,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.latebutlucky.beemote_controller.R;
+import com.latebutlucky.beemote_controller.TVList;
+import com.lge.tv.a2a.client.A2AClientManager;
+
 public class BeeView extends RelativeLayout implements View.OnClickListener {
 	ShapeDrawable shapeRed;
 	ShapeDrawable shapeGreen;
-	Button[] btn = new Button[19];
+	public Button[] btn = new Button[19];
 	ButtonMenu btnMenu;
 	ItemView itemView;
 
@@ -27,7 +31,8 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 	ImageButton btnChDown;
 	ImageButton btnVolUp;
 	ImageButton btnVolDown;
-	
+
+	Context mContext;
 	private HashMap<View, ItemView> mItemViewMap;
 
 	int btn_R[] = { R.id.bee_btn1, R.id.bee_btn2, R.id.bee_btn3, R.id.bee_btn4,
@@ -38,6 +43,7 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 
 	public BeeView(Context context) {
 		super(context);
+		mContext = context;
 		create(context);
 	}
 
@@ -72,7 +78,7 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		btnChUp = (ImageButton) findViewById(R.id.ch_up);
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
-		btnVolDown = (ImageButton) findViewById(R.id.vol_down);		
+		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
 
 		mItemViewMap = new HashMap<View, ItemView>();
 	}
@@ -91,20 +97,37 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		int left = v.getLeft() - 70;
-		int top = v.getTop() - 75;
-		btnMenu.setPadding(left, top, 0, 0);
-		btnMenu.setVisibleState();
-		
-		itemView = new ItemView(getContext());
-		addView(itemView);
-		itemView.setVisible();
-		itemView.setPadding(left+10, top, 0, 0);
-		itemView.bringToFront();
-		mItemViewMap.put(v, itemView);	
-		itemView.setText(mItemViewMap.toString());
 
-		v.setBackgroundDrawable(shapeGreen);
+		if (v.equals(btn[0])) {
+
+			Intent intent = new Intent(mContext.getApplicationContext(),
+					TVList.class);
+			mContext.startActivity(intent);
+
+		}
+
+		if (v.equals(btn[1])) {
+			try {
+				A2AClientManager.getDefaultClient().handleKey();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// int left = v.getLeft() - 70;
+		// int top = v.getTop() - 75;
+		// btnMenu.setPadding(left, top, 0, 0);
+		// btnMenu.setVisibleState();
+		//
+		// itemView = new ItemView(getContext());
+		// addView(itemView);
+		// itemView.setVisible();
+		// itemView.setPadding(left+10, top, 0, 0);
+		// itemView.bringToFront();
+		// mItemViewMap.put(v, itemView);
+		// itemView.setText(mItemViewMap.toString());
+		//
+		// v.setBackgroundDrawable(shapeGreen);
 	}
 
 }
