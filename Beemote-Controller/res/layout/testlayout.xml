@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/bg" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_1"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_2"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_3"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_4"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_5"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_6"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_7"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_8"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_9"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_10"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_11"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_12"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_13"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_14"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_15"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_16"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_17"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_18"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <com.latebutlucky.beemote_view.BeeButton
+                android:id="@+id/btnBee_19"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

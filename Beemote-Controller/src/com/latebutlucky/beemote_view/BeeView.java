@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 public class BeeView extends RelativeLayout implements View.OnClickListener {
 	ShapeDrawable shapeRed;
 	ShapeDrawable shapeGreen;
-	Button[] btn = new Button[19];
+	BeeButton[] btn = new BeeButton[19];
 	ButtonMenu btnMenu;
 	ItemView itemView;
 
@@ -56,19 +56,24 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		addView(btnMenu);
 		btnMenu.setVisibility(View.GONE);
 
-		Path path = new Path();
-		drawHaxgon(path);
-
-		shapeRed = new ShapeDrawable(new PathShape(path, 10, 10));
-		shapeRed.getPaint().setColor(Color.RED);
-		shapeGreen = new ShapeDrawable(new PathShape(path, 10, 10));
-		shapeGreen.getPaint().setColor(Color.GREEN);
+//		Path path = new Path();
+//		drawHaxgon(path);
+//
+//		shapeRed = new ShapeDrawable(new PathShape(path, 10, 10));
+//		shapeRed.getPaint().setColor(Color.RED);
+//		shapeGreen = new ShapeDrawable(new PathShape(path, 10, 10));
+//		shapeGreen.getPaint().setColor(Color.GREEN);
 
 		for (int i = 0; i < btn.length; i++) {
-			btn[i] = (Button) findViewById(btn_R[i]);
-			btn[i].setBackgroundDrawable(shapeRed);
+			btn[i] = (BeeButton) findViewById(btn_R[i]);
+//			btn[i].setBackgroundDrawable(shapeRed);
 			btn[i].setOnClickListener(this);
+			
+			btn[i].setBackgroundResource(R.drawable.hexagonrgb);
 		}
+		
+		
+		
 		btnChUp = (ImageButton) findViewById(R.id.ch_up);
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
@@ -104,7 +109,9 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		mItemViewMap.put(v, itemView);	
 		itemView.setText(mItemViewMap.toString());
 
-		v.setBackgroundDrawable(shapeGreen);
+//		v.setBackgroundDrawable(shapeGreen);
+		
+		((BeeButton)v).setText("123123");
 	}
 
 }
