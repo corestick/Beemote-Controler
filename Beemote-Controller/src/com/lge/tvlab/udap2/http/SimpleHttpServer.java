@@ -182,10 +182,7 @@ public class SimpleHttpServer {
 			System.out.println("New connection thread");
 			HttpContext context = new BasicHttpContext(null);			
 			try {
-				while (!Thread.interrupted() && this.conn.isOpen()) {
-					System.err.println(this.conn.getSocketTimeout()+"");
-					System.err.println(this.conn.toString());
-					System.err.println(context.toString());
+				while (!Thread.interrupted() && this.conn.isOpen()) {				
 					this.httpservice.handleRequest(this.conn, context);
 				}
 			} catch (ConnectionClosedException ex) {

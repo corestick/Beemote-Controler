@@ -1,5 +1,7 @@
 package com.lge.tv.a2a.client;
 
+import com.latebutlucky.beemote_controller.KeyboardInfo;
+
 /**
  * Inteface definition for a callback to be invoked when TV send a message.
  * 
@@ -15,5 +17,5 @@ public interface A2AMessageListener {
 	 * @param message
 	 *            The message string from TV
 	 */
-	public void onRecieveMessage(int type, String message);
+	public void onRecieveMessage(KeyboardInfo keyboardInfo);
 }

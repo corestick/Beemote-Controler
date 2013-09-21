@@ -44,6 +44,7 @@ import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.util.Log;
 
+import com.latebutlucky.beemote_controller.KeyboardInfo;
 import com.lge.tvlab.udap2.UDAPManager;
 import com.lge.tvlab.udap2.http.SimpleHttpServer;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
@@ -244,58 +245,114 @@ public class A2AClientDefault extends A2AClient {
 			if (httpServer != null) {
 				httpServer.stopServer();
 			}
-			
+
 			HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
-			registry.register("/udap/api/event",
-					new HttpRequestHandler() {
-						final String MAGIC_STR = "~*(a)$^$(a)*~";
+			registry.register("/udap/api/event", new HttpRequestHandler() {
+				boolean inEnvelope = false;
+				boolean inName = false;
+				boolean inValue = false;
+				boolean inMode = false;
+				boolean inState = false;
+				KeyboardInfo keyboardInfo = new KeyboardInfo();
 
-						@Override
-						public void handle(HttpRequest request,
-								HttpResponse response, HttpContext context)
-								throws HttpException, IOException {
-							String method = request.getRequestLine()
-									.getMethod().toUpperCase(Locale.ENGLISH);
-							System.out.println(request);
-							if (!method.equals("GET") && !method.equals("POST")) {
-								throw new MethodNotSupportedException(method
-										+ " method not supported");
-							}
+				@Override
+				public void handle(HttpRequest request, HttpResponse response,
+						HttpContext context) throws HttpException, IOException {
+					String method = request.getRequestLine().getMethod()
+							.toUpperCase(Locale.ENGLISH);
+					System.out.println(request);
+					if (!method.equals("GET") && !method.equals("POST")) {
+						throw new MethodNotSupportedException(method
+								+ " method not supported");
+					}
 
-							if (request instanceof HttpEntityEnclosingRequest) {
-								HttpEntity entity = ((HttpEntityEnclosingRequest) request)
-										.getEntity();
+					if (request instanceof HttpEntityEnclosingRequest) {
+						HttpEntity entity = ((HttpEntityEnclosingRequest) request)
+								.getEntity();
+						if (entity != null) {
+							Log.e("in", "in");
+							try {
+								XmlPullParser parser = XmlPullParserFactory
+										.newInstance().newPullParser();
+								parser.setInput(new StringReader(EntityUtils
+										.toString(entity)));
+								int eventType = parser.getEventType();
+								while (eventType != XmlPullParser.END_DOCUMENT) {
+									switch (eventType) {
+									case XmlPullParser.START_TAG:
+									case XmlPullParser.END_TAG:
+										boolean isStart = eventType == XmlPullParser.START_TAG ? true
+												: false;
 
-								if (entity != null) {
-									Log.e("inin", "in");
-									int msgType = 0;
-									String contents = EntityUtils
-											.toString(entity);
-									Log.e("InString", contents);
-//									if (contents.indexOf(MAGIC_STR) > 0) {
-//										try {
-//											msgType = Integer.parseInt(contents.substring(
-//													0,
-//													contents.indexOf(MAGIC_STR)));
-//											contents = contents
-//													.substring(contents
-//															.indexOf(MAGIC_STR)
-//															+ MAGIC_STR
-//																	.length());
-//										} catch (Exception e) {
-//										}
-//									}
-//
-//									if (messageListener != null) {
-//										messageListener.onRecieveMessage(
-//												msgType, contents);
-//									}
+										if (parser.getName().equals("envelope")) {
+											inEnvelope = isStart;
+										}
+										if (parser.getName().equals("name")) {
+											inName = isStart;
+										}
+										if (parser.getName().equals("value")) {
+											inValue = isStart;
+										}
+										if (parser.getName().equals("mode")) {
+											inMode = isStart;
+										}
+										if (parser.getName().equals("state")) {
+											inState = isStart;
+										}
+										break;
+									case XmlPullParser.TEXT:
+										if (inEnvelope) {
+											if (inName) {
+												keyboardInfo.name = parser
+														.getText();
+											}
+											if (inValue) {
+												keyboardInfo.value = parser
+														.getText();
+											}
+											if (inMode) {
+												keyboardInfo.mode = parser
+														.getText();
+											}
+											if (inState) {
+												keyboardInfo.state = parser
+														.getText();
+											}
+										}
+										break;
 
-									response.setStatusCode(HttpStatus.SC_OK);
+									default:
+										break;
+
+									}
+									eventType = parser.next();
 								}
+							} catch (XmlPullParserException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
+							// if (contents.indexOf(MAGIC_STR) > 0) {
+							// try {
+							// msgType = Integer.parseInt(contents.substring(
+							// 0,
+							// contents.indexOf(MAGIC_STR)));
+							// contents = contents
+							// .substring(contents
+							// .indexOf(MAGIC_STR)
+							// + MAGIC_STR
+							// .length());
+							// } catch (Exception e) {
+							// }
+							// }
+							//
+							if (messageListener != null) {
+								messageListener.onRecieveMessage(keyboardInfo);
+							}
+							response.setStatusCode(HttpStatus.SC_OK);
 						}
-					});
+					}
+				}
+			});
 
 			httpServer = new SimpleHttpServer(registry);
 			httpServer.startServer();
@@ -307,7 +364,6 @@ public class A2AClientDefault extends A2AClient {
 			if (error == A2ACmdError.A2ACmdErrorOK) {
 				a2atvInfo.isConnected = true;
 				httpclient = getThreadsafeClient();
-
 			}
 			return parseError(ret);
 		}
@@ -714,4 +770,5 @@ public class A2AClientDefault extends A2AClient {
 		Log.d("CSnopy", error + "");
 		return error;
 	}
+
 }
