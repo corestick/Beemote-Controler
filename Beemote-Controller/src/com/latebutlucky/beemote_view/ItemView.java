@@ -41,7 +41,10 @@ public class ItemView extends RelativeLayout {
 		
 		itemImage = (ImageView)findViewById(R.id.item_image);
 		itemText = (TextView)findViewById(R.id.item_text);
-	}	
+		
+		
+	}
+	
 	public void setImage(int img){
 		itemImage.setImageResource(img);
 	}

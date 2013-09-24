@@ -28,7 +28,7 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 	ImageButton btnVolUp;
 	ImageButton btnVolDown;
 	
-	private HashMap<View, ItemView> mItemViewMap;
+//	private HashMap<View, ItemView> mItemViewMap;
 
 	int btn_R[] = { R.id.bee_btn1, R.id.bee_btn2, R.id.bee_btn3, R.id.bee_btn4,
 			R.id.bee_btn5, R.id.bee_btn6, R.id.bee_btn7, R.id.bee_btn8,
@@ -66,20 +66,30 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 
 		for (int i = 0; i < btn.length; i++) {
 			btn[i] = (BeeButton) findViewById(btn_R[i]);
-//			btn[i].setBackgroundDrawable(shapeRed);
 			btn[i].setOnClickListener(this);
 			
-			btn[i].setBackgroundResource(R.drawable.hexagonrgb);
+//			btn[i].setBackgroundDrawable(shapeRed);
+			
+			
+//			btn[i].setBackgroundResource(R.drawable.hexagonrgb);
 		}
 		
+		
+		btn[0].setTextE("안녕하세요");
+		btn[1].setTextE("123123123");
+		
+		btn[1].setIcon(getResources().getDrawable(R.drawable.test_icon));
+		btn[3].setIcon(getResources().getDrawable(R.drawable.appearance));
+		btn[4].setIcon(getResources().getDrawable(R.drawable.bittorrent));
+		btn[12].setIcon(getResources().getDrawable(R.drawable.properties));
 		
 		
 		btnChUp = (ImageButton) findViewById(R.id.ch_up);
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
-		btnVolDown = (ImageButton) findViewById(R.id.vol_down);		
+		btnVolDown = (ImageButton) findViewById(R.id.vol_down);	
 
-		mItemViewMap = new HashMap<View, ItemView>();
+//		mItemViewMap = new HashMap<View, ItemView>();
 	}
 
 	public void drawHaxgon(Path p) {
@@ -101,17 +111,17 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		btnMenu.setPadding(left, top, 0, 0);
 		btnMenu.setVisibleState();
 		
-		itemView = new ItemView(getContext());
-		addView(itemView);
-		itemView.setVisible();
-		itemView.setPadding(left+10, top, 0, 0);
-		itemView.bringToFront();
-		mItemViewMap.put(v, itemView);	
-		itemView.setText(mItemViewMap.toString());
+//		itemView = new ItemView(getContext());
+//		addView(itemView);
+//		itemView.setVisible();
+//		itemView.setPadding(left+10, top, 0, 0);
+//		itemView.bringToFront();
+//		mItemViewMap.put(v, itemView);	
+//		itemView.setText(mItemViewMap.toString());
 
 //		v.setBackgroundDrawable(shapeGreen);
 		
-		((BeeButton)v).setText("123123");
+//		((BeeButton)v).setText("123123");
 	}
 
 }
