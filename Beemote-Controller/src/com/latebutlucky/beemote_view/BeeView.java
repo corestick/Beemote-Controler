@@ -114,6 +114,9 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 				e.printStackTrace();
 			}
 		}
+		if (v.equals(btn[2])) {
+			btnMenu.setVisibleState();
+		}
 		// int left = v.getLeft() - 70;
 		// int top = v.getTop() - 75;
 		// btnMenu.setPadding(left, top, 0, 0);

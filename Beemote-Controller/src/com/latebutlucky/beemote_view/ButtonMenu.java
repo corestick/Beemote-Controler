@@ -1,15 +1,23 @@
 package com.latebutlucky.beemote_view;
 
-import com.latebutlucky.beemote_controller.R;
+import java.io.IOException;
+import java.net.URLEncoder;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+
+import com.latebutlucky.beemote_controller.R;
+import com.lge.tv.a2a.client.A2AClient;
+import com.lge.tv.a2a.client.A2AClientManager;
 
 public class ButtonMenu extends RelativeLayout implements OnClickListener {
 	private int mVisibleState = INVISIBLE;
@@ -17,6 +25,8 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 	public Button btn2;
 	public Button btn3;
 	public Button btn4;
+
+	A2AClient mA2AClient = null;
 
 	public ButtonMenu(Context context) {
 		super(context);
@@ -37,6 +47,46 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 		btn2 = (Button) findViewById(R.id.selmenu_btn2);
 		btn3 = (Button) findViewById(R.id.selmenu_btn3);
 		btn4 = (Button) findViewById(R.id.selmenu_btn4);
+
+		mA2AClient = A2AClientManager.getDefaultClient();
+
+		btn2.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				try {
+					mA2AClient.exe();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		btn1.setOnClickListener(new View.OnClickListener() {
+			Bitmap bitmap;
+
+			@Override
+			public void onClick(View v) {
+				try {
+					mA2AClient.tvAppQuery();
+					for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+						bitmap = mA2AClient.tvAppIconQuery(mA2AClient.TvAppList
+								.get(i).auid, URLEncoder
+								.encode(mA2AClient.TvAppList.get(i).name));
+						mA2AClient.TvAppList.get(i).appIcon = bitmap;
+					}
+					bitmap = mA2AClient.TvAppList.get(0).appIcon = bitmap;
+					Bitmap bit = Bitmap.createBitmap(bitmap);
+					Drawable drawable = new BitmapDrawable(bit);
+					btn3.setBackgroundDrawable(drawable);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
 	}
 
 	@Override

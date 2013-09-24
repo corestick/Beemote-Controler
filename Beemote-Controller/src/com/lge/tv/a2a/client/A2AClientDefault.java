@@ -2,6 +2,7 @@ package com.lge.tv.a2a.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.DatagramPacket;
@@ -12,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -40,11 +42,14 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.util.Log;
 
 import com.latebutlucky.beemote_controller.KeyboardInfo;
+import com.latebutlucky.beemote_controller.TvAppInfo;
 import com.lge.tvlab.udap2.UDAPManager;
 import com.lge.tvlab.udap2.http.SimpleHttpServer;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
@@ -57,6 +62,7 @@ import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
 public class A2AClientDefault extends A2AClient {
 	List<A2ATVInfo> infos = new ArrayList<A2ATVInfo>();
 	List<A2ATVInfo> tmpList = null;
+	
 	Handler handler = null;
 	SimpleHttpServer httpServer = null;
 	Context context = null;
@@ -612,7 +618,43 @@ public class A2AClientDefault extends A2AClient {
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
 	}
 
-	synchronized public void query() throws IOException {
+	synchronized public Bitmap tvAppIconQuery(String auid, String appName)
+			throws IOException {
+		Log.e("aaa", auid);
+		Log.e("aaa", appName);
+		URI uri = null;
+		int statusCode = 0;
+		Bitmap bitmap = null;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
+						+ a2atvInfo.port
+						+ "/udap/api/data?target=appicon_get&auid=" + auid
+						+ "&appname=URL_Encode(" + appName + ")");
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HttpGet httpGet = new HttpGet(uri);
+			httpGet.setHeader("User-Agent", "UDAP/2.0");
+			httpGet.setHeader("Connection", "Keep-Alive");
+
+			HttpResponse response = httpclient.execute(httpGet);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				InputStream inStream = null;
+				inStream = entity.getContent();
+				bitmap = BitmapFactory.decodeStream(inStream);
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
+			}
+		}
+		Log.e("Input", bitmap.toString());
+		return bitmap;
+	}
+
+	synchronized public void tvAppQuery() throws IOException {
 		URI uri = null;
 		int statusCode = 0;
 		if (a2atvInfo != null) {
@@ -632,18 +674,98 @@ public class A2AClientDefault extends A2AClient {
 			HttpResponse response = httpclient.execute(httpGet);
 			HttpEntity entity = response.getEntity();
 
-			statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == HttpURLConnection.HTTP_OK) {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						response.getEntity().getContent()));
-				StringBuffer sb = new StringBuffer();
-				String line = "";
-				while ((line = in.readLine()) != null) {
-					sb.append(line);
-				}
+			boolean inEnvelope = false;
+			boolean inData = false;
+			boolean inAuid = false;
+			boolean inName = false;
+			boolean inCpid = false;
+			TvAppInfo tvInfo = new TvAppInfo();
 
-				System.out.println(sb);
+			try {
+				XmlPullParser parser = XmlPullParserFactory.newInstance()
+						.newPullParser();
+				parser.setInput(new StringReader(EntityUtils.toString(entity)));
+				int eventType = parser.getEventType();
+				while (eventType != XmlPullParser.END_DOCUMENT) {
+					switch (eventType) {
+					case XmlPullParser.START_TAG:
+					case XmlPullParser.END_TAG:
+						boolean isStart = eventType == XmlPullParser.START_TAG ? true
+								: false;
+
+						if (parser.getName().equals("envelope")) {
+							inEnvelope = isStart;
+						}
+						if (parser.getName().equals("data")) {
+							inData = isStart;
+						}
+						if (parser.getName().equals("auid")) {
+							inAuid = isStart;
+						}
+						if (parser.getName().equals("name")) {
+							inName = isStart;
+						}
+						if (parser.getName().equals("cpid")) {
+							inCpid = isStart;
+						}
+						break;
+					case XmlPullParser.TEXT:
+						if (inEnvelope) {
+							if (inData) {
+								if (inCpid) {
+									tvInfo.cpid = parser.getText();
+									Log.e("TVAPPcpid", tvInfo.cpid);
+									TvAppList.add(tvInfo);
+									tvInfo = new TvAppInfo();						
+//									
+									Log.e("TVAPPListSize", TvAppList.size() + "");
+								}
+								// } else {
+								// if (!tvInfo.auid.equals("") &&
+								// !tvInfo.name.equals("")) {
+								// TvAppList.add(tvInfo);
+								// tvInfo.auid ="";
+								// tvInfo.name ="";
+								// tvInfo.cpid ="";
+								// Log.e("TVAPPList2222", TvAppList.size()
+								// + "");
+								// }
+								// }
+								if (inAuid) {
+									tvInfo.auid = parser.getText();
+									Log.e("TVAPP", tvInfo.auid);
+								}
+								if (inName) {
+									tvInfo.name = parser.getText();
+									Log.e("TVAPPname", tvInfo.name);
+								}
+							}
+						}
+						break;
+
+					default:
+						break;
+
+					}
+					eventType = parser.next();
+				}
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
+			// statusCode = response.getStatusLine().getStatusCode();
+			// if (statusCode == HttpURLConnection.HTTP_OK) {
+			// BufferedReader in = new BufferedReader(new InputStreamReader(
+			// response.getEntity().getContent()));
+			// StringBuffer sb = new StringBuffer();
+			// String line = "";
+			// while ((line = in.readLine()) != null) {
+			// sb.append(line);
+			// }
+			//
+			// System.out.println(sb);
+			// }
 		}
 	}
 
@@ -672,6 +794,50 @@ public class A2AClientDefault extends A2AClient {
 				post.setEntity(entity);
 				HttpResponse response = httpclient.execute(post);
 
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	synchronized public void keywordSend(String str) throws IOException {
+		URI uri = null;
+		int statusCode = 0;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
+						+ a2atvInfo.port + "/udap/api/event");
+				HttpPost post = new HttpPost(uri);
+				post.setHeader("Pragma", "no-cache");
+				post.setHeader("Cache-Control", "no-cache");
+				post.setHeader("User-Agent", "UDAP/2.0");
+				post.setHeader("Connection", "Keep-Alive");
+				StringEntity entity = new StringEntity(
+						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"event\"><name>TextEdited</name><state>"
+								+ "Editing"
+								+ "</state><value>"
+								+ str
+								+ "</value>" + "</api></envelope>", HTTP.UTF_8);
+				entity.setContentType("text/xml; charset=UTF-8");
+				post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+				statusCode = response.getStatusLine().getStatusCode();
+				if (statusCode == HttpURLConnection.HTTP_OK) {
+					BufferedReader in = new BufferedReader(
+							new InputStreamReader(response.getEntity()
+									.getContent()));
+					StringBuffer sb = new StringBuffer();
+					String line = "";
+					while ((line = in.readLine()) != null) {
+						sb.append(line);
+					}
+
+					System.out.println(sb);
+				}
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

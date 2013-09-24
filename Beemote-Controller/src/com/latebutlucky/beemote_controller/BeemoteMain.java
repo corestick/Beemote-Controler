@@ -1,14 +1,18 @@
 package com.latebutlucky.beemote_controller;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,16 +64,32 @@ public class BeemoteMain extends Activity implements A2AMessageListener {
 				View dial_view = getLayoutInflater().inflate(
 						R.layout.input_text, null);
 				dial.setContentView(dial_view);
-				EditText t = (EditText) dial_view
+				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
 				t.setFocusable(true);
+				t.setOnKeyListener(new OnKeyListener() {
+
+					@Override
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+						Log.e("RRR", String.valueOf(keyCode));
+						// mA2AClient.keywordSend(String.valueOf(keyCode));
+
+						return false;
+					}
+				});
 				b1.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View click_v) {
-						dial.dismiss();
+						try {
+							mA2AClient.keywordSend(t.getText().toString());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// dial.dismiss();
 					}
 				});
 				b2.setOnClickListener(new View.OnClickListener() {
