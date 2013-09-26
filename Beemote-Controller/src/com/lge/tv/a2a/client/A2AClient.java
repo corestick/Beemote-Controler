@@ -1,8 +1,14 @@
 package com.lge.tv.a2a.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.latebutlucky.beemote_controller.TvAppInfo;
+import com.latebutlucky.beemote_controller.TvChannelListInfo;
 
 /**
  * Represent App to App Android Client.
@@ -14,6 +20,8 @@ public abstract class A2AClient {
 	A2AEventListener eventListener = null;
 	A2AMessageListener messageListener = null;
 	A2ATVInfo a2atvInfo = null;
+	public ArrayList<TvAppInfo> TvAppList = new ArrayList<TvAppInfo>();
+	public ArrayList<TvChannelListInfo> TvChannelList = new ArrayList<TvChannelListInfo>();
 
 	public class QueryResultAppID {
 		A2ACmdError error;
@@ -183,10 +191,18 @@ public abstract class A2AClient {
 	 */
 	abstract public A2ACmdError terminateApp(long appId) throws IOException;
 
-	abstract public void query() throws IOException;
+	abstract public void tvAppQuery() throws IOException;
 
-	abstract public void exe() throws IOException;
+	abstract public Bitmap tvAppIconQuery(String auid, String appName)
+			throws IOException;
+
+	abstract public void TvAppExe(String auid, String appName, String contentId)
+			throws IOException;
 
 	abstract public void handleKey() throws IOException;
+
+	abstract public void keywordSend(String str) throws IOException;
+
+	abstract public void tvListQuery() throws IOException;
 
 }

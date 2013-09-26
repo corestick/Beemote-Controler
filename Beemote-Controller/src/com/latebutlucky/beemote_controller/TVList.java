@@ -28,6 +28,7 @@ import com.lge.tv.a2a.client.A2AClient;
 import com.lge.tv.a2a.client.A2AClient.A2ACmdError;
 import com.lge.tv.a2a.client.A2AClientManager;
 import com.lge.tv.a2a.client.A2AEventListener;
+import com.lge.tv.a2a.client.A2AMessageListener;
 import com.lge.tv.a2a.client.A2ATVInfo;
 
 public class TVList extends Activity {
@@ -99,7 +100,7 @@ public class TVList extends Activity {
 								mTVListAdapter.add(info);
 								
 								
-								//ÀÚµ¿ Æä¾î¸µ
+								//ï¿½Úµï¿½ ï¿½ï¿½î¸µ
 								if (info != null && info instanceof A2ATVInfo) {
 									mA2AClient.setCurrentTV((A2ATVInfo) info);
 									
@@ -110,7 +111,7 @@ public class TVList extends Activity {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-									Log.e("RRR", "Æä¾î¸µ °á°ú : " + ret);
+									Log.e("RRR", "ï¿½ï¿½î¸µ ï¿½ï¿½ï¿½ : " + ret);
 									TVList.this.finish();
 								}
 							}
@@ -138,7 +139,7 @@ public class TVList extends Activity {
 				mTVListAdapter.clear();
 				mTVListView.requestLayout();
 
-				//Æä¾î¸µ °ü·Ã
+				//ï¿½ï¿½î¸µ ï¿½ï¿½ï¿½
 //				mProgressDialog.show();
 				
 				boolean result = mA2AClient.searchTV(TVList.this);
@@ -157,7 +158,7 @@ public class TVList extends Activity {
 	private void showPairingDialog() {
 		// TODO Auto-generated method stub
 		
-		// Æä¾î¸µ ÄÚµå º¸±â
+		// ï¿½ï¿½î¸µ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
 		try {
 			mA2AClient.showPasscode();
 		} catch (IOException e1) {
@@ -171,14 +172,14 @@ public class TVList extends Activity {
 		new AlertDialog.Builder(TVList.this)
 		.setTitle(R.string.input_pairing)
 		.setView(linear)
-		.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {
+		.setPositiveButton("È®ï¿½ï¿½", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				try {
 					A2ACmdError ret = mA2AClient.connect(edtPairingCode.getText().toString());
-					Log.e("RRR", "Æä¾î¸µ °á°ú : " + ret);
+					Log.e("RRR", "ï¿½ï¿½î¸µ ï¿½ï¿½ï¿½ : " + ret);
 					TVList.this.finish();
 					
 				} catch (IOException e) {
@@ -186,7 +187,7 @@ public class TVList extends Activity {
 					e.printStackTrace();
 				}
 			}
-		}).show();
+		}).show();		
 	}
 
 	@Override

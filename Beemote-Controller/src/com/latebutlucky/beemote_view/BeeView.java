@@ -1,6 +1,5 @@
 package com.latebutlucky.beemote_view;
 
-import java.util.Vector;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,6 +16,7 @@ public class BeeView extends RelativeLayout {
 	public ButtonMenu btnMenu;
 
 	public BeeButton[] btnBee = new BeeButton[19];
+
 
 	ImageButton btnChUp;
 	ImageButton btnChDown;
@@ -65,6 +65,7 @@ public class BeeView extends RelativeLayout {
 
 	public void refreshBeemoteState(BeeButton beeButton) {
 		// TODO Auto-generated method stub
+
 		ItemInfo info = beeButton.itemInfo;
 
 		switch (info.beemoteType) {

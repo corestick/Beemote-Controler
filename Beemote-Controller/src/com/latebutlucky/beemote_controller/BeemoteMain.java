@@ -1,28 +1,43 @@
 package com.latebutlucky.beemote_controller;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
 import com.latebutlucky.beemote_view.SlidingView;
+import com.lge.tv.a2a.client.A2AClient;
+import com.lge.tv.a2a.client.A2AMessageListener;
 
-public class BeemoteMain extends Activity implements OnClickListener {
+public class BeemoteMain extends Activity implements OnClickListener,
+		A2AMessageListener {
 
 	public SlidingView slidingView;
 	BeemoteDB beemoteDB;
 	Vector<ItemInfo> beeInfo;
+
+	LayoutInflater mInflater;
+	static BeemoteMain mBeemote;
+	EditText edtMsg;
+	A2AClient mA2AClient = null;
+	Handler m_handler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,33 +47,35 @@ public class BeemoteMain extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		beemoteDB = new BeemoteDB(this);
-		
+
 		slidingView = new SlidingView(this);
-		
+
 		slidingView.addView(new BeeView(this));
 		slidingView.addView(new BeeView(this));
 		slidingView.addView(new BeeView(this));
-		
-		for(int i = 0; i < slidingView.getChildCount(); i++) {
+
+		for (int i = 0; i < slidingView.getChildCount(); i++) {
 			BeeView bView = (BeeView) slidingView.getChildAt(i);
 			bView.initBeeView(this, i);
 		}
-		
+
 		// DB정보 불러오기
 		beeInfo = beemoteDB.select();
-		
+
 		// DB정보 적용
-		for(int i = 0; i < beeInfo.size(); i++) {
+		for (int i = 0; i < beeInfo.size(); i++) {
 			ItemInfo info = beeInfo.get(i);
-			
-			if(info.screenIdx > -1 && info.screenIdx < slidingView.getChildCount()) {
-				
-				BeeView bView = (BeeView) slidingView.getChildAt(info.screenIdx);
+
+			if (info.screenIdx > -1
+					&& info.screenIdx < slidingView.getChildCount()) {
+
+				BeeView bView = (BeeView) slidingView
+						.getChildAt(info.screenIdx);
 				bView.btnBee[info.beemoteIdx].itemInfo = info;
 				bView.refreshBeemoteState(bView.btnBee[info.beemoteIdx]);
 			}
 		}
-		
+
 		setContentView(slidingView);
 	}
 
@@ -71,6 +88,7 @@ public class BeemoteMain extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+
 		// TODO Auto-generated method stub
 
 		// bee버튼
@@ -124,7 +142,7 @@ public class BeemoteMain extends Activity implements OnClickListener {
 					break;
 				default:
 					Toast.makeText(BeemoteMain.this, "지우기", Toast.LENGTH_SHORT)
-					.show();
+							.show();
 
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 					break;
@@ -143,6 +161,78 @@ public class BeemoteMain extends Activity implements OnClickListener {
 
 				bView.refreshBeemoteState(bButton);
 			}
+		}
+	}
+
+	public void showMsgDialog() {
+		m_handler.post(new Runnable() {
+			@Override
+			public void run() {
+				Log.e("dia", "dia");
+				// final Dialog dial = new Dialog(mBeemote,
+				// R.style.Theme_dialog);
+				final Dialog dial = new Dialog(mBeemote);
+				View dial_view = getLayoutInflater().inflate(
+						R.layout.input_text, null);
+				dial.setContentView(dial_view);
+				final EditText t = (EditText) dial_view
+						.findViewById(R.id.textinput_edit);
+				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
+				Button b2 = (Button) dial_view
+						.findViewById(R.id.custom_btncancle);
+				t.setFocusable(true);
+				t.setOnKeyListener(new OnKeyListener() {
+
+					@Override
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+						Log.e("RRR", String.valueOf(keyCode));
+						// mA2AClient.keywordSend(String.valueOf(keyCode));
+
+						return false;
+					}
+				});
+				b1.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View click_v) {
+						try {
+							mA2AClient.keywordSend(t.getText().toString());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// dial.dismiss();
+					}
+				});
+				b2.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dial.dismiss();
+					}
+				});
+				dial.show();
+			}
+		});
+		Log.e("dialog", "dialog");
+
+		//
+		// if (msg.length() > 0) {
+		// InputMethodManager imm = (InputMethodManager) mBeemote
+		// .getSystemService(Context.INPUT_METHOD_SERVICE);
+		// imm.hideSoftInputFromWindow(edtMsg.getWindowToken(), 0);
+
+	}
+
+	@Override
+	public void onRecieveMessage(KeyboardInfo keyboardInfo) {
+
+		if (keyboardInfo.name.equals("KeyboardVisible")) {
+			Log.e("In3", keyboardInfo.name);
+			Log.e("In3", keyboardInfo.value);
+			Log.e("In3", keyboardInfo.mode);
+			showMsgDialog();
+		} else if (keyboardInfo.name.equals("TextEdited")) {
+			Log.e("In3", keyboardInfo.state);
+			Log.e("In3", keyboardInfo.value);
 		}
 	}
 }
