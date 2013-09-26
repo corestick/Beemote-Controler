@@ -1,10 +1,13 @@
 package com.latebutlucky.beemote_controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Vector;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -18,12 +21,15 @@ import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
 import com.latebutlucky.beemote_view.SlidingView;
 import com.lge.tv.a2a.client.A2AClient;
+import com.lge.tv.a2a.client.A2AClientManager;
 import com.lge.tv.a2a.client.A2AMessageListener;
 
 public class BeemoteMain extends Activity implements OnClickListener,
@@ -45,7 +51,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		super.onCreate(savedInstanceState);
-
+		mBeemote = this;
 		beemoteDB = new BeemoteDB(this);
 
 		slidingView = new SlidingView(this);
@@ -53,6 +59,9 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		slidingView.addView(new BeeView(this));
 		slidingView.addView(new BeeView(this));
 		slidingView.addView(new BeeView(this));
+
+		mA2AClient = A2AClientManager.getDefaultClient();
+		mA2AClient.setMessageListener(this);
 
 		for (int i = 0; i < slidingView.getChildCount(); i++) {
 			BeeView bView = (BeeView) slidingView.getChildAt(i);
@@ -97,7 +106,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
 			bView.btnMenu.showButtonMenu(bButton);
-
+			try {
+				mA2AClient.TvAppExe(bButton.itemInfo.appId,bButton.itemInfo.appName , bButton.itemInfo.contentId);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Toast.makeText(
 					BeemoteMain.this,
 					"스크린 : " + bButton.itemInfo.screenIdx + "\n 버튼 : "
@@ -117,8 +131,29 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				case R.id.selmenu_btn1:
 					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
 							.show();
-
-					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_APP;
+					try {
+						mA2AClient.tvAppQuery();
+						Bitmap bitmap;
+						for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+							bitmap = mA2AClient.tvAppIconQuery(
+									mA2AClient.TvAppList.get(i).auid,
+									URLEncoder.encode(mA2AClient.TvAppList
+											.get(i).name));
+							mA2AClient.TvAppList.get(i).appIcon = bitmap;
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					TvAppListDialog appDialog = new TvAppListDialog(
+							BeemoteMain.this, mA2AClient.TvAppList, bButton);
+					appDialog.setCancelable(true);
+					android.view.WindowManager.LayoutParams params = appDialog
+							.getWindow().getAttributes();
+					params.width = LayoutParams.FILL_PARENT;
+					params.height = LayoutParams.FILL_PARENT;
+					appDialog.getWindow().setAttributes(params);
+					appDialog.show();			
 					break;
 				case R.id.selmenu_btn2:
 					Toast.makeText(BeemoteMain.this, "채널", Toast.LENGTH_SHORT)
@@ -147,21 +182,40 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 					break;
 				}
-
-				if (beeInfo.contains(bButton.itemInfo)) {
-					int idx = beeInfo.indexOf(bButton.itemInfo);
-					beeInfo.remove(idx);
-					beeInfo.add(bButton.itemInfo);
-
-					beemoteDB.update(bButton.itemInfo);
-				} else {
-					beeInfo.add(bButton.itemInfo);
-					beemoteDB.insert(bButton.itemInfo);
+			} else if (v instanceof ImageButton) {
+				switch (v.getId()) {
+				case R.id.ch_up:
+					Intent intent = new Intent(getApplicationContext(),
+							TVList.class);
+					intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+					getApplicationContext().startActivity(intent);
+					break;
 				}
-
-				bView.refreshBeemoteState(bButton);
 			}
 		}
+	}
+	
+	public void updateInfo(int beeType) {
+		
+		BeeView bView = (BeeView) slidingView.getChildAt(slidingView
+				.getCurrentPage());
+
+		BeeButton bButton = bView.btnMenu.getBeeButton();
+		
+		bButton.itemInfo.beemoteType = beeType;
+		
+		if (beeInfo.contains(bButton.itemInfo)) {
+			int idx = beeInfo.indexOf(bButton.itemInfo);
+			beeInfo.remove(idx);
+			beeInfo.add(bButton.itemInfo);
+
+			beemoteDB.update(bButton.itemInfo);
+		} else {
+			beeInfo.add(bButton.itemInfo);
+			beemoteDB.insert(bButton.itemInfo);
+		}
+
+		bView.refreshBeemoteState(bButton);
 	}
 
 	public void showMsgDialog() {

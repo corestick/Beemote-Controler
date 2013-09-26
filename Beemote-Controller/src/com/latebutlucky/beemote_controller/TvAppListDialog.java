@@ -4,11 +4,13 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +21,23 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.latebutlucky.beemote_view.BeeButton;
+
 public class TvAppListDialog extends Dialog {
 
 	IndexableListView listview;
 	App_Adapter App_Adapter;
-	ArrayList<TvAppInfo> appInfoArry = new ArrayList<TvAppInfo>();;
+	ArrayList<TvAppInfo> appInfoArry = new ArrayList<TvAppInfo>();
+	BeeButton mBeebutton;
+	Dialog mDialog;
+	BeemoteMain bMain;
 
-	public TvAppListDialog(Context context, ArrayList<TvAppInfo> TvList) {
+	public TvAppListDialog(Context context, ArrayList<TvAppInfo> TvList,
+			BeeButton beebutton) {
 		super(context);
+		
+		bMain = (BeemoteMain) context;
+		
 		// setTheme(R.style.Theme_dialog); //테두리 없애기위해
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.list_dialog);
@@ -34,12 +45,14 @@ public class TvAppListDialog extends Dialog {
 		// new ColorDrawable(Color.TRANSPARENT));
 		// getWindow().setBackgroundDrawable(
 		// getResources().getDrawable(R.drawable.gridback));
+		mDialog = this;
 		listview = (IndexableListView) findViewById(R.id.applist_listview);
 		appInfoArry = TvList;
+		mBeebutton = beebutton;
 		App_Adapter = new App_Adapter();
 		listview.setAdapter(App_Adapter);
 		listview.setFastScrollEnabled(true);
-		
+
 		Comparator<TvAppInfo> myComparator = new Comparator<TvAppInfo>() {
 			Collator app_Collator = Collator.getInstance();
 
@@ -55,10 +68,22 @@ public class TvAppListDialog extends Dialog {
 			public void onItemClick(AdapterView<?> parentView, View view,
 
 			int position, long id) {
+				Log.e("RRRR", "!!!!!!!!!!!!!------");
+				// Log.e("RRRR", appInfoArry.get(position).appIcon);
+				// mBeebutton.setTextE(appInfoArry.get(position).name);
+				mBeebutton.itemInfo.appName = appInfoArry.get(position).name;
+				mBeebutton.itemInfo.appId = appInfoArry.get(position).auid;
+				mBeebutton.itemInfo.contentId = appInfoArry.get(position).cpid;
+				
+				mBeebutton.setIcon(appInfoArry.get(position).appIcon);
 
+				bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_APP);
+
+				mDialog.dismiss();
 			}
 
 		});
+
 	}
 
 	public class App_Adapter extends BaseAdapter implements SectionIndexer {

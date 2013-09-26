@@ -3,6 +3,7 @@ package com.latebutlucky.beemote_view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -61,6 +62,7 @@ public class BeeView extends RelativeLayout {
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
 		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
+		btnChUp.setOnClickListener(bMain);
 	}
 
 	public void refreshBeemoteState(BeeButton beeButton) {
@@ -75,9 +77,10 @@ public class BeeView extends RelativeLayout {
 			beeButton.setIcon();
 			break;
 		case BGlobal.BEEBUTTON_TYPE_APP:
-
+			
 			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
-			beeButton.setIcon();
+//			Log.e("INFO", info.appName);
+			beeButton.setTextE(info.appName);
 			break;
 		case BGlobal.BEEBUTTON_TYPE_CH:
 			beeButton.setTextE("" + info.channelNo);

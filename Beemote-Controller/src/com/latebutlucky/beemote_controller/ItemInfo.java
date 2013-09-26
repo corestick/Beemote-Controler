@@ -15,7 +15,7 @@ public class ItemInfo {
 	public int channelNo;
 	
 	//어플관련
-	public int appId;
+	public String appId;
 	public String appName;
 	public String contentId;
 	
