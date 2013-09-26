@@ -1,6 +1,5 @@
 package com.latebutlucky.beemote_view;
 
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ public class BeeView extends RelativeLayout {
 	public ButtonMenu btnMenu;
 
 	public BeeButton[] btnBee = new BeeButton[19];
-
 
 	ImageButton btnChUp;
 	ImageButton btnChDown;

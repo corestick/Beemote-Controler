@@ -136,7 +136,6 @@ public class SlidingView extends ViewGroup {
 		// 메뉴 버튼 감추기
 		BeeView bView = (BeeView) this.getChildAt(this.getCurrentPage());
 		bView.btnMenu.hideButtonMenu();
-					
 
 		if (mVelocityTracker == null)
 			mVelocityTracker = VelocityTracker.obtain();
