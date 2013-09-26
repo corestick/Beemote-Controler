@@ -196,7 +196,7 @@ public abstract class A2AClient {
 	abstract public Bitmap tvAppIconQuery(String auid, String appName)
 			throws IOException;
 
-	abstract public void TvAppExE(String auid, String appName, String contentId)
+	abstract public void TvAppExe(String auid, String appName, String contentId)
 			throws IOException;
 
 	abstract public void handleKey() throws IOException;

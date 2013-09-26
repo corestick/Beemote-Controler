@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
@@ -841,7 +840,7 @@ public class A2AClientDefault extends A2AClient {
 									tvListInfo.PhysicalNum = parser.getText();
 									Log.e("TVAPPcpid", tvListInfo.PhysicalNum);
 
-								}								
+								}
 								if (inMajor) {
 									tvListInfo.Major = parser.getText();
 									Log.e("TVAPP", tvListInfo.Major);
@@ -865,24 +864,24 @@ public class A2AClientDefault extends A2AClient {
 				e.printStackTrace();
 			}
 
-			statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == HttpURLConnection.HTTP_OK) {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						response.getEntity().getContent()));
-				StringBuffer sb = new StringBuffer();
-				String line = "";
-				while ((line = in.readLine()) != null) {
-					sb.append(line);
-				}
-
-				System.out.println(sb);
-			}
+//			statusCode = response.getStatusLine().getStatusCode();
+//			if (statusCode == HttpURLConnection.HTTP_OK) {
+//				BufferedReader in = new BufferedReader(new InputStreamReader(
+//						response.getEntity().getContent()));
+//				StringBuffer sb = new StringBuffer();
+//				String line = "";
+//				while ((line = in.readLine()) != null) {
+//					sb.append(line);
+//				}
+//
+//				System.out.println(sb);
+//			}
 		}
 	}
 
-	synchronized public void TvAppExE(String auid, String appName,String contentId) throws IOException {
-		URI uri = null;
-		int statusCode = 0;
+	synchronized public void TvAppExe(String auid, String appName,
+			String contentId) throws IOException {
+		URI uri = null;		
 		if (a2atvInfo != null) {
 			try {
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
@@ -903,8 +902,7 @@ public class A2AClientDefault extends A2AClient {
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
-
+				httpclient.execute(post);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

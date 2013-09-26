@@ -98,6 +98,20 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 
 			}
 		});
+		
+		btn2.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				 try {
+					mA2AClient.tvListQuery();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	@Override
