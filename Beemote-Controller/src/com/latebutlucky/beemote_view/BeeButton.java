@@ -1,59 +1,74 @@
 package com.latebutlucky.beemote_view;
 
+import android.R;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Button;
 
 import com.latebutlucky.beemote_controller.BGlobal;
+import com.latebutlucky.beemote_controller.ItemInfo;
 
-public class BeeButton extends Button implements OnClickListener {
+public class BeeButton extends Button {
 
 	private final float TEXT_SIZE = 14;
 	private final float TEXT_LENGTH = 40;
-	private int currentType;
+	private final int IMAGE_SIZE_X = 60;
+	private final int IMAGE_SIZE_Y = 60;
+
+	public ItemInfo itemInfo;
 
 	public BeeButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-		currentType = BGlobal.BEEBUTTON_TYPE_NONE;
 
 		this.setMaxLines(1);
 		this.setTextSize(TEXT_SIZE);
 		this.setTextColor(Color.WHITE);
 	}
 
-	public void setIcon(Drawable dr) {
+	public void setItemInfo(ItemInfo info) {
+		this.itemInfo = info;
+	}
+
+	public void setIcon(Bitmap b) {
+
+		Bitmap resize = Bitmap.createScaledBitmap(b, IMAGE_SIZE_X,
+				IMAGE_SIZE_Y, true);
+
+		Drawable dr = (BitmapDrawable) new BitmapDrawable(getResources(),
+				resize);
 
 		dr.setBounds(0, 0, dr.getIntrinsicWidth(), dr.getIntrinsicHeight());
-//		dr.setBounds(0, 0, 40, 40);
-		
+
 		super.setCompoundDrawables(null, dr, null, null);
 	}
 
-	public void setType(int arg) {
-		currentType = arg;
+	public void setIcon(Drawable drawable) {
 
-		switch (currentType) {
-		case BGlobal.BEEBUTTON_TYPE_NONE:
-			break;
-		case BGlobal.BEEBUTTON_TYPE_APP:
+		BitmapDrawable bd = (BitmapDrawable) drawable;
 
-			break;
-		case BGlobal.BEEBUTTON_TYPE_FUNC:
-			break;
-		case BGlobal.BEEBUTTON_TYPE_SEARCH:
-			break;
-		}
+		Bitmap resize = Bitmap.createScaledBitmap(bd.getBitmap(), IMAGE_SIZE_X,
+				IMAGE_SIZE_Y, true);
+
+		Drawable dr = (BitmapDrawable) new BitmapDrawable(getResources(),
+				resize);
+
+		dr.setBounds(0, 0, dr.getIntrinsicWidth(), dr.getIntrinsicHeight());
+
+		super.setCompoundDrawables(null, dr, null, null);
+	}
+	
+	public void setIcon() {
+		super.setCompoundDrawables(null, null, null, null);
 	}
 
 	public void setTextE(String text) {
@@ -63,11 +78,5 @@ public class BeeButton extends Button implements OnClickListener {
 				TruncateAt.END).toString();
 
 		super.setText(str);
-	}
-
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		// TODO Auto-generated method stub
-
 	}
 }

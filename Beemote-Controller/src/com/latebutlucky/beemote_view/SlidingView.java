@@ -95,7 +95,7 @@ public class SlidingView extends ViewGroup {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		Log.d(TAG, "onMeasure");
+//		Log.d(TAG, "onMeasure");
 		for (int i = 0; i < getChildCount(); i++) {
 			// 각 차일드뷰의 크기는 동일하게 설정
 			getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);
@@ -106,7 +106,7 @@ public class SlidingView extends ViewGroup {
 	// 차일드뷰의 위치를 지정하는 콜백 메서드
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Log.d(TAG, "onLayout");
+//		Log.d(TAG, "onLayout");
 		// 핵심 구현 부분으로써
 		// 차일드뷰들을 겹치지 않게 옆으로 차례대로 나열해서 배치한다.
 		// 옆으로 차례대로 배치를 해놔야 스크롤을 통해 옆으로 이동하는것이 가능해진다.
@@ -131,8 +131,12 @@ public class SlidingView extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.d(TAG, "event Action : " + event.getAction());
+//		Log.d(TAG, "event Action : " + event.getAction());
 
+		// 메뉴 버튼 감추기
+		BeeView bView = (BeeView) this.getChildAt(this.getCurrentPage());
+		bView.btnMenu.hideButtonMenu();
+					
 
 		if (mVelocityTracker == null)
 			mVelocityTracker = VelocityTracker.obtain();
@@ -173,7 +177,7 @@ public class SlidingView extends ViewGroup {
 
 
 			int gap = getScrollX() - mCurPage * getWidth(); // 드래그 이동 거리 체크
-			Log.d(TAG, "mVelocityTracker : " + v);
+//			Log.d(TAG, "mVelocityTracker : " + v);
 			int nextPage = mCurPage;
 
 
@@ -256,7 +260,7 @@ public class SlidingView extends ViewGroup {
 	// 하는 동작인가? 를 구분하는 로직이 여기서 필요하다.
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		Log.d(TAG, "onInterceptTouchEvent : " + ev.getAction());
+//		Log.d(TAG, "onInterceptTouchEvent : " + ev.getAction());
 		int action = ev.getAction();
 		int x = (int) ev.getX();
 		int y = (int) ev.getY();
@@ -286,6 +290,10 @@ public class SlidingView extends ViewGroup {
 
 		// 현재 상태가 스크롤 중이라면 true를 리턴하여 viewgroup의 onTouchEvent 가 실행됨
 		return mCurTouchState == TOUCH_STATE_SCROLLING;
+	}
+	
+	public int getCurrentPage() {
+		return mCurPage;
 	}
 }
 

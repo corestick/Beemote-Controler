@@ -1,34 +1,27 @@
 package com.latebutlucky.beemote_view;
 
-import java.util.HashMap;
-
-import com.latebutlucky.beemote_controller.R;
+import java.util.Vector;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Path;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-public class BeeView extends RelativeLayout implements View.OnClickListener {
-	ShapeDrawable shapeRed;
-	ShapeDrawable shapeGreen;
-	BeeButton[] btn = new BeeButton[19];
-	ButtonMenu btnMenu;
-	ItemView itemView;
+import com.latebutlucky.beemote_controller.BGlobal;
+import com.latebutlucky.beemote_controller.BeemoteMain;
+import com.latebutlucky.beemote_controller.ItemInfo;
+import com.latebutlucky.beemote_controller.R;
+
+public class BeeView extends RelativeLayout {
+	public ButtonMenu btnMenu;
+
+	public BeeButton[] btnBee = new BeeButton[19];
 
 	ImageButton btnChUp;
 	ImageButton btnChDown;
 	ImageButton btnVolUp;
 	ImageButton btnVolDown;
-	
-//	private HashMap<View, ItemView> mItemViewMap;
 
 	int btn_R[] = { R.id.bee_btn1, R.id.bee_btn2, R.id.bee_btn3, R.id.bee_btn4,
 			R.id.bee_btn5, R.id.bee_btn6, R.id.bee_btn7, R.id.bee_btn8,
@@ -38,90 +31,76 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 
 	public BeeView(Context context) {
 		super(context);
-		create(context);
 	}
 
 	public BeeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		create(context);
 	}
 
-	@SuppressWarnings("deprecation")
-	private void create(Context context) {
+	public void initBeeView(BeemoteMain bMain, int idx) {
 		String service = Context.LAYOUT_INFLATER_SERVICE;
-		LayoutInflater li = (LayoutInflater) context.getSystemService(service);
+		LayoutInflater li = (LayoutInflater) bMain.getSystemService(service);
 		li.inflate(R.layout.bemote_main, this, true);
 
-		btnMenu = new ButtonMenu(context);
+		btnMenu = new ButtonMenu(bMain);
 		addView(btnMenu);
-		btnMenu.setVisibility(View.GONE);
 
-//		Path path = new Path();
-//		drawHaxgon(path);
-//
-//		shapeRed = new ShapeDrawable(new PathShape(path, 10, 10));
-//		shapeRed.getPaint().setColor(Color.RED);
-//		shapeGreen = new ShapeDrawable(new PathShape(path, 10, 10));
-//		shapeGreen.getPaint().setColor(Color.GREEN);
+		for (int i = 0; i < btnBee.length; i++) {
+			btnBee[i] = (BeeButton) findViewById(btn_R[i]);
+			btnBee[i].setOnClickListener(bMain);
 
-		for (int i = 0; i < btn.length; i++) {
-			btn[i] = (BeeButton) findViewById(btn_R[i]);
-			btn[i].setOnClickListener(this);
-			
-//			btn[i].setBackgroundDrawable(shapeRed);
-			
-			
-//			btn[i].setBackgroundResource(R.drawable.hexagonrgb);
+			ItemInfo info = new ItemInfo();
+
+			info.screenIdx = idx;
+			info.beemoteIdx = i;
+			info.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
+			btnBee[i].setItemInfo(info);
 		}
-		
-		
-		btn[0].setTextE("안녕하세요");
-		btn[1].setTextE("123123123");
-		
-		btn[1].setIcon(getResources().getDrawable(R.drawable.test_icon));
-		btn[3].setIcon(getResources().getDrawable(R.drawable.appearance));
-		btn[4].setIcon(getResources().getDrawable(R.drawable.bittorrent));
-		btn[12].setIcon(getResources().getDrawable(R.drawable.properties));
-		
-		
+
 		btnChUp = (ImageButton) findViewById(R.id.ch_up);
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
-		btnVolDown = (ImageButton) findViewById(R.id.vol_down);	
-
-//		mItemViewMap = new HashMap<View, ItemView>();
+		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
 	}
 
-	public void drawHaxgon(Path p) {
-		p.moveTo(2.25f, 0f);
-		p.lineTo(6.75f, 0f);
-		p.lineTo(9f, 3.825f);
-		p.lineTo(6.75f, 7.65f);
-		p.lineTo(2.25f, 7.65f);
-		p.lineTo(0, 3.825f);
-
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onClick(View v) {
+	public void refreshBeemoteState(BeeButton beeButton) {
 		// TODO Auto-generated method stub
-		int left = v.getLeft() - 70;
-		int top = v.getTop() - 75;
-		btnMenu.setPadding(left, top, 0, 0);
-		btnMenu.setVisibleState();
-		
-//		itemView = new ItemView(getContext());
-//		addView(itemView);
-//		itemView.setVisible();
-//		itemView.setPadding(left+10, top, 0, 0);
-//		itemView.bringToFront();
-//		mItemViewMap.put(v, itemView);	
-//		itemView.setText(mItemViewMap.toString());
+		ItemInfo info = beeButton.itemInfo;
 
-//		v.setBackgroundDrawable(shapeGreen);
-		
-//		((BeeButton)v).setText("123123");
+		switch (info.beemoteType) {
+		case BGlobal.BEEBUTTON_TYPE_NONE:
+
+			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton.setIcon();
+			break;
+		case BGlobal.BEEBUTTON_TYPE_APP:
+
+			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton.setIcon();
+			break;
+		case BGlobal.BEEBUTTON_TYPE_CH:
+			beeButton.setTextE("" + info.channelNo);
+			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton
+					.setIcon(getResources().getDrawable(R.drawable.appearance));
+			break;
+		case BGlobal.BEEBUTTON_TYPE_SEARCH:
+			beeButton.setTextE(beeButton.itemInfo.keyWord);
+			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton
+					.setIcon(getResources().getDrawable(R.drawable.properties));
+			break;
+		case BGlobal.BEEBUTTON_TYPE_FUNC:
+
+			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton
+					.setIcon(getResources().getDrawable(R.drawable.properties));
+			break;
+		default:
+
+			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton.setIcon();
+			break;
+		}
 	}
-
 }

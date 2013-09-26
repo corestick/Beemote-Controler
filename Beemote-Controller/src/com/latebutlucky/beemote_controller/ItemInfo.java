@@ -1,20 +1,28 @@
 package com.latebutlucky.beemote_controller;
 
 public class ItemInfo {
-	int screenIdx;
 	
-	int beemoteIdx;
+	//í™”ë©´
+	public int screenIdx;
 	
-	// Ã¤³Î, ¾îÇÃ, °Ë»ö¾î, Ãß°¡±â´É
-	int beemoteType;
+	//ë²„íŠ¼ ë²ˆí˜¸
+	public int beemoteIdx;
 	
-	int channelNo;
+	//íƒ€ì…
+	public int beemoteType;
 	
-	int appId;
-	String appName;
-	String contentId;
+	//ì±„ë„ë²ˆí˜¸
+	public int channelNo;
 	
-	String keyWord;
+	//ì–´í”Œê´€ë ¨
+	public int appId;
+	public String appName;
+	public String contentId;
 	
-	String functionKey;
+	//ê²€ìƒ‰ì–´
+	public String keyWord;
+	
+	//ê¸°ëŠ¥í‚¤
+	public String functionKey;
+	
 }
