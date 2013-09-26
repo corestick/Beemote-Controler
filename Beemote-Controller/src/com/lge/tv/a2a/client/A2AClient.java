@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.latebutlucky.beemote_controller.TvAppInfo;
+import com.latebutlucky.beemote_controller.TvChannelListInfo;
 
 /**
  * Represent App to App Android Client.
@@ -19,6 +20,8 @@ public abstract class A2AClient {
 	A2AMessageListener messageListener = null;
 	A2ATVInfo a2atvInfo = null;
 	public Vector<TvAppInfo> TvAppList = new Vector<TvAppInfo>();
+	public Vector<TvChannelListInfo> TvChannelList = new Vector<TvChannelListInfo>();
+
 
 	public class QueryResultAppID {
 		A2ACmdError error;
@@ -198,5 +201,6 @@ public abstract class A2AClient {
 	abstract public void handleKey() throws IOException;
 
 	abstract public void keywordSend(String str) throws IOException;
+	abstract public void tvListQuery() throws IOException;
 
 }

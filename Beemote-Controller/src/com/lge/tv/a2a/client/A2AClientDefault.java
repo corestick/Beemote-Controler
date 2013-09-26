@@ -50,6 +50,7 @@ import android.util.Log;
 
 import com.latebutlucky.beemote_controller.KeyboardInfo;
 import com.latebutlucky.beemote_controller.TvAppInfo;
+import com.latebutlucky.beemote_controller.TvChannelListInfo;
 import com.lge.tvlab.udap2.UDAPManager;
 import com.lge.tvlab.udap2.http.SimpleHttpServer;
 import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
@@ -62,7 +63,7 @@ import com.lge.tvlab.udap2.upnp.ssdp.SSDP;
 public class A2AClientDefault extends A2AClient {
 	List<A2ATVInfo> infos = new ArrayList<A2ATVInfo>();
 	List<A2ATVInfo> tmpList = null;
-	
+
 	Handler handler = null;
 	SimpleHttpServer httpServer = null;
 	Context context = null;
@@ -620,8 +621,6 @@ public class A2AClientDefault extends A2AClient {
 
 	synchronized public Bitmap tvAppIconQuery(String auid, String appName)
 			throws IOException {
-		Log.e("aaa", auid);
-		Log.e("aaa", appName);
 		URI uri = null;
 		int statusCode = 0;
 		Bitmap bitmap = null;
@@ -650,7 +649,6 @@ public class A2AClientDefault extends A2AClient {
 				}
 			}
 		}
-		Log.e("Input", bitmap.toString());
 		return bitmap;
 	}
 
@@ -716,9 +714,10 @@ public class A2AClientDefault extends A2AClient {
 									tvInfo.cpid = parser.getText();
 									Log.e("TVAPPcpid", tvInfo.cpid);
 									TvAppList.add(tvInfo);
-									tvInfo = new TvAppInfo();						
-//									
-									Log.e("TVAPPListSize", TvAppList.size() + "");
+									tvInfo = new TvAppInfo();
+									//
+									Log.e("TVAPPListSize", TvAppList.size()
+											+ "");
 								}
 								// } else {
 								// if (!tvInfo.auid.equals("") &&
@@ -766,6 +765,118 @@ public class A2AClientDefault extends A2AClient {
 			//
 			// System.out.println(sb);
 			// }
+		}
+	}
+
+	synchronized public void tvListQuery() throws IOException {
+		URI uri = null;
+		int statusCode = 0;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
+						+ a2atvInfo.port + "/udap/api/data?target=channel_list");
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HttpGet httpGet = new HttpGet(uri);
+			httpGet.setHeader("User-Agent", "UDAP/2.0");
+			httpGet.setHeader("Connection", "Close");
+
+			HttpResponse response = httpclient.execute(httpGet);
+			HttpEntity entity = response.getEntity();
+
+			boolean inEnvelope = false;
+			boolean inData = false;
+			boolean inMajor = false;
+			boolean inMinor = false;
+			boolean inPhysicalNum = false;
+			boolean inChname = false;
+
+			TvChannelListInfo tvListInfo = new TvChannelListInfo();
+
+			try {
+				XmlPullParser parser = XmlPullParserFactory.newInstance()
+						.newPullParser();
+				parser.setInput(new StringReader(EntityUtils.toString(entity)));
+				int eventType = parser.getEventType();
+				while (eventType != XmlPullParser.END_DOCUMENT) {
+					switch (eventType) {
+					case XmlPullParser.START_TAG:
+					case XmlPullParser.END_TAG:
+						boolean isStart = eventType == XmlPullParser.START_TAG ? true
+								: false;
+
+						if (parser.getName().equals("envelope")) {
+							inEnvelope = isStart;
+						}
+						if (parser.getName().equals("data")) {
+							inData = isStart;
+						}
+						if (parser.getName().equals("major")) {
+							inMajor = isStart;
+						}
+						if (parser.getName().equals("minor")) {
+							inMinor = isStart;
+						}
+						if (parser.getName().equals("physicalNum")) {
+							inPhysicalNum = isStart;
+						}
+						if (parser.getName().equals("chname")) {
+							inPhysicalNum = isStart;
+						}
+						break;
+					case XmlPullParser.TEXT:
+						if (inEnvelope) {
+							if (inData) {
+								if (inChname) {
+									tvListInfo.chname = parser.getText();
+									Log.e("TVAPP", tvListInfo.chname);
+									TvChannelList.add(tvListInfo);
+									tvListInfo = new TvChannelListInfo();
+									Log.e("TVTvChannelListSize",
+											TvChannelList.size() + "");
+								}
+								if (inPhysicalNum) {
+									tvListInfo.PhysicalNum = parser.getText();
+									Log.e("TVAPPcpid", tvListInfo.PhysicalNum);
+
+								}								
+								if (inMajor) {
+									tvListInfo.Major = parser.getText();
+									Log.e("TVAPP", tvListInfo.Major);
+								}
+								if (inMinor) {
+									tvListInfo.Minor = parser.getText();
+									Log.e("TVAPP", tvListInfo.Minor);
+								}
+							}
+						}
+						break;
+
+					default:
+						break;
+
+					}
+					eventType = parser.next();
+				}
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						response.getEntity().getContent()));
+				StringBuffer sb = new StringBuffer();
+				String line = "";
+				while ((line = in.readLine()) != null) {
+					sb.append(line);
+				}
+
+				System.out.println(sb);
+			}
 		}
 	}
 
@@ -860,7 +971,7 @@ public class A2AClientDefault extends A2AClient {
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleKeyInput</name>"
 								+ "<value>"
-								+ "1"
+								+ "9"
 								+ "</value>"
 								+ "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");

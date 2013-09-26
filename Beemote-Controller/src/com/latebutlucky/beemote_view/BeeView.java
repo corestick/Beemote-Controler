@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -79,7 +80,8 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
 		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
-
+		
+		btnChUp.setOnClickListener(this);
 		mItemViewMap = new HashMap<View, ItemView>();
 	}
 
@@ -106,8 +108,9 @@ public class BeeView extends RelativeLayout implements View.OnClickListener {
 
 		}
 
-		if (v.equals(btn[1])) {
+		if (v.equals(btnChUp)) {
 			try {
+				Log.e("chhh", "ch");
 				A2AClientManager.getDefaultClient().handleKey();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
