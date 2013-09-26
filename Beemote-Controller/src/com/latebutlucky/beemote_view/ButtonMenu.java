@@ -5,10 +5,7 @@ import java.net.URLEncoder;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.latebutlucky.beemote_controller.R;
+import com.latebutlucky.beemote_controller.TvAppListDialog;
 import com.lge.tv.a2a.client.A2AClient;
 import com.lge.tv.a2a.client.A2AClientManager;
 
@@ -66,6 +64,7 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 		btn1.setOnClickListener(new View.OnClickListener() {
 			Bitmap bitmap;
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 				try {
@@ -76,10 +75,22 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 								.encode(mA2AClient.TvAppList.get(i).name));
 						mA2AClient.TvAppList.get(i).appIcon = bitmap;
 					}
-					bitmap = mA2AClient.TvAppList.get(0).appIcon = bitmap;
-					Bitmap bit = Bitmap.createBitmap(bitmap);
-					Drawable drawable = new BitmapDrawable(bit);
-					btn3.setBackgroundDrawable(drawable);
+
+					TvAppListDialog appDialog = new TvAppListDialog(getContext(),
+							mA2AClient.TvAppList);
+					appDialog.setCancelable(true);
+					android.view.WindowManager.LayoutParams params = appDialog
+							.getWindow().getAttributes();
+					params.width = LayoutParams.FILL_PARENT;
+					params.height = LayoutParams.FILL_PARENT;
+					appDialog.getWindow().setAttributes(params);
+					appDialog.show();
+
+					// bitmap = mA2AClient.TvAppList.get(0).appIcon = bitmap;
+					// Bitmap bit = Bitmap.createBitmap(bitmap);
+					//
+					// Drawable drawable = new BitmapDrawable(bit);
+					// btn3.setBackgroundDrawable(drawable);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

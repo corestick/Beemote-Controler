@@ -1,6 +1,7 @@
 package com.lge.tv.a2a.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import android.content.Context;
@@ -19,8 +20,8 @@ public abstract class A2AClient {
 	A2AEventListener eventListener = null;
 	A2AMessageListener messageListener = null;
 	A2ATVInfo a2atvInfo = null;
-	public Vector<TvAppInfo> TvAppList = new Vector<TvAppInfo>();
-	public Vector<TvChannelListInfo> TvChannelList = new Vector<TvChannelListInfo>();
+	public ArrayList<TvAppInfo> TvAppList = new ArrayList<TvAppInfo>();
+	public ArrayList<TvChannelListInfo> TvChannelList = new ArrayList<TvChannelListInfo>();
 
 
 	public class QueryResultAppID {
