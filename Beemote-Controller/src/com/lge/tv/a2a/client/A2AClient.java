@@ -23,7 +23,6 @@ public abstract class A2AClient {
 	public ArrayList<TvAppInfo> TvAppList = new ArrayList<TvAppInfo>();
 	public ArrayList<TvChannelListInfo> TvChannelList = new ArrayList<TvChannelListInfo>();
 
-
 	public class QueryResultAppID {
 		A2ACmdError error;
 		long appId;
@@ -197,11 +196,13 @@ public abstract class A2AClient {
 	abstract public Bitmap tvAppIconQuery(String auid, String appName)
 			throws IOException;
 
-	abstract public void exe() throws IOException;
+	abstract public void TvAppExE(String auid, String appName, String contentId)
+			throws IOException;
 
 	abstract public void handleKey() throws IOException;
 
 	abstract public void keywordSend(String str) throws IOException;
+
 	abstract public void tvListQuery() throws IOException;
 
 }

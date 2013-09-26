@@ -52,12 +52,12 @@ public class ButtonMenu extends RelativeLayout implements OnClickListener {
 
 			@Override
 			public void onClick(View v) {
-				try {
-					mA2AClient.exe();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					mA2AClient.TvAppexe();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		});
 

@@ -880,7 +880,7 @@ public class A2AClientDefault extends A2AClient {
 		}
 	}
 
-	synchronized public void exe() throws IOException {
+	synchronized public void TvAppExE(String auid, String appName,String contentId) throws IOException {
 		URI uri = null;
 		int statusCode = 0;
 		if (a2atvInfo != null) {
@@ -894,11 +894,11 @@ public class A2AClientDefault extends A2AClient {
 				post.setHeader("Connection", "Close");
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>AppExecute</name><auid>"
-								+ "00000000000112aa"
+								+ auid
 								+ "</auid><appname>"
-								+ "NAVER"
+								+ appName
 								+ "</appname><contentId>"
-								+ ""
+								+ contentId
 								+ "</contentId>" + "</api></envelope>",
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
