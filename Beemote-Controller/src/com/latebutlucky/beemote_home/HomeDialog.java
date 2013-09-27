@@ -22,8 +22,8 @@ public class HomeDialog extends Dialog implements android.view.View.OnClickListe
 		setContentView(R.layout.home_dialog);
 		
 		mainImg = (ImageView) findViewById(R.id.home_img);
-		donwBtn = (Button) findViewById(R.id.home_ok);
-		cancleBtn  = (Button) findViewById(R.id.home_cancel);	
+		donwBtn = (Button) findViewById(R.id.home_btn_down);
+		cancleBtn  = (Button) findViewById(R.id.home_btn_cancel);	
 		
 		donwBtn.setOnClickListener(this);
 		cancleBtn.setOnClickListener(this);

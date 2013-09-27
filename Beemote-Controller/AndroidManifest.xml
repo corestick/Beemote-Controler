@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -31,6 +32,12 @@
         <activity
             android:name="com.latebutlucky.beemote_controller.TVList"
             android:label="@string/title_activity_tvlist" >
+        </activity>
+                <activity
+            android:name="com.latebutlucky.beemote_home.Beemote_home">
+        </activity>
+                        <activity
+            android:name="com.latebutlucky.beemote_home.SubList">
         </activity>
         <activity
             android:name="com.latebutlucky.beemote_controller.TouchPad"

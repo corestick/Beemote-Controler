@@ -1,5 +1,7 @@
 package com.latebutlucky.beemote_controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Vector;
@@ -10,12 +12,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -26,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.latebutlucky.beemote_home.Beemote_home;
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
 import com.latebutlucky.beemote_view.SlidingView;
@@ -36,6 +41,7 @@ import com.lge.tv.a2a.client.A2AMessageListener;
 public class BeemoteMain extends Activity implements OnClickListener,
 		OnLongClickListener, A2AMessageListener {
 
+	private static final int HOMEPAGE = 1;
 	public SlidingView slidingView;
 	BeemoteDB beemoteDB;
 	Vector<ItemInfo> beeInfo;
@@ -94,9 +100,20 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.beemote, menu);
+		menu.add(0, HOMEPAGE, 0, "Beemote Homepage").setIcon(
+				R.drawable.arrow_down);
 		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case HOMEPAGE:
+			startHomepage(); //런처홈페이지 시작
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -385,5 +402,38 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		}
 
 	}
+	public void startHomepage() {
+		Bitmap captureView[] = null;
+		int count = slidingView.getChildCount();
 
+		if (captureView == null || captureView.length != count)
+			captureView = new Bitmap[count];
+
+		String sdcard = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
+
+		File cfile = new File(sdcard + "/Beemote");
+		cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
+	for (int i = 0; i < count; i++) {
+			View tempCapture = slidingView.getChildAt(i);
+			tempCapture.buildDrawingCache();
+			captureView[i] = tempCapture.getDrawingCache();
+
+			String path = sdcard + "/Beemote/screen" + i + ".jpg";
+			try {
+				FileOutputStream fos = new FileOutputStream(path);
+				captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		Intent intent = new Intent(this, Beemote_home.class);
+		intent.putExtra("ChildCount", this.Child_Count());
+		this.startActivity(intent);
+	}
+	public int Child_Count() {
+		return slidingView.getChildCount();
+	}
 }
