@@ -49,15 +49,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	String AppDetail = null;
 
 	BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
-
-	private ProgressDialog mProgressDialog = null;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.enableDefaults();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		super.onCreate(savedInstanceState);
+
 		beemoteDB = new BeemoteDB(this);
 
 		slidingView = new SlidingView(this);
@@ -144,9 +142,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
 							.show();
 
-					showProgressDialog("Loading...");
 					refreshTVAppList();
-					hideProgressDialog();
 
 					InfoListDialog("TvApp", bButton);
 					break;
@@ -159,6 +155,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
 					InfoListDialog("TvChannel", bButton);
 					break;
 				case R.id.selmenu_btn3:
@@ -167,7 +164,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 							.show();
 
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_SEARCH;
-					bButton.itemInfo.keyWord = "설리 최자";
 					break;
 				case R.id.selmenu_btn4:
 					Toast.makeText(BeemoteMain.this, "기능키", Toast.LENGTH_SHORT)
@@ -192,25 +188,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				}
 			}
 		}
-	}
-
-	public void showProgressDialog(String msg) {
-		
-		Log.e("RRR", "showProgressDialog11111");
-		
-		
-		if (getApplicationContext() != null) {
-			mProgressDialog = new ProgressDialog(getApplicationContext());
-			mProgressDialog.setCancelable(false);
-			mProgressDialog.setMessage(msg);
-			mProgressDialog.show();
-		}
-	}
-
-	public void hideProgressDialog() {
-		Log.e("RRR", "hideProgressDialog22222");
-		if (mProgressDialog != null && mProgressDialog.isShowing())
-			mProgressDialog.dismiss();
 	}
 
 	private void refreshTVAppList() {

@@ -1,12 +1,14 @@
 package com.latebutlucky.beemote_controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,6 +109,7 @@ public class TVList extends Activity {
 									A2ACmdError ret = null;
 									try {
 										ret = A2AClientManager.getDefaultClient().connect("591855");
+										refreshTVAppList();
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -153,6 +156,24 @@ public class TVList extends Activity {
 			}
 		});
 
+	}
+	
+	private void refreshTVAppList() {
+		// TODO Auto-generated method stub
+		try {
+			mA2AClient.tvAppQuery();
+			Bitmap bitmap;
+
+			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+				bitmap = mA2AClient.tvAppIconQuery(
+						mA2AClient.TvAppList.get(i).auid,
+						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+				mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void showPairingDialog() {
