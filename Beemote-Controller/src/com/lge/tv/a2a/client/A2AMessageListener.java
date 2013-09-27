@@ -17,5 +17,5 @@ public interface A2AMessageListener {
 	 * @param message
 	 *            The message string from TV
 	 */
-	public void onRecieveMessage(KeyboardInfo keyboardInfo);
+	public void onRecieveMessage(String nameType, Object object);
 }

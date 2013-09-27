@@ -49,7 +49,7 @@ public class BeeView extends RelativeLayout {
 		for (int i = 0; i < btnBee.length; i++) {
 			btnBee[i] = (BeeButton) findViewById(btn_R[i]);
 			btnBee[i].setOnClickListener(bMain);
-
+			btnBee[i].setOnLongClickListener(bMain);
 			ItemInfo info = new ItemInfo();
 
 			info.screenIdx = idx;
@@ -75,6 +75,7 @@ public class BeeView extends RelativeLayout {
 
 			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
 			beeButton.setIcon();
+			beeButton.setTextE();
 			break;
 		case BGlobal.BEEBUTTON_TYPE_APP:
 			

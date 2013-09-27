@@ -1,9 +1,6 @@
 package com.latebutlucky.beemote_view;
 
-import android.R;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -66,9 +63,13 @@ public class BeeButton extends Button {
 
 		super.setCompoundDrawables(null, dr, null, null);
 	}
-	
+
 	public void setIcon() {
 		super.setCompoundDrawables(null, null, null, null);
+	}
+	
+	public void setTextE(){
+		super.setText(null);
 	}
 
 	public void setTextE(String text) {
@@ -78,5 +79,15 @@ public class BeeButton extends Button {
 				TruncateAt.END).toString();
 
 		super.setText(str);
+	}
+
+	public void initButton() {
+		this.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
+		this.itemInfo.channelNo = 0;
+		this.itemInfo.appId = null;
+		this.itemInfo.appName = null;
+		this.itemInfo.contentId = null;
+		this.itemInfo.keyWord = null;
+		this.itemInfo.functionKey = null;
 	}
 }
