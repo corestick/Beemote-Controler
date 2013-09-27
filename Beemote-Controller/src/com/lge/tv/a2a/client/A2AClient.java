@@ -199,7 +199,10 @@ public abstract class A2AClient {
 	abstract public void TvAppExe(String auid, String appName, String contentId)
 			throws IOException;
 
-	abstract public void handleKey() throws IOException;
+	abstract public void TvAppTerminate(String auid, String appName)
+			throws IOException;
+
+	abstract public void KeyCodeSend(String keycode) throws IOException;
 
 	abstract public void keywordSend(String str) throws IOException;
 

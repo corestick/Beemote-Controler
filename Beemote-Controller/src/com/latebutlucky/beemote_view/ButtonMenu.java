@@ -73,7 +73,7 @@ public class ButtonMenu extends RelativeLayout {
 	public void showButtonMenu(BeeButton v) {
 		this.curBeeButton = v;
 		
-		setPadding(v.getLeft() - 70, v.getTop() - 75, 0, 0);
+		setPadding(v.getLeft() - 40, v.getTop() - 50, 0, 0);
 		setVisibleState();
 	}
 	

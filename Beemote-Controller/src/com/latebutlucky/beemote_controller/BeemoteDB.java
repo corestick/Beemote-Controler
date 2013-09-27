@@ -31,7 +31,7 @@ public class BeemoteDB {
 		db = dbHelper.getWritableDatabase();
 		sql = String.format(Locale.US, "INSERT INTO " + TABLE_BEEMOTE
 				+ " VALUES (null, " + "%d" + ", " + "%d" + ", " + "%d"
-				+ ", " + "%d" + ", " + "%d" + ", " + "'%s'" + ", " + "'%s'"
+				+ ", " + "%d" + ", " + "'%s'" + ", " + "'%s'" + ", " + "'%s'"
 				+ ", " + "'%s'" + ", " + "'%s'" + ");", info.screenIdx,
 				info.beemoteIdx, info.beemoteType, info.channelNo, info.appId,
 				info.appName, info.contentId, info.keyWord, info.functionKey);
@@ -68,7 +68,7 @@ public class BeemoteDB {
 		
 		sql = "UPDATE " + TABLE_BEEMOTE + " SET " + ColumnInfo.BEEMOTE_TYPE + " = " + info.beemoteType + ", "
 				+ ColumnInfo.CHANNEL_NUMBER + " = " + info.channelNo + ", "
-				+ ColumnInfo.APP_ID + " = " + info.appId + ", "
+				+ ColumnInfo.APP_ID + " = '" + info.appId + "', "
 				+ ColumnInfo.APP_NAME + " = '" + info.appName + "', "
 				+ ColumnInfo.CONTENT_ID + " = '" + info.contentId + "', "
 				+ ColumnInfo.KEYWORD + " = '" + info.keyWord + "', "
@@ -101,7 +101,7 @@ public class BeemoteDB {
 				info.beemoteIdx = cursor.getInt(cursor.getColumnIndex(ColumnInfo.BEEMOTE_IDX));
 				info.beemoteType = cursor.getInt(cursor.getColumnIndex(ColumnInfo.BEEMOTE_TYPE));
 				info.channelNo = cursor.getInt(cursor.getColumnIndex(ColumnInfo.CHANNEL_NUMBER));
-				info.appId = cursor.getInt(cursor.getColumnIndex(ColumnInfo.APP_ID));
+				info.appId = cursor.getString(cursor.getColumnIndex(ColumnInfo.APP_ID));
 				info.appName = cursor.getString(cursor.getColumnIndex(ColumnInfo.APP_NAME));
 				info.contentId = cursor.getString(cursor.getColumnIndex(ColumnInfo.CONTENT_ID));
 				info.keyWord = cursor.getString(cursor.getColumnIndex(ColumnInfo.KEYWORD));
@@ -137,7 +137,7 @@ public class BeemoteDB {
 					+ ColumnInfo.BEEMOTE_IDX + " INTEGER " + ", "
 					+ ColumnInfo.BEEMOTE_TYPE + " INTEGER " + ", "
 					+ ColumnInfo.CHANNEL_NUMBER + " INTEGER " + ", "
-					+ ColumnInfo.APP_ID + " INTEGER " + ", "
+					+ ColumnInfo.APP_ID + " TEXT " + ", "
 					+ ColumnInfo.APP_NAME + " TEXT " + ", "
 					+ ColumnInfo.CONTENT_ID + " TEXT " + ", "
 					+ ColumnInfo.KEYWORD + " TEXT " + ", "

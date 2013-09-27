@@ -9,15 +9,15 @@ public class ItemInfo {
 	public int beemoteIdx;
 	
 	//타입
-	public int beemoteType;
+	public int beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 	
 	//채널번호
 	public int channelNo;
 	
 	//어플관련
-	public int appId;
-	public String appName;
-	public String contentId;
+	public String appId = null;
+	public String appName = null;
+	public String contentId = null;
 	
 	//검색어
 	public String keyWord;
