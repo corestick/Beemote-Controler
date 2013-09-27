@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,6 +49,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	String AppDetail = null;
 
 	BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
+
+	private ProgressDialog mProgressDialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
 			bView.btnMenu.showButtonMenu(bButton);
+
 			try {
 				if (bButton.itemInfo.appId != null) {
 					Log.e("TTTTT", bButton.itemInfo.appId);
@@ -139,20 +143,11 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				case R.id.selmenu_btn1:
 					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
 							.show();
-					try {
-						mA2AClient.tvAppQuery();
-						Bitmap bitmap;
-						for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
-							bitmap = mA2AClient.tvAppIconQuery(
-									mA2AClient.TvAppList.get(i).auid,
-									URLEncoder.encode(mA2AClient.TvAppList
-											.get(i).name));
-							mA2AClient.TvAppList.get(i).appIcon = bitmap;
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+
+					showProgressDialog("Loading...");
+					refreshTVAppList();
+					hideProgressDialog();
+
 					InfoListDialog("TvApp", bButton);
 					break;
 				case R.id.selmenu_btn2:
@@ -196,6 +191,43 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					break;
 				}
 			}
+		}
+	}
+
+	public void showProgressDialog(String msg) {
+		
+		Log.e("RRR", "showProgressDialog11111");
+		
+		
+		if (getApplicationContext() != null) {
+			mProgressDialog = new ProgressDialog(getApplicationContext());
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.setMessage(msg);
+			mProgressDialog.show();
+		}
+	}
+
+	public void hideProgressDialog() {
+		Log.e("RRR", "hideProgressDialog22222");
+		if (mProgressDialog != null && mProgressDialog.isShowing())
+			mProgressDialog.dismiss();
+	}
+
+	private void refreshTVAppList() {
+		// TODO Auto-generated method stub
+		try {
+			mA2AClient.tvAppQuery();
+			Bitmap bitmap;
+
+			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+				bitmap = mA2AClient.tvAppIconQuery(
+						mA2AClient.TvAppList.get(i).auid,
+						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+				mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -284,7 +316,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	}
 
 	public void InfoListDialog(String Type, BeeButton mBeebutton) {
-
 		InfoListDialog infoDialog = null;
 		if (Type.equals("TvApp")) {
 			infoDialog = new InfoListDialog(BeemoteMain.this, "TvApp",
@@ -318,7 +349,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			AppAction = appErrstate.action;
 			AppDetail = appErrstate.detail;
 		}
-
 	}
 
 	@Override
@@ -340,7 +370,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	@Override
 	public void onBackPressed() {
 		backPressCloseHandler.onBackPressed();
-
 	}
 
 	public class BackPressCloseHandler {
@@ -355,20 +384,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 		public void onBackPressed() {
 			if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-				if(AppAction == null){
+				if (AppAction == null) {
 					backKeyPressedTime = System.currentTimeMillis();
 					showGuide();
 					return;
-				}
-				else if(AppAction.equals("Execute")){
+				} else if (AppAction.equals("Execute")) {
 					try {
 						mA2AClient.keywordSend("23");
 						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}					
-				}				
+					}
+				}
 			}
 
 			if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
