@@ -3,33 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Beemote_home" >
+    tools:context=".Beemote_uploadpage" >
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn12"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignLeft="@+id/bee_btn11"
-        android:layout_below="@+id/bee_btn11"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignLeft="@+id/bee_btn10"
+        android:layout_alignTop="@+id/bee_btn10"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="12" />
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn16"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn15"
         android:layout_below="@+id/bee_btn15"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -37,12 +31,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn18"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn17"
         android:layout_below="@+id/bee_btn17"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -50,12 +44,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn19"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn18"
         android:layout_below="@+id/bee_btn18"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -63,12 +57,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn15"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn14"
         android:layout_below="@+id/bee_btn14"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_inner_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -76,12 +70,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn1"
         android:layout_below="@+id/bee_btn2"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -89,12 +83,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn7"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn6"
         android:layout_below="@+id/bee_btn6"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -102,12 +96,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn5"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn4"
         android:layout_below="@+id/bee_btn4"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_inner_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -115,12 +109,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn6"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn5"
         android:layout_below="@+id/bee_btn5"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_inner_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -128,12 +122,12 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn14"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn13"
         android:layout_below="@+id/bee_btn13"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_inner_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -141,13 +135,13 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn17"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn13"
         android:layout_alignTop="@+id/bee_btn13"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/hexagon"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -155,53 +149,48 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn13"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn8"
         android:layout_alignTop="@+id/bee_btn8"
-        android:layout_marginLeft="52dp"
+        android:layout_marginLeft="55dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="13" />
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn9"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn10"
         android:layout_alignTop="@+id/bee_btn10"
-        android:layout_marginTop="-62dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:layout_marginTop="-65dp"
+        android:background="@drawable/btn_inner_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="9" />
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn4"
         android:layout_alignTop="@+id/bee_btn4"
-        android:layout_marginLeft="-52dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/hexagon"
+        android:layout_marginLeft="-55dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="1" />
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn1"
         android:layout_below="@+id/bee_btn1"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
+        android:background="@drawable/btn_yellow_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -209,87 +198,95 @@
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn11"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_alignLeft="@+id/bee_btn10"
-        android:layout_below="@+id/bee_btn10"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:layout_alignTop="@+id/bee_btn10"
+        android:layout_marginTop="65dp"
+        android:background="@drawable/btn_inner_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="11" />
 
     <ImageButton
         android:id="@+id/ch_down"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_alignLeft="@+id/ch_up"
         android:layout_below="@+id/ch_up"
         android:background="@drawable/ch_down" />
 
     <ImageButton
         android:id="@+id/vol_down"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_alignLeft="@+id/vol_up"
         android:layout_alignTop="@+id/ch_down"
         android:background="@drawable/vol_down" />
 
     <com.latebutlucky.beemote_view.BeeButton
         android:id="@+id/bee_btn8"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_above="@+id/bee_btn9"
-        android:layout_alignLeft="@+id/bee_btn9"
-        android:layout_marginBottom="42dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignLeft="@+id/bee_btn10"
+        android:layout_alignTop="@+id/bee_btn10"
+        android:layout_marginTop="-130dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
         android:text="8" />
 
     <com.latebutlucky.beemote_view.BeeButton
-        android:id="@+id/bee_btn10"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:id="@+id/bee_btn4"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignLeft="@+id/bee_btn10"
+        android:layout_alignTop="@+id/bee_btn10"
+        android:layout_marginTop="-99dp"
+        android:layout_marginLeft="-55dp"
+        android:background="@drawable/btn_yellow_hexagon"
         android:gravity="center"
-        android:paddingTop="15dp"
-        android:text="10" />
+        android:text="4" />
 
     <ImageButton
-        android:id="@+id/ch_up"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/bee_btn12"
-        android:layout_toRightOf="@+id/bee_btn3"
-        android:background="@drawable/ch_up" />
+        android:id="@+id/imageButton1"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/btn_keyboard" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_mouse" />
 
     <ImageButton
         android:id="@+id/vol_up"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_above="@+id/vol_down"
-        android:layout_toLeftOf="@+id/bee_btn19"
+        android:layout_alignRight="@+id/bee_btn16"
         android:background="@drawable/vol_up" />
 
+    <ImageButton
+        android:id="@+id/ch_up"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_below="@+id/bee_btn16"
+        android:layout_toLeftOf="@+id/bee_btn12"
+        android:background="@drawable/ch_up" />
+
     <com.latebutlucky.beemote_view.BeeButton
-        android:id="@+id/bee_btn4"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignBaseline="@+id/bee_btn13"
-        android:layout_alignBottom="@+id/bee_btn13"
-        android:layout_marginRight="25dp"
-        android:layout_toLeftOf="@+id/bee_btn14"
-        android:background="@drawable/hexagon"
-        android:drawablePadding="-10dp"
+        android:id="@+id/bee_btn10"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/btn_pairring"
         android:gravity="center"
-        android:paddingTop="15dp"
-        android:text="4" />
+        android:text="10" />
 
 </RelativeLayout>

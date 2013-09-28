@@ -1,14 +1,12 @@
 package com.latebutlucky.beemote_home;
-import com.latebutlucky.beemote_controller.R;
-
 import android.content.Context;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.latebutlucky.beemote_controller.R;
 
 public class ExpAdapter extends BaseExpandableListAdapter {
 
@@ -20,9 +18,9 @@ public class ExpAdapter extends BaseExpandableListAdapter {
 			{ "야구", "축구","농구","골프" },
 			{ "sub1", "sub2","sub3" },
 			{ "sub1", "sub2","sub3" },
-			{ "sub1", "sub2","sub3" },
+			{ "sub1", "sub2","sub3" },			
 			{ "sub1", "sub2","sub3" }};
-	
+		
 	private Context myContext;
 
 	public ExpAdapter(Context context) {

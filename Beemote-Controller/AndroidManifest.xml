@@ -34,10 +34,10 @@
             android:label="@string/title_activity_tvlist" >
         </activity>
                 <activity
-            android:name="com.latebutlucky.beemote_home.Beemote_home">
+            android:name="com.latebutlucky.beemote_home.Beemote_uploadpage">
         </activity>
                         <activity
-            android:name="com.latebutlucky.beemote_home.SubList">
+            android:name="com.latebutlucky.beemote_home.DownloadSubList">
         </activity>
         <activity
             android:name="com.latebutlucky.beemote_controller.TouchPad"

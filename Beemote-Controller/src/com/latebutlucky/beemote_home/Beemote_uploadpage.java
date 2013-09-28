@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.latebutlucky.beemote_controller.R;
 
 
-public class Beemote_home extends Activity {
+public class Beemote_uploadpage extends Activity {
 	
 	public static final String EXIST_NAME = "exit_name";
 
@@ -29,12 +29,6 @@ public class Beemote_home extends Activity {
 	private static final int CULTURE = 4;
 	private static final int FUN = 5;
 	
-
-	
-//	ListView listView;
-//	ArrayList<Data> list;
-	
-//	ListViewAdapter adapter;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,21 +36,14 @@ public class Beemote_home extends Activity {
         setContentView(R.layout.beemote_home);
         
         expList = (ExpandableListView) findViewById(R.id.list);
-        
-//        list = new ArrayList<Data>();
-//        listView = (ListView) findViewById(R.id.listView);
-        
+
         
         metrics = new DisplayMetrics(); 
         getWindowManager().getDefaultDisplay().getMetrics(metrics);         
         width = metrics.widthPixels;
         
-//		adapter = new ListViewAdapter(this, list);
-
-        
         expList.setIndicatorBounds(width - GetDipsFromPixel(50), width - GetDipsFromPixel(10));
-        expList.setAdapter(new ExpAdapter(this)); 
-        
+        expList.setAdapter(new ExpAdapter(this));         
         expList.setOnGroupExpandListener(new OnGroupExpandListener() {
 			@Override
 			public void onGroupExpand(int groupPosition) {
@@ -78,12 +65,12 @@ public class Beemote_home extends Activity {
 					int groupPosition, int childPosition, long id) {
 				Log.e("OnChildClickListener", Integer.toString(childPosition));
 				
-				Intent i = new Intent(Beemote_home.this, SubList.class);
+				Intent i = new Intent(Beemote_uploadpage.this, DownloadSubList.class);
 				String tmp = groupPosition + "-" + childPosition;
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);
 				
-		        Toast awesomeToast = Toast.makeText(Beemote_home.this, "hello", Toast.LENGTH_SHORT);		
+		        Toast awesomeToast = Toast.makeText(Beemote_uploadpage.this, "hello", Toast.LENGTH_SHORT);		
 		        awesomeToast.show();
 				return false;
 			}

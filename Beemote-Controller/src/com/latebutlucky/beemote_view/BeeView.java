@@ -39,7 +39,7 @@ public class BeeView extends RelativeLayout {
 	public void initBeeView(BeemoteMain bMain, int idx) {
 		String service = Context.LAYOUT_INFLATER_SERVICE;
 		LayoutInflater li = (LayoutInflater) bMain.getSystemService(service);
-		li.inflate(R.layout.bemote_main, this, true);
+		li.inflate(R.layout.beemote_main, this, true);
 
 		btnMenu = new ButtonMenu(bMain);
 		addView(btnMenu);
@@ -72,37 +72,37 @@ public class BeeView extends RelativeLayout {
 		switch (info.beemoteType) {
 		case BGlobal.BEEBUTTON_TYPE_NONE:
 
-			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton.setBackgroundResource(R.drawable.btn_pink_hexagon);
 			beeButton.setIcon();
 			beeButton.setTextE();
 			break;
 		case BGlobal.BEEBUTTON_TYPE_APP:
 			
-			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton.setBackgroundResource(R.drawable.btn_pink_hexagon);
 //			Log.e("INFO", info.appName);
 			beeButton.setTextE(info.appName);
 			break;
 		case BGlobal.BEEBUTTON_TYPE_CH:
 			beeButton.setTextE("" + info.channelNo);
-			beeButton.setBackgroundResource(R.drawable.hexagon_ch);
+			beeButton.setBackgroundResource(R.drawable.btn_pink_hexagon);
 			beeButton
 					.setIcon(getResources().getDrawable(R.drawable.appearance));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_SEARCH:
 			beeButton.setTextE(beeButton.itemInfo.keyWord);
-			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
 			beeButton
 					.setIcon(getResources().getDrawable(R.drawable.properties));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_FUNC:
 
-			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
 			beeButton
 					.setIcon(getResources().getDrawable(R.drawable.properties));
 			break;
 		default:
 
-			beeButton.setBackgroundResource(R.drawable.hexagon_app);
+			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
 			beeButton.setIcon();
 			break;
 		}

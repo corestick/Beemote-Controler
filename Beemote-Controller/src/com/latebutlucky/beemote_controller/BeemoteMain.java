@@ -31,7 +31,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
-import com.latebutlucky.beemote_home.Beemote_home;
+import com.latebutlucky.beemote_home.Beemote_uploadpage;
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
 import com.latebutlucky.beemote_view.SlidingView;
@@ -41,8 +41,8 @@ import com.lge.tv.a2a.client.A2AMessageListener;
 
 public class BeemoteMain extends Activity implements OnClickListener,
 		OnLongClickListener, A2AMessageListener {
-
-	private static final int HOMEPAGE = 1;
+	private static final int UPLOADPAGE = 0;
+	private static final int DOWNPAGE = 1;
 	public SlidingView slidingView;
 	BeemoteDB beemoteDB;
 	Vector<ItemInfo> beeInfo;
@@ -66,9 +66,9 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 		slidingView = new SlidingView(this);
 
-		slidingView.addView(new BeeView(this));
-		slidingView.addView(new BeeView(this));
-		slidingView.addView(new BeeView(this));
+		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
 
 		mA2AClient = A2AClientManager.getDefaultClient();
 		mA2AClient.setMessageListener(this);
@@ -101,16 +101,20 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, HOMEPAGE, 0, "Beemote Homepage").setIcon(
+		menu.add(0, UPLOADPAGE, 0, "Upload").setIcon(
+				R.drawable.arrow_up);
+		menu.add(0, DOWNPAGE, 0, "Download").setIcon(
 				R.drawable.arrow_down);
 		return true;
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-
-		case HOMEPAGE:
-			startHomepage(); //런처홈페이지 시작
+		case UPLOADPAGE:	
+			startUploadpage();
+			break;
+		case DOWNPAGE:
+			startDownpage(); 
 			return true;
 		}
 
@@ -403,7 +407,15 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		}
 
 	}
-	public void startHomepage() {
+	
+
+	public void startDownpage() {
+		Bitmap captureView[] = null;
+		Intent intent = new Intent(this, Beemote_uploadpage.class);
+		this.startActivity(intent);
+	}
+	
+	public void startUploadpage() {
 		Bitmap captureView[] = null;
 		int count = slidingView.getChildCount();
 
@@ -430,10 +442,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				e.printStackTrace();
 			}
 		}
-		Intent intent = new Intent(this, Beemote_home.class);
+		Intent intent = new Intent(this, Beemote_uploadpage.class);
 		intent.putExtra("ChildCount", this.Child_Count());
 		this.startActivity(intent);
 	}
+	
+	
 	public int Child_Count() {
 		return slidingView.getChildCount();
 	}
