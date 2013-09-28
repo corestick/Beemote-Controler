@@ -13,38 +13,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
+
             <Gallery
-            android:id="@+id/gallery1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-            <LinearLayout
+                android:id="@+id/gallery1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/radioButton1"
+                    android:id="@+id/radio0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="RadioButton" />
+
                 <RadioButton
-                    android:id="@+id/radioButton1"
+                    android:id="@+id/radio1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RadioButton" />
+
                 <RadioButton
-                    android:id="@+id/radioButton1"
+                    android:id="@+id/radio2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RadioButton" />
-                
-            </LinearLayout>
+            </RadioGroup>
 
         </LinearLayout>
-
-        
-
     </HorizontalScrollView>
 
     <LinearLayout
@@ -67,7 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Button" />
-
     </LinearLayout>
 
 </LinearLayout>
