@@ -8,14 +8,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
 import com.lge.tv.a2a.client.A2AClientDefault;
 import com.lge.tv.a2a.client.A2AClientManager;
@@ -26,32 +26,26 @@ public class TouchPad extends Activity {
 	A2ATVInfo tvInfo;
 	A2AClientDefault A2Aclient;
 	float x, y;
+	Button TouchClick;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_touch_pad);
-
-		TextView tv = (TextView) findViewById(R.id.txtTEST);
-		tv.setText(A2AClientManager.getDefaultClient().getCurrentTV()
-				.getTvName()
-				+ " : "
-				+ A2AClientManager.getDefaultClient().getCurrentTV()
-						.getIpAddress());
-
-		tvInfo = A2AClientManager.getDefaultClient().getCurrentTV();
-
 		A2Aclient = (A2AClientDefault) A2AClientManager.getDefaultClient();
+		TouchClick = (Button) findViewById(R.id.btnTouchClick);
+		TouchClick.setOnClickListener(new View.OnClickListener() {
 
-		// try {
-		// A2AClientManager.getDefaultClient().executeApp(Long.parseLong("11"));
-		// } catch (NumberFormatException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+			@Override
+			public void onClick(View v) {
+				try {
+					A2Aclient.HandleTouchClick();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -62,21 +56,20 @@ public class TouchPad extends Activity {
 		case MotionEvent.ACTION_DOWN:
 			// Log.e("RRR", "Down");
 			try {
-				cursorVisible();
+				A2Aclient.cursorVisible();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			x = event.getX();
 			y = event.getY();
 			break;
 		case MotionEvent.ACTION_UP:
-			// Log.e("RRR", "Up");
 			break;
 		case MotionEvent.ACTION_MOVE:
 			try {
-				moveMouse((int) (event.getX() - x), (int) (event.getY() - y));
+				A2Aclient.moveMouse((int) (event.getX() - x),
+						(int) (event.getY() - y));
 				x = event.getX();
 				y = event.getY();
 			} catch (IOException e) {
@@ -85,91 +78,8 @@ public class TouchPad extends Activity {
 			}
 			break;
 		}
-
-		// Log.e("RRR", event.getX() + "");
-		// Log.e("RRR", event.getY() + "");
-
-		// try {
-		// // cursorVisible();
-		// moveMouse();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 		return super.onTouchEvent(event);
 
-	}
-
-	synchronized public void cursorVisible() throws IOException {
-		URI uri = null;
-		int statusCode = 0;
-		if (tvInfo != null) {
-			try {
-				uri = new URI("http://" + tvInfo.getIpAddress() + ":"
-						+ tvInfo.getPort() + "/udap/api/event");
-				HttpPost post = new HttpPost(uri);
-				post.setHeader("Pragma", "no-cache");
-				post.setHeader("Cache-Control", "no-cache");
-				post.setHeader("User-Agent", "UDAP/2.0");
-				post.setHeader("Connection", "close");
-				StringEntity entity = new StringEntity(
-						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"event\"><name>CursorVisible</name>"
-								+ "<value>"
-								+ "true"
-								+ "</value>"
-								+ "<mode>"
-								+ "auto" + "</mode>" + "</api></envelope>",
-						HTTP.UTF_8);
-				entity.setContentType("text/xml; charset=UTF-8");
-				post.setEntity(entity);
-				HttpResponse response = A2Aclient.httpclient.execute(post);
-
-				if (response.getEntity() != null) {
-					response.getEntity().consumeContent();
-				}
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	synchronized public void moveMouse(int x, int y) throws IOException {
-
-		Log.e("RRR", "x=" + x + ", y=" + y);
-
-		URI uri = null;
-		int statusCode = 0;
-		if (tvInfo != null) {
-			try {
-				uri = new URI("http://" + tvInfo.getIpAddress() + ":"
-						+ tvInfo.getPort() + "/udap/api/command");
-				HttpPost post = new HttpPost(uri);
-				post.setHeader("Pragma", "no-cache");
-				post.setHeader("Cache-Control", "no-cache");
-				post.setHeader("User-Agent", "UDAP/2.0");
-				post.setHeader("Connection", "close");
-				StringEntity entity = new StringEntity(
-						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleTouchMove</name>"
-								+ "<x>"
-								+ x
-								+ "</x>"
-								+ "<y>"
-								+ y
-								+ "</y>"
-								+ "</api></envelope>", HTTP.UTF_8);
-				entity.setContentType("text/xml; charset=UTF-8");
-				post.setEntity(entity);
-				HttpResponse response = A2Aclient.httpclient.execute(post);
-				if (response.getEntity() != null) {
-					response.getEntity().consumeContent();
-				}
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override

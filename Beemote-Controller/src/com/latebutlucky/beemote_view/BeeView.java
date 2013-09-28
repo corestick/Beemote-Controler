@@ -21,6 +21,8 @@ public class BeeView extends RelativeLayout {
 	ImageButton btnChDown;
 	ImageButton btnVolUp;
 	ImageButton btnVolDown;
+	ImageButton btnMouse;
+	ImageButton btnKeybroad;
 
 	int btn_R[] = { R.id.bee_btn1, R.id.bee_btn2, R.id.bee_btn3, R.id.bee_btn4,
 			R.id.bee_btn5, R.id.bee_btn6, R.id.bee_btn7, R.id.bee_btn8,
@@ -60,10 +62,15 @@ public class BeeView extends RelativeLayout {
 		btnChDown = (ImageButton) findViewById(R.id.ch_down);
 		btnVolUp = (ImageButton) findViewById(R.id.vol_up);
 		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
+		btnMouse = (ImageButton) findViewById(R.id.bee_mouse);
+		btnKeybroad = (ImageButton) findViewById(R.id.bee_keyboard);
+		
 		btnChUp.setOnClickListener(bMain);
 		btnChDown.setOnClickListener(bMain);
 		btnVolUp.setOnClickListener(bMain);
 		btnVolDown.setOnClickListener(bMain);
+		btnMouse.setOnClickListener(bMain);
+		btnKeybroad.setOnClickListener(bMain);
 	}
 
 	public void refreshBeemoteState(BeeButton beeButton) {

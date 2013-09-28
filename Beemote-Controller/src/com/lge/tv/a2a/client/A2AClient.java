@@ -208,4 +208,7 @@ public abstract class A2AClient {
 
 	abstract public void tvListQuery() throws IOException;
 
+	abstract public void HandleTouchClick() throws IOException;
+	abstract public void cursorVisible() throws IOException;
+	abstract public void moveMouse(int x, int y) throws IOException;
 }
