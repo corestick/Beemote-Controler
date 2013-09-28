@@ -255,7 +255,7 @@
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="130dp"
         android:background="@drawable/hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
