@@ -83,7 +83,7 @@ public class BeeButton extends Button {
 
 	public void initButton() {
 		this.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
-		this.itemInfo.channelNo = 0;
+		this.itemInfo.channelNo = null;
 		this.itemInfo.appId = null;
 		this.itemInfo.appName = null;
 		this.itemInfo.contentId = null;

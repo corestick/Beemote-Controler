@@ -321,6 +321,7 @@ public class A2AClientDefault extends A2AClient {
 									case XmlPullParser.TEXT:
 										if (inEnvelope) {
 											if (inName) {
+												Log.e("INNAME",parser.getText());
 												if (parser.getText().equals(
 														"KeyboardVisible")) {
 													Log.e("Keyin", "Keyin");
@@ -337,6 +338,11 @@ public class A2AClientDefault extends A2AClient {
 												} else if (parser.getText()
 														.equals("3DMode")) {
 													nameType = "3DMode";
+													Log.e("nameType", nameType);
+												}
+												else if (parser.getText()
+														.equals("ChannelChanged")) {
+													nameType = "ChannelChanged";
 													Log.e("nameType", nameType);
 												}
 											}

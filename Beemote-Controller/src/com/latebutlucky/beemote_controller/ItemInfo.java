@@ -12,7 +12,7 @@ public class ItemInfo {
 	public int beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 	
 	//채널번호
-	public int channelNo;
+	public String channelNo;
 	
 	//어플관련
 	public String appId = null;

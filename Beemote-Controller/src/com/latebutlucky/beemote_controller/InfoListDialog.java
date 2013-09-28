@@ -103,7 +103,7 @@ public class InfoListDialog extends Dialog {
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_APP);
 				}
 				else if (mType.equals("TvChannel")) {
-					mBeebutton.itemInfo.channelNo = Integer.valueOf(ChannelInfoArry.get(position).Major);
+					mBeebutton.itemInfo.channelNo = ChannelInfoArry.get(position).Major;
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_CH);					
 				}
 				mDialog.dismiss();
