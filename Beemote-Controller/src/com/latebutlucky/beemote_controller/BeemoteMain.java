@@ -24,10 +24,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.latebutlucky.beemote_home.Beemote_uploadpage;
@@ -62,8 +64,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.enableDefaults();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		super.onCreate(savedInstanceState);
+
 		beemoteDB = new BeemoteDB(this);
 
 		slidingView = new SlidingView(this);
@@ -194,20 +196,10 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				// 메뉴 기능
 				switch (v.getId()) {
 				case R.id.selmenu_btn1:
-					try {
-						mA2AClient.tvAppQuery();
-						Bitmap bitmap;
-						for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
-							bitmap = mA2AClient.tvAppIconQuery(
-									mA2AClient.TvAppList.get(i).auid,
-									URLEncoder.encode(mA2AClient.TvAppList
-											.get(i).name));
-							mA2AClient.TvAppList.get(i).appIcon = bitmap;
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+
+					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
+							.show();
+					refreshTVAppList();
 					InfoListDialog("TvApp", bButton);
 					break;
 				case R.id.selmenu_btn2:
@@ -217,6 +209,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
 					InfoListDialog("TvChannel", bButton);
 					break;
 				case R.id.selmenu_btn3:
@@ -225,7 +218,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 							.show();
 
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_SEARCH;
-					bButton.itemInfo.keyWord = "설리 최자";
 					break;
 				case R.id.selmenu_btn4:
 					Toast.makeText(BeemoteMain.this, "기능키", Toast.LENGTH_SHORT)
@@ -249,6 +241,24 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					break;
 				}
 			}
+		}
+	}
+
+	private void refreshTVAppList() {
+		// TODO Auto-generated method stub
+		try {
+			mA2AClient.tvAppQuery();
+			Bitmap bitmap;
+
+			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+				bitmap = mA2AClient.tvAppIconQuery(
+						mA2AClient.TvAppList.get(i).auid,
+						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+				mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -286,12 +296,20 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				View dial_view = getLayoutInflater().inflate(
 						R.layout.input_text, null);
 				dial.setContentView(dial_view);
+
+				TextView txtTitle = (TextView) dial_view
+						.findViewById(R.id.txtTitle);
+				txtTitle.setText("검색어를 입력하세요.");
+
 				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
+
 				t.setFocusable(true);
+				t.requestFocus();
+
 				b1.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View click_v) {
@@ -318,6 +336,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// dial.dismiss();
 					}
 				});
+
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

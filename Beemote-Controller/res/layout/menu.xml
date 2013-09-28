@@ -11,15 +11,16 @@
         android:background="@drawable/menu2" />
 
     <Button
-        android:id="@+id/selmenu_btn1"
+        android:id="@+id/selmenu_btn4"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/selmenu_btn2"
-        android:background="@drawable/menu1" />
+        android:layout_alignBaseline="@+id/selmenu_btn3"
+        android:layout_alignBottom="@+id/selmenu_btn3"
+        android:layout_alignLeft="@+id/selmenu_btn1"
+        android:background="@drawable/menu4" />
 
     <Button
-        android:id="@+id/selmenu_btn4"
+        android:id="@+id/selmenu_btn3"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
@@ -27,7 +28,7 @@
         android:background="@drawable/menu4" />
 
     <Button
-        android:id="@+id/selmenu_btn3"
+        android:id="@+id/selmenu_btn1"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignBaseline="@+id/selmenu_btn4"

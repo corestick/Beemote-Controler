@@ -2,17 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#ffdddddd"
+    android:animateLayoutChanges="true"
     android:orientation="vertical" >
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ff666666"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:id="@+id/txtTitle"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"        
-        android:orientation="vertical"
+        android:layout_marginRight="10dp"
         android:gravity="fill_vertical"
-        android:weightSum="10"
-        android:padding="20dp">
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:weightSum="10" >
 
         <EditText
             android:id="@+id/textinput_edit"
@@ -37,6 +48,8 @@
                 android:layout_gravity="bottom"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:textColor="#ffeeeeee"
+                android:background="@drawable/img_button_01"
                 android:text="예" />
 
             <Button
@@ -46,9 +59,10 @@
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
+                android:textColor="#ffeeeeee"
+                android:background="@drawable/img_button_01"
                 android:text="아니오" />
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>
