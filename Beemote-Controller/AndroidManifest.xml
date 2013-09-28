@@ -45,7 +45,8 @@
         </activity>
         <activity
             android:name="com.latebutlucky.beemote_controller.TouchPad"
-            android:label="@string/title_activity_touch_pad" >
+            android:label="@string/title_activity_touch_pad"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
     </application>
 

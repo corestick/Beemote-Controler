@@ -30,6 +30,7 @@ public class BeeButton extends Button {
 		this.setMaxLines(1);
 		this.setTextSize(TEXT_SIZE);
 		this.setTextColor(Color.WHITE);
+		this.setTextE();
 	}
 
 	public void setItemInfo(ItemInfo info) {

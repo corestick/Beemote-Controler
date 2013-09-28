@@ -339,17 +339,24 @@ public class A2AClientDefault extends A2AClient {
 														.equals("3DMode")) {
 													nameType = "3DMode";
 													Log.e("nameType", nameType);
-												}
-												else if (parser.getText()
+												} else if (parser
+														.getText()
 														.equals("ChannelChanged")) {
 													nameType = "ChannelChanged";
 													Log.e("nameType", nameType);
+												} else if (parser.getText()
+														.equals("TextEdited")) {
+													keyboardInfo = new KeyboardInfo();
+													keyboardInfo.name = parser
+															.getText();
+													nameType = "TextEdited";
+													Log.e("nameType", nameType);
 												}
 											}
-
 											if (inValue
-													&& nameType
-															.equals("KeyboardVisible")) {
+													&& (nameType
+															.equals("KeyboardVisible") || nameType
+															.equals("TextEdited"))) {
 												keyboardInfo.value = parser
 														.getText();
 											}
@@ -361,13 +368,7 @@ public class A2AClientDefault extends A2AClient {
 											}
 											if (inState
 													&& nameType
-															.equals("KeyboardVisible")) {
-												keyboardInfo.state = parser
-														.getText();
-											}
-											if (inState
-													&& nameType
-															.equals("KeyboardVisible")) {
+															.equals("TextEdited")) {
 												keyboardInfo.state = parser
 														.getText();
 											}
@@ -744,7 +745,7 @@ public class A2AClientDefault extends A2AClient {
 			boolean inCpid = false;
 
 			TvAppInfo tvInfo = null;
-			
+
 			try {
 				XmlPullParser parser = XmlPullParserFactory.newInstance()
 						.newPullParser();
@@ -777,16 +778,16 @@ public class A2AClientDefault extends A2AClient {
 						if (inEnvelope) {
 							if (inData) {
 								if (inAuid) {
-//									Log.e("TVAPP", tvInfo.auid);
-									
-									if(tvInfo != null)
+									// Log.e("TVAPP", tvInfo.auid);
+
+									if (tvInfo != null)
 										TvAppList.add(tvInfo);
-									
+
 									tvInfo = new TvAppInfo();
 									tvInfo.auid = parser.getText();
 								}
 								if (inName) {
-//									 Log.e("TVAPPname", tvInfo.name);
+									// Log.e("TVAPPname", tvInfo.name);
 
 									tvInfo.name = parser.getText();
 								}
@@ -803,22 +804,21 @@ public class A2AClientDefault extends A2AClient {
 					}
 					eventType = parser.next();
 				}
-				
-				if(tvInfo != null)
+
+				if (tvInfo != null)
 					TvAppList.add(tvInfo);
 
 			} catch (XmlPullParserException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			for(int i = 0; i< TvAppList.size(); i++)
-			{
+
+			for (int i = 0; i < TvAppList.size(); i++) {
 				Log.e("RRR", "a-->" + TvAppList.get(i).auid);
 				Log.e("RRR", "n-->" + TvAppList.get(i).name);
 				Log.e("RRR", "c-->" + TvAppList.get(i).cpid);
 			}
-			
+
 			// statusCode = response.getStatusLine().getStatusCode();
 			// if (statusCode == HttpURLConnection.HTTP_OK) {
 			// BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -921,8 +921,9 @@ public class A2AClientDefault extends A2AClient {
 									if (sameName == false) {
 										tvListInfo.chname = chname;
 										TvChannelList.add(tvListInfo);
-										Log.e("TVChannelname", tvListInfo.chname);
-										
+										Log.e("TVChannelname",
+												tvListInfo.chname);
+
 									}
 									tvListInfo = new TvChannelListInfo();
 									Log.e("TVTvChannelListSize",
@@ -1087,6 +1088,104 @@ public class A2AClientDefault extends A2AClient {
 					response.getEntity().consumeContent();
 				}
 
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	synchronized public void cursorVisible() throws IOException {
+		URI uri = null;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.getIpAddress() + ":"
+						+ a2atvInfo.getPort() + "/udap/api/event");
+				HttpPost post = new HttpPost(uri);
+				post.setHeader("Pragma", "no-cache");
+				post.setHeader("Cache-Control", "no-cache");
+				post.setHeader("User-Agent", "UDAP/2.0");
+				post.setHeader("Connection", "close");
+				StringEntity entity = new StringEntity(
+						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"event\"><name>CursorVisible</name>"
+								+ "<value>"
+								+ "true"
+								+ "</value>"
+								+ "<mode>"
+								+ "auto" + "</mode>" + "</api></envelope>",
+						HTTP.UTF_8);
+				entity.setContentType("text/xml; charset=UTF-8");
+				post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	synchronized public void moveMouse(int x, int y) throws IOException {
+
+		Log.e("RRR", "x=" + x + ", y=" + y);
+
+		URI uri = null;
+		int statusCode = 0;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.getIpAddress() + ":"
+						+ a2atvInfo.getPort() + "/udap/api/command");
+				HttpPost post = new HttpPost(uri);
+				post.setHeader("Pragma", "no-cache");
+				post.setHeader("Cache-Control", "no-cache");
+				post.setHeader("User-Agent", "UDAP/2.0");
+				post.setHeader("Connection", "close");
+				StringEntity entity = new StringEntity(
+						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleTouchMove</name>"
+								+ "<x>"
+								+ x
+								+ "</x>"
+								+ "<y>"
+								+ y
+								+ "</y>"
+								+ "</api></envelope>", HTTP.UTF_8);
+				entity.setContentType("text/xml; charset=UTF-8");
+				post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	synchronized public void HandleTouchClick() throws IOException {
+		URI uri = null;
+		int statusCode = 0;
+		if (a2atvInfo != null) {
+			try {
+				uri = new URI("http://" + a2atvInfo.getIpAddress() + ":"
+						+ a2atvInfo.getPort() + "/udap/api/command");
+				HttpPost post = new HttpPost(uri);
+				post.setHeader("Pragma", "no-cache");
+				post.setHeader("Cache-Control", "no-cache");
+				post.setHeader("User-Agent", "UDAP/2.0");
+				post.setHeader("Connection", "close");
+				StringEntity entity = new StringEntity(
+						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleTouchClick</name>"
+								+ "</api></envelope>", HTTP.UTF_8);
+				entity.setContentType("text/xml; charset=UTF-8");
+				post.setEntity(entity);
+				HttpResponse response = httpclient.execute(post);
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

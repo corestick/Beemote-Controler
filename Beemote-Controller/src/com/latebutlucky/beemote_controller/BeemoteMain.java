@@ -132,7 +132,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			if (v.getId() == R.id.bee_btn10) {
 				Intent intent = new Intent(BeemoteMain.this, TVList.class);
 				intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-				getApplicationContext().startActivity(intent);
+				BeemoteMain.this.startActivity(intent);
 				return;
 			}
 			bButton = (BeeButton) v;
@@ -251,6 +251,20 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						break;
 					case R.id.vol_down:
 						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_VOLUME_DOWN);
+						break;
+					case R.id.bee_keyboard:
+
+						break;
+					case R.id.bee_mouse:
+						if (mA2AClient.getCurrentTV() != null) {
+							Intent intent = new Intent(BeemoteMain.this,
+									TouchPad.class);
+							intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+							getApplicationContext().startActivity(intent);
+						} else {
+							Toast.makeText(BeemoteMain.this, "먼저 TV와 연결하세요.",
+									Toast.LENGTH_SHORT).show();
+						}
 						break;
 					}
 				} catch (IOException e) {
