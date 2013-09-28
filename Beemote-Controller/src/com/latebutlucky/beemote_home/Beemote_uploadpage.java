@@ -65,7 +65,7 @@ public class Beemote_uploadpage extends Activity {
 					int groupPosition, int childPosition, long id) {
 				Log.e("OnChildClickListener", Integer.toString(childPosition));
 				
-				Intent i = new Intent(Beemote_uploadpage.this, DownloadSubList.class);
+				Intent i = new Intent(Beemote_uploadpage.this, UploadPage.class);
 				String tmp = groupPosition + "-" + childPosition;
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);

@@ -12,7 +12,7 @@
         android:layout_alignLeft="@+id/bee_btn10"
         android:layout_alignTop="@+id/bee_btn10"
         android:layout_marginTop="130dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:gravity="center"
         android:text="12" />
 
@@ -23,7 +23,7 @@
         android:layout_alignLeft="@+id/bee_btn15"
         android:layout_below="@+id/bee_btn15"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -36,7 +36,7 @@
         android:layout_alignLeft="@+id/bee_btn17"
         android:layout_below="@+id/bee_btn17"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -49,7 +49,7 @@
         android:layout_alignLeft="@+id/bee_btn18"
         android:layout_below="@+id/bee_btn18"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -75,7 +75,7 @@
         android:layout_alignLeft="@+id/bee_btn1"
         android:layout_below="@+id/bee_btn2"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -88,7 +88,7 @@
         android:layout_alignLeft="@+id/bee_btn6"
         android:layout_below="@+id/bee_btn6"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -141,7 +141,7 @@
         android:layout_alignTop="@+id/bee_btn13"
         android:layout_marginLeft="55dp"
         android:layout_marginTop="33dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -155,7 +155,7 @@
         android:layout_alignTop="@+id/bee_btn8"
         android:layout_marginLeft="55dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:gravity="center"
         android:text="13" />
 
@@ -178,7 +178,7 @@
         android:layout_alignTop="@+id/bee_btn4"
         android:layout_marginLeft="-55dp"
         android:layout_marginTop="33dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:text="1" />
@@ -190,7 +190,7 @@
         android:layout_alignLeft="@+id/bee_btn1"
         android:layout_below="@+id/bee_btn1"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:drawablePadding="-10dp"
         android:gravity="center"
         android:paddingTop="15dp"
@@ -230,7 +230,7 @@
         android:layout_alignLeft="@+id/bee_btn10"
         android:layout_alignTop="@+id/bee_btn10"
         android:layout_marginTop="-130dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:gravity="center"
         android:text="8" />
 
@@ -242,7 +242,7 @@
         android:layout_alignTop="@+id/bee_btn10"
         android:layout_marginTop="-99dp"
         android:layout_marginLeft="-55dp"
-        android:background="@drawable/btn_yellow_hexagon"
+        android:background="@drawable/btn_out_hexagon"
         android:gravity="center"
         android:text="4" />
 

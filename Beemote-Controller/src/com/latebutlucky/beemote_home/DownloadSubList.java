@@ -1,18 +1,10 @@
 package com.latebutlucky.beemote_home;
 
-import java.io.File;
 import java.util.ArrayList;
-
-import com.latebutlucky.beemote_controller.R;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.latebutlucky.beemote_controller.R;
 
 public class DownloadSubList extends Activity implements OnItemClickListener {
 
@@ -32,14 +25,10 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 	ListData listdata;
 	ArrayList<String[][]> subList;
 	HomeDialog homeDialog;
-	private String sdcard = Environment.getExternalStorageDirectory()
-			.getAbsolutePath(); // sdcard 경로	
+
 
 	// private int[] mImageID = {
-	private String[] mImagePath = {
-			sdcard + "/Beemote/screen0.jpg",
-			sdcard + "/Beemote/screen1.jpg", 
-			sdcard + "/Beemote/screen2.jpg"
+	private int[] mImagePath = {R.drawable.tmp1,R.drawable.tmp2,R.drawable.tmp3
 	};
 	
 	@Override
@@ -105,9 +94,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		Uri uri = Uri.fromFile(new File(mImagePath[position]));
-		Bitmap bmp = BitmapFactory.decodeFile(uri.getPath());
-		homeDialog.setImg(bmp);
+		homeDialog.setImg(mImagePath[position]);
 		homeDialog.show();
 	}
 }

@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.latebutlucky.beemote_home.Beemote_downloadpage;
 import com.latebutlucky.beemote_home.Beemote_uploadpage;
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
@@ -411,7 +412,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	public void startDownpage() {
 		Bitmap captureView[] = null;
-		Intent intent = new Intent(this, Beemote_uploadpage.class);
+		Intent intent = new Intent(this, Beemote_downloadpage.class);
 		this.startActivity(intent);
 	}
 	

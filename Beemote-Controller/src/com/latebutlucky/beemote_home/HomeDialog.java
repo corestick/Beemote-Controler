@@ -38,7 +38,7 @@ public class HomeDialog extends Dialog implements android.view.View.OnClickListe
 			dismiss();
 		}
 	}
-	void setImg(Bitmap bmp){
-		mainImg.setImageBitmap(bmp);
+	void setImg(int img){
+		mainImg.setImageResource(img);
 	}
 }
