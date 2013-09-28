@@ -189,6 +189,7 @@ public class TVList extends Activity {
 		
 		final LinearLayout linear = (LinearLayout) View.inflate(TVList.this, R.layout.dialog_pairing, null);
 		edtPairingCode = (EditText) linear.findViewById(R.id.edtPairingCode);
+		edtPairingCode.setMaxLines(1);
 		
 		new AlertDialog.Builder(TVList.this)
 		.setTitle(R.string.input_pairing)

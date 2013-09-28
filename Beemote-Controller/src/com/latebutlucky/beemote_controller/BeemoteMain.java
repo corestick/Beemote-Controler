@@ -144,13 +144,14 @@ public class BeemoteMain extends Activity implements OnClickListener,
 							.show();
 
 					refreshTVAppList();
-
+					
 					InfoListDialog("TvApp", bButton);
 					break;
 				case R.id.selmenu_btn2:
 					Toast.makeText(BeemoteMain.this, "채널", Toast.LENGTH_SHORT)
 							.show();
 					try {
+						mA2AClient.TvChannelList.clear();
 						mA2AClient.tvListQuery();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -194,6 +195,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	private void refreshTVAppList() {
 		// TODO Auto-generated method stub
 		try {
+			mA2AClient.TvAppList.clear();
+			
 			mA2AClient.tvAppQuery();
 			Bitmap bitmap;
 
