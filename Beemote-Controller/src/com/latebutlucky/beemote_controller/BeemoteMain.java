@@ -6,7 +6,6 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,10 +20,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.latebutlucky.beemote_view.BeeButton;
@@ -242,12 +243,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				View dial_view = getLayoutInflater().inflate(
 						R.layout.input_text, null);
 				dial.setContentView(dial_view);
+				
+				TextView txtTitle = (TextView) dial_view.findViewById(R.id.txtTitle);
+				txtTitle.setText("검색어를 입력하세요.");
+				
 				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
+				
 				t.setFocusable(true);
+				t.requestFocus();
+				
 				b1.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View click_v) {
@@ -274,6 +282,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// dial.dismiss();
 					}
 				});
+				
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

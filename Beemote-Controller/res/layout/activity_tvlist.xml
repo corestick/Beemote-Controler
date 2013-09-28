@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Search" />
+        android:background="@drawable/img_button_01"
+        android:textColor="#ffeeeeee"
+        android:text="TV 검색" />
 
     <ListView
         android:id="@+id/tvList"
