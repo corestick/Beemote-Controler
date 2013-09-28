@@ -323,6 +323,7 @@ public class A2AClientDefault extends A2AClient {
 									case XmlPullParser.TEXT:
 										if (inEnvelope) {
 											if (inName) {
+												Log.e("aaaa", parser.getText());
 												if (parser.getText().equals(
 														"KeyboardVisible")) {
 													keyboardInfo = new KeyboardInfo();
@@ -352,6 +353,11 @@ public class A2AClientDefault extends A2AClient {
 													nameType = "TextEdited";
 													Log.e("nameType", nameType);
 												}
+												 else if (parser.getText()
+															.equals("CursorVisible")) {														
+														nameType = "CursorVisible";
+														Log.e("nameType", nameType);
+													}
 											}
 											if (inValue
 													&& (nameType
@@ -1020,7 +1026,7 @@ public class A2AClientDefault extends A2AClient {
 		}
 	}
 
-	synchronized public void keywordSend(String str) throws IOException {
+	synchronized public void keywordSend(String state, String value) throws IOException {
 		URI uri = null;
 		int statusCode = 0;
 		if (a2atvInfo != null) {
@@ -1034,9 +1040,9 @@ public class A2AClientDefault extends A2AClient {
 				post.setHeader("Connection", "Keep-Alive");
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"event\"><name>TextEdited</name><state>"
-								+ "Editing"
+								+ state
 								+ "</state><value>"
-								+ str
+								+ value
 								+ "</value>" + "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);

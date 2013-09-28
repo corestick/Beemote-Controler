@@ -83,7 +83,7 @@ public class InfoListDialog extends Dialog {
 				}
 			};
 			Collections.sort(ChannelInfoArry, myComparator);
-		}
+		}		
 		mBeebutton = beebutton;		
 		
 		listview.setFastScrollEnabled(true);

@@ -76,6 +76,8 @@ public class BeeView extends RelativeLayout {
 	public void refreshBeemoteState(BeeButton beeButton) {
 		// TODO Auto-generated method stub
 
+		btnMenu.hideButtonMenu();
+		
 		ItemInfo info = beeButton.itemInfo;
 
 		switch (info.beemoteType) {

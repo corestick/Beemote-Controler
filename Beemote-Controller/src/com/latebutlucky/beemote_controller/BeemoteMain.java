@@ -50,12 +50,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	LayoutInflater mInflater;
 	EditText edtMsg;
-	A2AClient mA2AClient = null;
+	public A2AClient mA2AClient = null;
 	Handler m_handler = new Handler();
 	String AppAction = null;
 	String AppDetail = null;
 
 	BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
+	public String TextState;
 	private static final int UPLOADPAGE = 0;
 	private static final int DOWNPAGE = 1;
 
@@ -126,22 +127,30 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 
+		if (v.getId() == R.id.bee_btn10) {
+			Intent intent = new Intent(BeemoteMain.this, TVList.class);
+			intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+			BeemoteMain.this.startActivity(intent);
+			return;
+		} else {
+			if (mA2AClient.getCurrentTV() == null) {
+				Toast.makeText(BeemoteMain.this, "먼저 TV와 연결하세요.",
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+		}
+
 		final BeeButton bButton;
 		// bee버튼
 		if (v instanceof BeeButton) {
-			if (v.getId() == R.id.bee_btn10) {
-				Intent intent = new Intent(BeemoteMain.this, TVList.class);
-				intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-				BeemoteMain.this.startActivity(intent);
-				return;
-			}
+
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
-			
-			if(bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
+
+			if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
 				bView.btnMenu.showButtonMenu(bButton);
-			
+
 			try {
 				if (bButton.itemInfo.appId != null) {
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
@@ -180,6 +189,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						mA2AClient.KeyCodeSend(String.valueOf(ChannelNum));
 					}
 
+				} else if (bButton.itemInfo.functionKey != null) {
+					mA2AClient.KeyCodeSend(bButton.itemInfo.functionKey);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -202,11 +213,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				// 메뉴 기능
 				switch (v.getId()) {
 				case R.id.selmenu_btn1:
-					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
-							.show();
-
 					refreshTVAppList();
-
 					InfoListDialog("TvApp", bButton);
 					break;
 				case R.id.selmenu_btn2:
@@ -217,26 +224,25 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 					InfoListDialog("TvChannel", bButton);
 					break;
 				case R.id.selmenu_btn3:
 					showMsgDialog("Keyword");
-					Toast.makeText(BeemoteMain.this, "검색어", Toast.LENGTH_SHORT)
-							.show();
-
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_SEARCH;
 					break;
 				case R.id.selmenu_btn4:
-					Toast.makeText(BeemoteMain.this, "기능키", Toast.LENGTH_SHORT)
-							.show();
-
+					FuctionDialog funcDial = new FuctionDialog(
+							BeemoteMain.this, bButton);
+					funcDial.setCancelable(true);
+					android.view.WindowManager.LayoutParams params = funcDial
+							.getWindow().getAttributes();
+					params.width = LayoutParams.FILL_PARENT;
+					params.height = LayoutParams.FILL_PARENT;
+					funcDial.getWindow().setAttributes(params);
+					funcDial.show();
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_FUNC;
 					break;
 				default:
-					Toast.makeText(BeemoteMain.this, "지우기", Toast.LENGTH_SHORT)
-							.show();
-
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 					break;
 				}
@@ -259,15 +265,11 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 						break;
 					case R.id.bee_mouse:
-						if (mA2AClient.getCurrentTV() != null) {
-							Intent intent = new Intent(BeemoteMain.this,
-									TouchPad.class);
-							intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-							getApplicationContext().startActivity(intent);
-						} else {
-							Toast.makeText(BeemoteMain.this, "먼저 TV와 연결하세요.",
-									Toast.LENGTH_SHORT).show();
-						}
+						Intent intent = new Intent(BeemoteMain.this,
+								TouchPad.class);
+						intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+						getApplicationContext().startActivity(intent);
+
 						break;
 					}
 				} catch (IOException e) {
@@ -335,13 +337,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 				TextView txtTitle = (TextView) dial_view
 						.findViewById(R.id.txtTitle);
-				
+
 				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
-				
+
 				if (msg.equals("KeyboardVisible")) {
 					txtTitle.setText("텍스트 입력 후, 전송 버튼을 누르세요.");
 					b1.setText("전송");
@@ -351,7 +353,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					b1.setText("확인");
 					b2.setText("취소");
 				}
-				
 
 				t.setFocusable(true);
 				t.requestFocus();
@@ -361,7 +362,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					public void onClick(View click_v) {
 						try {
 							if (msg.equals("KeyboardVisible")) {
-								mA2AClient.keywordSend(t.getText().toString());
+								mA2AClient.keywordSend("Editing", t.getText()
+										.toString());
 							} else if (msg.equals("Keyword")) {
 								BeeView bView = (BeeView) slidingView
 										.getChildAt(slidingView
@@ -386,8 +388,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						dial.dismiss();
+						try {
+							// if (TextState.equals("TextEdited"))
+							Log.e("eeee", "eeee");
+							mA2AClient.keywordSend("EditEnd", t.getText()
+									.toString());
+
+							dial.dismiss();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
+
 				});
 				dial.show();
 			}
@@ -426,10 +439,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		if (nameType.equals("KeyboardVisible")) {
 			KeyboardInfo keyboardInfo = (KeyboardInfo) object;
 			if (keyboardInfo.name.equals("KeyboardVisible")) {
-				showMsgDialog("KeyboardVisible");
+				TextState = "KeyboardVisible";
+				if (keyboardInfo.value.equals("true")) {
+					showMsgDialog("KeyboardVisible");
+				}
 			} else if (keyboardInfo.name.equals("TextEdited")) {
-				Log.e("In3", keyboardInfo.state);
-				Log.e("In3", keyboardInfo.value);
+				TextState = "TextEdited";
 			}
 		} else if (nameType.equals("AppErrstate")) {
 			App_Errstate appErrstate = (App_Errstate) object;
@@ -479,7 +494,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					return;
 				} else if (AppAction.equals("Execute")) {
 					try {
-						mA2AClient.keywordSend("23");
+						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_REDO);
 						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block

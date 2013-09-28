@@ -204,7 +204,7 @@ public abstract class A2AClient {
 
 	abstract public void KeyCodeSend(String keycode) throws IOException;
 
-	abstract public void keywordSend(String str) throws IOException;
+	abstract public void keywordSend(String state, String value) throws IOException;
 
 	abstract public void tvListQuery() throws IOException;
 
