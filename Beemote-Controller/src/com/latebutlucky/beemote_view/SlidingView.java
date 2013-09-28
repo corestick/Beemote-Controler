@@ -207,14 +207,14 @@ public class SlidingView extends ViewGroup {
 			// 그러면 스크롤 애니메이션이 되는것처럼 보인다. (computeScroll() 참조)
 			mScroller.startScroll(getScrollX(), 0, move, 0, Math.abs(move));
 
-
-			if (mToast != null) {
-				mToast.setText("page : " + nextPage);
-			} else {
-				mToast = Toast.makeText(getContext(), "page : " + nextPage,
-						Toast.LENGTH_SHORT);
-			}
-			mToast.show();
+//
+//			if (mToast != null) {
+//				mToast.setText("page : " + nextPage);
+//			} else {
+//				mToast = Toast.makeText(getContext(), "page : " + nextPage,
+//						Toast.LENGTH_SHORT);
+//			}
+//			mToast.show();
 			invalidate();
 			mCurPage = nextPage;
 

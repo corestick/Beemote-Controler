@@ -23,7 +23,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.latebutlucky.beemote_controller.BeemoteMain"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +37,12 @@
         </activity>
         <activity android:name="com.latebutlucky.beemote_home.Beemote_uploadpage" >
         </activity>
-        <activity android:name="com.latebutlucky.beemote_home.DownloadSubList" ></activity>
-        <activity android:name="com.latebutlucky.beemote_home.Beemote_downloadpage"></activity>
-         <activity android:name="com.latebutlucky.beemote_home.UploadPage"></activity>
+        <activity android:name="com.latebutlucky.beemote_home.DownloadSubList" >
+        </activity>
+        <activity android:name="com.latebutlucky.beemote_home.Beemote_downloadpage" >
+        </activity>
+        <activity android:name="com.latebutlucky.beemote_home.UploadPage" >
+        </activity>
         <activity
             android:name="com.latebutlucky.beemote_controller.TouchPad"
             android:label="@string/title_activity_touch_pad" >

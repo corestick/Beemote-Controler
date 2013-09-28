@@ -43,7 +43,7 @@ import com.lge.tv.a2a.client.A2AMessageListener;
 
 public class BeemoteMain extends Activity implements OnClickListener,
 		OnLongClickListener, A2AMessageListener {
-	
+
 	public SlidingView slidingView;
 	BeemoteDB beemoteDB;
 	Vector<ItemInfo> beeInfo;
@@ -129,6 +129,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		final BeeButton bButton;
 		// bee버튼
 		if (v instanceof BeeButton) {
+			if (v.getId() == R.id.bee_btn10) {
+				Intent intent = new Intent(BeemoteMain.this, TVList.class);
+				intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+				getApplicationContext().startActivity(intent);
+				return;
+			}
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
@@ -161,9 +167,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 										e.printStackTrace();
 									}
 								}
-
 							}
-
 						}, 500);
 					} else {
 						int ChannelNum = Integer.parseInt(String
@@ -178,12 +182,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Toast.makeText(
-					BeemoteMain.this,
-					"스크린 : " + bButton.itemInfo.screenIdx + "\n 버튼 : "
-							+ bButton.itemInfo.beemoteIdx + "\n 타입 : "
-							+ bButton.itemInfo.beemoteType, Toast.LENGTH_SHORT)
-					.show();
+			// Toast.makeText(
+			// BeemoteMain.this,
+			// "스크린 : " + bButton.itemInfo.screenIdx + "\n 버튼 : "
+			// + bButton.itemInfo.beemoteIdx + "\n 타입 : "
+			// + bButton.itemInfo.beemoteType, Toast.LENGTH_SHORT)
+			// .show();
 		} else {
 
 			if (v instanceof Button) {
@@ -210,7 +214,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					InfoListDialog("TvChannel", bButton);
 					break;
 				case R.id.selmenu_btn3:
@@ -234,12 +238,24 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					break;
 				}
 			} else if (v instanceof ImageButton) {
-				switch (v.getId()) {
-				case R.id.ch_up:
-					Intent intent = new Intent(BeemoteMain.this, TVList.class);
-					intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
-					getApplicationContext().startActivity(intent);
-					break;
+				try {
+					switch (v.getId()) {
+					case R.id.ch_up:
+						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_CHANNEL_UP);
+						break;
+					case R.id.ch_down:
+						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_CHANNEL_DOWN);
+						break;
+					case R.id.vol_up:
+						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_VOLUME_UP);
+						break;
+					case R.id.vol_down:
+						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_VOLUME_DOWN);
+						break;
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
@@ -249,7 +265,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		try {
 			mA2AClient.TvAppList.clear();
-			
+
 			mA2AClient.tvAppQuery();
 			Bitmap bitmap;
 
@@ -299,19 +315,20 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				View dial_view = getLayoutInflater().inflate(
 						R.layout.input_text, null);
 				dial.setContentView(dial_view);
-				
-				TextView txtTitle = (TextView) dial_view.findViewById(R.id.txtTitle);
+
+				TextView txtTitle = (TextView) dial_view
+						.findViewById(R.id.txtTitle);
 				txtTitle.setText("검색어를 입력하세요.");
-				
+
 				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
-				
+
 				t.setFocusable(true);
 				t.requestFocus();
-				
+
 				b1.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View click_v) {
@@ -338,7 +355,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						// dial.dismiss();
 					}
 				});
-				
+
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
