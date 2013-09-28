@@ -261,11 +261,12 @@ public class A2AClientDefault extends A2AClient {
 				boolean inMode = false;
 				boolean inState = false;
 				boolean inAction = false;
-				boolean inDetail = false;				
+				boolean inDetail = false;
 				String nameType = null;
-				
+
 				KeyboardInfo keyboardInfo;
 				App_Errstate app_Errstate;
+
 				@Override
 				public void handle(HttpRequest request, HttpResponse response,
 						HttpContext context) throws HttpException, IOException {
@@ -282,6 +283,7 @@ public class A2AClientDefault extends A2AClient {
 								.getEntity();
 						if (entity != null) {
 							try {
+								nameType = null;
 								XmlPullParser parser = XmlPullParserFactory
 										.newInstance().newPullParser();
 								parser.setInput(new StringReader(EntityUtils
@@ -319,41 +321,51 @@ public class A2AClientDefault extends A2AClient {
 									case XmlPullParser.TEXT:
 										if (inEnvelope) {
 											if (inName) {
-												if(parser.getText().equals("KeyboardVisible")){
+												if (parser.getText().equals(
+														"KeyboardVisible")) {
+													Log.e("Keyin", "Keyin");
 													keyboardInfo = new KeyboardInfo();
 													keyboardInfo.name = parser
 															.getText();
 													nameType = "KeyboardVisible";
-												}
-												else if(parser.getText().equals("Mobilehome_App_Errstate")){
+												} else if (parser
+														.getText()
+														.equals("Mobilehome_App_Errstate")) {
 													app_Errstate = new App_Errstate();
 													nameType = "AppErrstate";
 													Log.e("nameType", nameType);
 												}
-											}
-											if (inValue) {
+												else if (parser
+														.getText()
+														.equals("3DMode")) {													
+													nameType = "3DMode";
+													Log.e("nameType", nameType);
+												}
+											}											
+											
+											if (inValue && nameType.equals("KeyboardVisible") ) {
 												keyboardInfo.value = parser
 														.getText();
 											}
-											if (inMode) {
+											if (inMode && nameType.equals("KeyboardVisible")) {
 												keyboardInfo.mode = parser
 														.getText();
 											}
-											if (inState) {
+											if (inState && nameType.equals("KeyboardVisible")) {
 												keyboardInfo.state = parser
 														.getText();
 											}
-											if (inState) {
+											if (inState && nameType.equals("KeyboardVisible")) {
 												keyboardInfo.state = parser
 														.getText();
 											}
-											if (inAction) {
+											if (inAction && nameType.equals("AppErrstate")) {
 												app_Errstate.action = parser
-														.getText();												
+														.getText();
 											}
-											if (inDetail) {
+											if (inDetail && nameType.equals("AppErrstate")) {
 												app_Errstate.detail = parser
-														.getText();												
+														.getText();
 											}
 										}
 										break;
@@ -382,13 +394,15 @@ public class A2AClientDefault extends A2AClient {
 							// }
 							// }
 							//
-							if (messageListener != null) {
-								if(nameType.equals("KeyboardVisible")){
-									messageListener.onRecieveMessage("KeyboardVisible",keyboardInfo);
+							if (messageListener != null) {							
+
+								if (nameType.equals("KeyboardVisible")) {
+									messageListener.onRecieveMessage(
+											"KeyboardVisible", keyboardInfo);
+								} else if (nameType.equals("AppErrstate")) {
+									messageListener.onRecieveMessage(
+											"AppErrstate", app_Errstate);
 								}
-								else if(nameType.equals("AppErrstate")){
-									messageListener.onRecieveMessage("AppErrstate",app_Errstate);
-								}								
 							}
 							response.setStatusCode(HttpStatus.SC_OK);
 						}
@@ -963,8 +977,8 @@ public class A2AClientDefault extends A2AClient {
 								+ auid
 								+ "</auid><appname>"
 								+ appName
-								+ "</appname>"
-								+ "</api></envelope>", HTTP.UTF_8);
+								+ "</appname>" + "</api></envelope>",
+						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
 				httpclient.execute(post);
@@ -1020,7 +1034,7 @@ public class A2AClientDefault extends A2AClient {
 	}
 
 	synchronized public void KeyCodeSend(String keycode) throws IOException {
-		URI uri = null;		
+		URI uri = null;
 		if (a2atvInfo != null) {
 			try {
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"

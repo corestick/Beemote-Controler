@@ -110,11 +110,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					.getCurrentPage());
 			bView.btnMenu.showButtonMenu(bButton);
 			try {
-				if (bButton.itemInfo.appId != null) {
-					Log.e("TTTTT", bButton.itemInfo.appId);
+				if (bButton.itemInfo.appId != null) {					
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
 							bButton.itemInfo.appName,
 							bButton.itemInfo.contentId);
+				}
+				else if(bButton.itemInfo.keyWord != null){
+					mA2AClient.KeyCodeSend(bButton.itemInfo.keyWord);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -140,6 +142,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
 							.show();
 					try {
+						mA2AClient.TvAppList.clear();
 						mA2AClient.tvAppQuery();
 						Bitmap bitmap;
 						for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
@@ -158,6 +161,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				case R.id.selmenu_btn2:
 					Toast.makeText(BeemoteMain.this, "채널", Toast.LENGTH_SHORT)
 							.show();
+					mA2AClient.TvChannelList.clear();
 					try {
 						mA2AClient.tvListQuery();
 					} catch (IOException e) {
@@ -193,6 +197,15 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					Intent intent = new Intent(BeemoteMain.this, TVList.class);
 					intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
 					getApplicationContext().startActivity(intent);
+					break;
+				case R.id.ch_down:
+					try {
+						Log.e("TTTT-----","TTT");
+						mA2AClient.KeyCodeSend("21");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				}
 			}
@@ -317,6 +330,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			App_Errstate appErrstate = (App_Errstate) object;
 			AppAction = appErrstate.action;
 			AppDetail = appErrstate.detail;
+			Log.e("AppAction",AppAction);
 		}
 
 	}
@@ -362,7 +376,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				}
 				else if(AppAction.equals("Execute")){
 					try {
-						mA2AClient.keywordSend("23");
+						mA2AClient.KeyCodeSend("23");
+						AppAction = null;
 						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
