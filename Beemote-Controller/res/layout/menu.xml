@@ -8,7 +8,7 @@
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/selmenu_btn4"
-        android:background="@drawable/meun2" />
+        android:background="@drawable/menu2" />
 
     <Button
         android:id="@+id/selmenu_btn1"
@@ -24,7 +24,7 @@
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/selmenu_btn1"
-        android:background="@drawable/meun4" />
+        android:background="@drawable/menu4" />
 
     <Button
         android:id="@+id/selmenu_btn3"
@@ -33,6 +33,6 @@
         android:layout_alignBaseline="@+id/selmenu_btn4"
         android:layout_alignBottom="@+id/selmenu_btn4"
         android:layout_alignLeft="@+id/selmenu_btn2"
-        android:background="@drawable/meun3" />
+        android:background="@drawable/menu3" />
 
 </RelativeLayout>
