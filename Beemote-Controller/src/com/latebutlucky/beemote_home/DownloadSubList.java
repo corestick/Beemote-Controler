@@ -41,9 +41,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 
 		subList = new ArrayList<String[][]>();
 		subList.add(listdata.sports);
-		subList.add(listdata.eonomy);
-		subList.add(listdata.life);
-		subList.add(listdata.culture);
+		subList.add(listdata.economy);
 		subList.add(listdata.fun);
 
 		alist = new ArrayList<String>();
@@ -57,7 +55,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 		int groupPosition = Integer.parseInt(String.valueOf(getText.charAt(0)));
 		int childPosition =Integer.parseInt(String.valueOf(getText.charAt(2)));
 		String[][] category = subList.get(groupPosition);
-		for(int i=0; i <3; i++){
+		for(int i=0; i <category[childPosition].length; i++){
 			adapter.add(category[childPosition][i]);
 		}
 		Log.e("gettext",getText);
