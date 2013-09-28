@@ -321,6 +321,7 @@ public class A2AClientDefault extends A2AClient {
 									case XmlPullParser.TEXT:
 										if (inEnvelope) {
 											if (inName) {
+												Log.e("INNAME",parser.getText());
 												if (parser.getText().equals(
 														"KeyboardVisible")) {
 													Log.e("Keyin", "Keyin");
@@ -334,36 +335,51 @@ public class A2AClientDefault extends A2AClient {
 													app_Errstate = new App_Errstate();
 													nameType = "AppErrstate";
 													Log.e("nameType", nameType);
-												}
-												else if (parser
-														.getText()
-														.equals("3DMode")) {													
+												} else if (parser.getText()
+														.equals("3DMode")) {
 													nameType = "3DMode";
 													Log.e("nameType", nameType);
 												}
-											}											
-											
-											if (inValue && nameType.equals("KeyboardVisible") ) {
+												else if (parser.getText()
+														.equals("ChannelChanged")) {
+													nameType = "ChannelChanged";
+													Log.e("nameType", nameType);
+												}
+											}
+
+											if (inValue
+													&& nameType
+															.equals("KeyboardVisible")) {
 												keyboardInfo.value = parser
 														.getText();
 											}
-											if (inMode && nameType.equals("KeyboardVisible")) {
+											if (inMode
+													&& nameType
+															.equals("KeyboardVisible")) {
 												keyboardInfo.mode = parser
 														.getText();
 											}
-											if (inState && nameType.equals("KeyboardVisible")) {
+											if (inState
+													&& nameType
+															.equals("KeyboardVisible")) {
 												keyboardInfo.state = parser
 														.getText();
 											}
-											if (inState && nameType.equals("KeyboardVisible")) {
+											if (inState
+													&& nameType
+															.equals("KeyboardVisible")) {
 												keyboardInfo.state = parser
 														.getText();
 											}
-											if (inAction && nameType.equals("AppErrstate")) {
+											if (inAction
+													&& nameType
+															.equals("AppErrstate")) {
 												app_Errstate.action = parser
 														.getText();
 											}
-											if (inDetail && nameType.equals("AppErrstate")) {
+											if (inDetail
+													&& nameType
+															.equals("AppErrstate")) {
 												app_Errstate.detail = parser
 														.getText();
 											}
@@ -394,7 +410,7 @@ public class A2AClientDefault extends A2AClient {
 							// }
 							// }
 							//
-							if (messageListener != null) {							
+							if (messageListener != null) {
 
 								if (nameType.equals("KeyboardVisible")) {
 									messageListener.onRecieveMessage(
@@ -891,9 +907,21 @@ public class A2AClientDefault extends A2AClient {
 						if (inEnvelope) {
 							if (inData) {
 								if (inChname) {
-									tvListInfo.chname = parser.getText();
-									Log.e("TVChannelname", tvListInfo.chname);
-									TvChannelList.add(tvListInfo);
+									String chname = parser.getText();
+									boolean sameName = false;
+									for (int i = 0; i < TvChannelList.size(); i++) {
+										if (TvChannelList.get(i).chname
+												.equals(chname)) {
+											sameName = true;
+											break;
+										}
+									}
+									if (sameName == false) {
+										tvListInfo.chname = chname;
+										TvChannelList.add(tvListInfo);
+										Log.e("TVChannelname", tvListInfo.chname);
+										
+									}
 									tvListInfo = new TvChannelListInfo();
 									Log.e("TVTvChannelListSize",
 											TvChannelList.size() + "");

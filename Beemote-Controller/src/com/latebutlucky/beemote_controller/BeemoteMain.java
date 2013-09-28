@@ -1,4 +1,3 @@
-
 package com.latebutlucky.beemote_controller;
 
 import java.io.File;
@@ -41,8 +40,8 @@ import com.lge.tv.a2a.client.A2AMessageListener;
 
 public class BeemoteMain extends Activity implements OnClickListener,
 		OnLongClickListener, A2AMessageListener {
-	private static final int UPLOADPAGE = 0;
-	private static final int DOWNPAGE = 1;
+
+	private static final int HOMEPAGE = 1;
 	public SlidingView slidingView;
 	BeemoteDB beemoteDB;
 	Vector<ItemInfo> beeInfo;
@@ -56,6 +55,9 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
 
+	private static final int UPLOADPAGE = 0;
+	private static final int DOWNPAGE = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.enableDefaults();
@@ -66,9 +68,9 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 		slidingView = new SlidingView(this);
 
-		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-		slidingView.addView(new BeeView(this), new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+		slidingView.addView(new BeeView(this));
+		slidingView.addView(new BeeView(this));
+		slidingView.addView(new BeeView(this));
 
 		mA2AClient = A2AClientManager.getDefaultClient();
 		mA2AClient.setMessageListener(this);
@@ -101,20 +103,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, UPLOADPAGE, 0, "Upload").setIcon(
-				R.drawable.arrow_up);
-		menu.add(0, DOWNPAGE, 0, "Download").setIcon(
-				R.drawable.arrow_down);
+		menu.add(0, UPLOADPAGE, 0, "Upload").setIcon(R.drawable.arrow_up);
+		menu.add(0, DOWNPAGE, 0, "Download").setIcon(R.drawable.arrow_down);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case UPLOADPAGE:	
+		case UPLOADPAGE:
 			startUploadpage();
 			break;
 		case DOWNPAGE:
-			startDownpage(); 
+			startDownpage();
 			return true;
 		}
 
@@ -124,7 +125,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 
-		BeeButton bButton;
+		final BeeButton bButton;
 		// bee버튼
 		if (v instanceof BeeButton) {
 			bButton = (BeeButton) v;
@@ -133,10 +134,44 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			bView.btnMenu.showButtonMenu(bButton);
 			try {
 				if (bButton.itemInfo.appId != null) {
-					Log.e("TTTTT", bButton.itemInfo.appId);
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
 							bButton.itemInfo.appName,
 							bButton.itemInfo.contentId);
+				} else if (bButton.itemInfo.channelNo != null) {
+					Log.e("Item", bButton.itemInfo.channelNo);
+
+					if (bButton.itemInfo.channelNo.length() > 1) {
+						final Handler handler = new Handler();
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								for (int i = 0; i < bButton.itemInfo.channelNo
+										.length(); i++) {
+									int ChannelNum = Integer.parseInt(String
+											.valueOf(bButton.itemInfo.channelNo
+													.charAt(i)));
+									ChannelNum = ChannelNum + 2;
+									Log.e("ChannelNUM", ChannelNum + "");
+									try {
+										mA2AClient.KeyCodeSend(String
+												.valueOf(ChannelNum));
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+
+							}
+
+						}, 500);
+					} else {
+						int ChannelNum = Integer.parseInt(String
+								.valueOf(bButton.itemInfo.channelNo.charAt(0)));
+						ChannelNum = ChannelNum + 2;
+						Log.e("ChannelNUM", ChannelNum + "");
+						mA2AClient.KeyCodeSend(String.valueOf(ChannelNum));
+					}
+
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -159,8 +194,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				// 메뉴 기능
 				switch (v.getId()) {
 				case R.id.selmenu_btn1:
-					Toast.makeText(BeemoteMain.this, "앱 매칭", Toast.LENGTH_SHORT)
-							.show();
 					try {
 						mA2AClient.tvAppQuery();
 						Bitmap bitmap;
@@ -178,8 +211,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					InfoListDialog("TvApp", bButton);
 					break;
 				case R.id.selmenu_btn2:
-					Toast.makeText(BeemoteMain.this, "채널", Toast.LENGTH_SHORT)
-							.show();
 					try {
 						mA2AClient.tvListQuery();
 					} catch (IOException e) {
@@ -377,20 +408,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 		public void onBackPressed() {
 			if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-				if(AppAction == null){
+				if (AppAction == null) {
 					backKeyPressedTime = System.currentTimeMillis();
 					showGuide();
 					return;
-				}
-				else if(AppAction.equals("Execute")){
+				} else if (AppAction.equals("Execute")) {
 					try {
 						mA2AClient.keywordSend("23");
 						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}					
-				}				
+					}
+				}
 			}
 
 			if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
@@ -407,14 +437,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		}
 
 	}
-	
 
 	public void startDownpage() {
 		Bitmap captureView[] = null;
 		Intent intent = new Intent(this, Beemote_uploadpage.class);
 		this.startActivity(intent);
 	}
-	
+
 	public void startUploadpage() {
 		Bitmap captureView[] = null;
 		int count = slidingView.getChildCount();
@@ -427,7 +456,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 		File cfile = new File(sdcard + "/Beemote");
 		cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
-	for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			View tempCapture = slidingView.getChildAt(i);
 			tempCapture.buildDrawingCache();
 			captureView[i] = tempCapture.getDrawingCache();
@@ -446,8 +475,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		intent.putExtra("ChildCount", this.Child_Count());
 		this.startActivity(intent);
 	}
-	
-	
+
 	public int Child_Count() {
 		return slidingView.getChildCount();
 	}
