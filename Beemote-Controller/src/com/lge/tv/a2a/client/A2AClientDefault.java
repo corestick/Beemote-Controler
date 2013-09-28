@@ -11,8 +11,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -321,10 +323,8 @@ public class A2AClientDefault extends A2AClient {
 									case XmlPullParser.TEXT:
 										if (inEnvelope) {
 											if (inName) {
-												Log.e("INNAME",parser.getText());
 												if (parser.getText().equals(
 														"KeyboardVisible")) {
-													Log.e("Keyin", "Keyin");
 													keyboardInfo = new KeyboardInfo();
 													keyboardInfo.name = parser
 															.getText();
@@ -411,7 +411,6 @@ public class A2AClientDefault extends A2AClient {
 							// }
 							//
 							if (messageListener != null) {
-
 								if (nameType.equals("KeyboardVisible")) {
 									messageListener.onRecieveMessage(
 											"KeyboardVisible", keyboardInfo);
@@ -689,6 +688,7 @@ public class A2AClientDefault extends A2AClient {
 		URI uri = null;
 		int statusCode = 0;
 		Bitmap bitmap = null;
+
 		if (a2atvInfo != null) {
 			try {
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
@@ -742,8 +742,9 @@ public class A2AClientDefault extends A2AClient {
 			boolean inAuid = false;
 			boolean inName = false;
 			boolean inCpid = false;
-			TvAppInfo tvInfo = new TvAppInfo();
 
+			TvAppInfo tvInfo = null;
+			
 			try {
 				XmlPullParser parser = XmlPullParserFactory.newInstance()
 						.newPullParser();
@@ -775,32 +776,22 @@ public class A2AClientDefault extends A2AClient {
 					case XmlPullParser.TEXT:
 						if (inEnvelope) {
 							if (inData) {
-								if (inCpid) {
-									tvInfo.cpid = parser.getText();
-									Log.e("TVAPPcpid", tvInfo.cpid);
-									TvAppList.add(tvInfo);
-									tvInfo = new TvAppInfo();
-									Log.e("TVAPPListSize", TvAppList.size()
-											+ "");
-								}
-								// } else {
-								// if (!tvInfo.auid.equals("") &&
-								// !tvInfo.name.equals("")) {
-								// TvAppList.add(tvInfo);
-								// tvInfo.auid ="";
-								// tvInfo.name ="";
-								// tvInfo.cpid ="";
-								// Log.e("TVAPPList2222", TvAppList.size()
-								// + "");
-								// }
-								// }
 								if (inAuid) {
+//									Log.e("TVAPP", tvInfo.auid);
+									
+									if(tvInfo != null)
+										TvAppList.add(tvInfo);
+									
+									tvInfo = new TvAppInfo();
 									tvInfo.auid = parser.getText();
-									// Log.e("TVAPP", tvInfo.auid);
 								}
 								if (inName) {
+//									 Log.e("TVAPPname", tvInfo.name);
+
 									tvInfo.name = parser.getText();
-									// Log.e("TVAPPname", tvInfo.name);
+								}
+								if (inCpid) {
+									tvInfo.cpid = parser.getText();
 								}
 							}
 						}
@@ -812,11 +803,22 @@ public class A2AClientDefault extends A2AClient {
 					}
 					eventType = parser.next();
 				}
+				
+				if(tvInfo != null)
+					TvAppList.add(tvInfo);
+
 			} catch (XmlPullParserException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			
+			for(int i = 0; i< TvAppList.size(); i++)
+			{
+				Log.e("RRR", "a-->" + TvAppList.get(i).auid);
+				Log.e("RRR", "n-->" + TvAppList.get(i).name);
+				Log.e("RRR", "c-->" + TvAppList.get(i).cpid);
+			}
+			
 			// statusCode = response.getStatusLine().getStatusCode();
 			// if (statusCode == HttpURLConnection.HTTP_OK) {
 			// BufferedReader in = new BufferedReader(new InputStreamReader(

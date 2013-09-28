@@ -1,12 +1,14 @@
 package com.latebutlucky.beemote_controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.os.Handler;
@@ -100,20 +102,21 @@ public class TVList extends Activity {
 								mTVListAdapter.add(info);
 								
 								
-								//�ڵ� ��
-								if (info != null && info instanceof A2ATVInfo) {
-									mA2AClient.setCurrentTV((A2ATVInfo) info);
-									
-									A2ACmdError ret = null;
-									try {
-										ret = A2AClientManager.getDefaultClient().connect("591855");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									Log.e("RRR", "�� ��� : " + ret);
-									TVList.this.finish();
-								}
+								//자동 페어링 (임시)
+//								if (info != null && info instanceof A2ATVInfo) {
+//									mA2AClient.setCurrentTV((A2ATVInfo) info);
+//									
+//									A2ACmdError ret = null;
+//									try {
+//										ret = A2AClientManager.getDefaultClient().connect("591855");
+//										refreshTVAppList();
+//									} catch (IOException e) {
+//										// TODO Auto-generated catch block
+//										e.printStackTrace();
+//									}
+//									Log.e("RRR", "�� ��� : " + ret);
+//									TVList.this.finish();
+//								}
 							}
 
 							mTVListView.requestLayout();
@@ -140,7 +143,7 @@ public class TVList extends Activity {
 				mTVListView.requestLayout();
 
 				//�� ���
-//				mProgressDialog.show();
+				mProgressDialog.show();
 				
 				boolean result = mA2AClient.searchTV(TVList.this);
 				if (!result) {
@@ -153,6 +156,24 @@ public class TVList extends Activity {
 			}
 		});
 
+	}
+	
+	private void refreshTVAppList() {
+		// TODO Auto-generated method stub
+		try {
+			mA2AClient.tvAppQuery();
+			Bitmap bitmap;
+
+			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+				bitmap = mA2AClient.tvAppIconQuery(
+						mA2AClient.TvAppList.get(i).auid,
+						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+				mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void showPairingDialog() {
@@ -168,11 +189,12 @@ public class TVList extends Activity {
 		
 		final LinearLayout linear = (LinearLayout) View.inflate(TVList.this, R.layout.dialog_pairing, null);
 		edtPairingCode = (EditText) linear.findViewById(R.id.edtPairingCode);
+		edtPairingCode.setMaxLines(1);
 		
 		new AlertDialog.Builder(TVList.this)
 		.setTitle(R.string.input_pairing)
 		.setView(linear)
-		.setPositiveButton("Ȯ��", new DialogInterface.OnClickListener() {
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -193,7 +215,7 @@ public class TVList extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.tvlist, menu);
+//		getMenuInflater().inflate(R.menu.tvlist, menu);
 		return true;
 	}
 
