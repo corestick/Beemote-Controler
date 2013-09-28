@@ -132,7 +132,11 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
-			bView.btnMenu.showButtonMenu(bButton);
+			
+			
+			if(bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
+				bView.btnMenu.showButtonMenu(bButton);
+			
 			try {
 				if (bButton.itemInfo.appId != null) {
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
@@ -178,6 +182,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			Toast.makeText(
 					BeemoteMain.this,
 					"스크린 : " + bButton.itemInfo.screenIdx + "\n 버튼 : "
@@ -301,13 +306,22 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				dial.setContentView(dial_view);
 				
 				TextView txtTitle = (TextView) dial_view.findViewById(R.id.txtTitle);
-				txtTitle.setText("검색어를 입력하세요.");
 				
 				final EditText t = (EditText) dial_view
 						.findViewById(R.id.textinput_edit);
 				Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 				Button b2 = (Button) dial_view
 						.findViewById(R.id.custom_btncancle);
+				
+				if (msg.equals("KeyboardVisible")) {
+					txtTitle.setText("텍스트 입력 후, 전송 버튼을 누르세요.");
+					b1.setText("전송");
+					b2.setText("완료");
+				} else if (msg.equals("Keyword")) {
+					txtTitle.setText("검색어를 입력하세요.");
+					b1.setText("확인");
+					b2.setText("취소");
+				}
 				
 				t.setFocusable(true);
 				t.requestFocus();

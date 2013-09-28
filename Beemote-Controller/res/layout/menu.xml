@@ -7,7 +7,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
-        android:background="@drawable/menu1" />
+        android:background="@drawable/menu2" />
 
     <Button
         android:id="@+id/selmenu_btn4"
@@ -32,6 +32,6 @@
         android:layout_height="70dp"
         android:layout_above="@+id/selmenu_btn3"
         android:layout_toRightOf="@+id/selmenu_btn2"
-        android:background="@drawable/menu2" />
+        android:background="@drawable/menu1" />
 
 </RelativeLayout>
