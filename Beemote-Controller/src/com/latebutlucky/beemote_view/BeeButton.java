@@ -17,9 +17,9 @@ import com.latebutlucky.beemote_controller.ItemInfo;
 public class BeeButton extends Button {
 
 	private final float TEXT_SIZE = 14;
-	private final float TEXT_LENGTH = 40;
-	private final int IMAGE_SIZE_X = 60;
-	private final int IMAGE_SIZE_Y = 60;
+	private final float TEXT_LENGTH = 38;
+	private final int IMAGE_SIZE_X = 50;
+	private final int IMAGE_SIZE_Y = 50;
 
 	public ItemInfo itemInfo;
 

@@ -75,12 +75,27 @@ public class BeeView extends RelativeLayout {
 		case BGlobal.BEEBUTTON_TYPE_NONE:
 			beeButton.setIcon();
 			beeButton.setTextE();
-			beeButton.setBackgroundResource(R.drawable.btn_pink_hexagon);
+			
+			switch(beeButton.itemInfo.beemoteIdx)
+			{
+			case 9:
+				break;
+			case 4:
+			case 5:
+			case 6:
+			case 10:
+			case 13:
+			case 14:
+				beeButton.setBackgroundResource(R.drawable.btn_in_hexagon);
+				break;
+			default:
+				beeButton.setBackgroundResource(R.drawable.btn_out_hexagon);
+				break;
+			}
 			break;
 		case BGlobal.BEEBUTTON_TYPE_APP:
 			beeButton.setTextE(info.appName);
-			beeButton.setBackgroundResource(R.drawable.hexagon);
-			beeButton.setIcon(getResources().getDrawable(R.drawable.btn_pink_hexagon));
+			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
 			break;
 		case BGlobal.BEEBUTTON_TYPE_CH:
 			beeButton.setTextE("" + info.channelNo);
@@ -89,12 +104,12 @@ public class BeeView extends RelativeLayout {
 			break;
 		case BGlobal.BEEBUTTON_TYPE_SEARCH:
 			beeButton.setTextE(beeButton.itemInfo.keyWord);
-			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
+			beeButton.setBackgroundResource(R.drawable.btn_green_hexagon);
 			beeButton.setIcon(getResources().getDrawable(R.drawable.serach));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_FUNC:
 
-			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
+			beeButton.setBackgroundResource(R.drawable.btn_yellow_hexagon);
 			beeButton.setIcon(getResources().getDrawable(R.drawable.func));
 			break;
 		default:
