@@ -7,4 +7,9 @@ public final class BGlobal {
 	public static final int BEEBUTTON_TYPE_CH = 2;
 	public static final int BEEBUTTON_TYPE_SEARCH = 3;
 	public static final int BEEBUTTON_TYPE_FUNC = 4;
+	
+	public static final String KEYCODE_VOLUME_UP ="24";
+	public static final String KEYCODE_VOLUME_DOWN ="25";
+	public static final String KEYCODE_CHANNEL_UP ="27";
+	public static final String KEYCODE_CHANNEL_DOWN ="28";
 }
