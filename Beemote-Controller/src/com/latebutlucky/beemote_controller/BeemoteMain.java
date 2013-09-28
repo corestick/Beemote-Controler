@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.hardware.Camera.Parameters;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -63,16 +64,19 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.enableDefaults();
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		super.onCreate(savedInstanceState);
 
 		beemoteDB = new BeemoteDB(this);
 
 		slidingView = new SlidingView(this);
 
-		slidingView.addView(new BeeView(this));
-		slidingView.addView(new BeeView(this));
-		slidingView.addView(new BeeView(this));
+		slidingView.addView(new BeeView(this), new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		slidingView.addView(new BeeView(this), new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		slidingView.addView(new BeeView(this), new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		mA2AClient = A2AClientManager.getDefaultClient();
 		mA2AClient.setMessageListener(this);
@@ -99,7 +103,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				bView.refreshBeemoteState(bView.btnBee[info.beemoteIdx]);
 			}
 		}
-
 		setContentView(slidingView);
 	}
 

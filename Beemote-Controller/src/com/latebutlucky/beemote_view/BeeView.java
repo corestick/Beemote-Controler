@@ -2,7 +2,6 @@ package com.latebutlucky.beemote_view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -89,6 +88,7 @@ public class BeeView extends RelativeLayout {
 			beeButton.setBackgroundResource(R.drawable.hexagon);
 			beeButton.setIcon(getResources().getDrawable(R.drawable.ch));
 			break;
+			
 		case BGlobal.BEEBUTTON_TYPE_SEARCH:
 			beeButton.setTextE(beeButton.itemInfo.keyWord);
 			beeButton.setBackgroundResource(R.drawable.btn_pink_hexagon);
