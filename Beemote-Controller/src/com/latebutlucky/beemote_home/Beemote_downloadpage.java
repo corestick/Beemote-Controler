@@ -25,9 +25,7 @@ public class Beemote_downloadpage extends Activity {
 	ExpandableListView expList;
 	private static final int SPORTS = 1;
 	private static final int ECONOMY = 2;
-	private static final int LIFE = 3;
-	private static final int CULTURE = 4;
-	private static final int FUN = 5;
+	private static final int FUN = 3;
 	
 	
     @Override

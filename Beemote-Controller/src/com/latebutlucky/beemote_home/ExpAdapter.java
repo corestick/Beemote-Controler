@@ -11,14 +11,11 @@ import com.latebutlucky.beemote_controller.R;
 public class ExpAdapter extends BaseExpandableListAdapter {
 
 	/** * strings for group elements */
-	public static final String arrGroupelements[] = { "category1", "category2", "category3",
-			"category4","category5" };
+	public static final String arrGroupelements[] = { "sports", "economy", "fun"};
 	/** * strings for child elements */
 	public static final String arrChildelements[][] = {
 			{ "야구", "축구","농구","골프" },
 			{ "sub1", "sub2","sub3" },
-			{ "sub1", "sub2","sub3" },
-			{ "sub1", "sub2","sub3" },			
 			{ "sub1", "sub2","sub3" }};
 		
 	private Context myContext;
