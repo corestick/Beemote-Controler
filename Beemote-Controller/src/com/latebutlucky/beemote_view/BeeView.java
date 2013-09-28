@@ -62,6 +62,8 @@ public class BeeView extends RelativeLayout {
 		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
 		btnChUp.setOnClickListener(bMain);
 		btnChDown.setOnClickListener(bMain);
+		btnVolUp.setOnClickListener(bMain);
+		btnVolDown.setOnClickListener(bMain);
 	}
 
 	public void refreshBeemoteState(BeeButton beeButton) {

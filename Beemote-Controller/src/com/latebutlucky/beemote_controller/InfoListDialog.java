@@ -74,15 +74,15 @@ public class InfoListDialog extends Dialog {
 			ChannelInfoArry = mA2AClient.TvChannelList;
 			channel_Adapter = new Channel_Adapter();
 			listview.setAdapter(channel_Adapter);
-//			Comparator<TvChannelListInfo> myComparator = new Comparator<TvChannelListInfo>() {
-//				Collator app_Collator = Collator.getInstance();
-//
-//				@Override
-//				public int compare(TvChannelListInfo a, TvChannelListInfo b) {
-//					return app_Collator.compare(a.chname, b.chname);
-//				}
-//			};
-//			Collections.sort(ChannelInfoArry, myComparator);
+			Comparator<TvChannelListInfo> myComparator = new Comparator<TvChannelListInfo>() {
+				Collator app_Collator = Collator.getInstance();
+
+				@Override
+				public int compare(TvChannelListInfo a, TvChannelListInfo b) {
+					return app_Collator.compare(a.chname, b.chname);
+				}
+			};
+			Collections.sort(ChannelInfoArry, myComparator);
 		}
 		mBeebutton = beebutton;		
 		
@@ -103,7 +103,7 @@ public class InfoListDialog extends Dialog {
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_APP);
 				}
 				else if (mType.equals("TvChannel")) {
-					mBeebutton.itemInfo.channelNo = Integer.valueOf(ChannelInfoArry.get(position).Major);
+					mBeebutton.itemInfo.channelNo = ChannelInfoArry.get(position).Major;
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_CH);					
 				}
 				mDialog.dismiss();
