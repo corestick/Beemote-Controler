@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.latebutlucky.beemote_controller.R;
 
 
-public class Beemote_uploadpage extends Activity {
+public class UpActivity extends Activity {
 	
 	public static final String EXIST_NAME = "exit_name";
 
@@ -63,12 +63,12 @@ public class Beemote_uploadpage extends Activity {
 					int groupPosition, int childPosition, long id) {
 				Log.e("OnChildClickListener", Integer.toString(childPosition));
 				
-				Intent i = new Intent(Beemote_uploadpage.this, UploadPage.class);
+				Intent i = new Intent(UpActivity.this, UploadPage.class);
 				String tmp = groupPosition + "-" + childPosition;
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);
 				
-		        Toast awesomeToast = Toast.makeText(Beemote_uploadpage.this, "hello", Toast.LENGTH_SHORT);		
+		        Toast awesomeToast = Toast.makeText(UpActivity.this, "hello", Toast.LENGTH_SHORT);		
 		        awesomeToast.show();
 				return false;
 			}

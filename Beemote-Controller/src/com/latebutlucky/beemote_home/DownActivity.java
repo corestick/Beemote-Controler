@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.latebutlucky.beemote_controller.R;
 
 
-public class Beemote_downloadpage extends Activity {
+public class DownActivity extends Activity {
 	
 	public static final String EXIST_NAME = "exit_name";
 
@@ -63,12 +63,12 @@ public class Beemote_downloadpage extends Activity {
 					int groupPosition, int childPosition, long id) {
 				Log.e("OnChildClickListener", Integer.toString(childPosition));
 				
-				Intent i = new Intent(Beemote_downloadpage.this, DownloadSubList.class);
+				Intent i = new Intent(DownActivity.this, DownloadSubList.class);
 				String tmp = groupPosition + "-" + childPosition;
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);
 				
-		        Toast awesomeToast = Toast.makeText(Beemote_downloadpage.this, "hello", Toast.LENGTH_SHORT);		
+		        Toast awesomeToast = Toast.makeText(DownActivity.this, "hello", Toast.LENGTH_SHORT);		
 		        awesomeToast.show();
 				return false;
 			}

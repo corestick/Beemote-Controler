@@ -32,8 +32,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.latebutlucky.beemote_home.Beemote_downloadpage;
-import com.latebutlucky.beemote_home.Beemote_uploadpage;
+import com.latebutlucky.beemote_home.DownActivity;
+import com.latebutlucky.beemote_home.UpActivity;
 import com.latebutlucky.beemote_view.BeeButton;
 import com.latebutlucky.beemote_view.BeeView;
 import com.latebutlucky.beemote_view.SlidingView;
@@ -520,7 +520,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 	public void startDownpage() {
 		Bitmap captureView[] = null;
-		Intent intent = new Intent(this, Beemote_downloadpage.class);
+		Intent intent = new Intent(this, DownActivity.class);
 		this.startActivity(intent);
 	}
 
@@ -551,7 +551,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				e.printStackTrace();
 			}
 		}
-		Intent intent = new Intent(this, Beemote_uploadpage.class);
+		Intent intent = new Intent(this, UpActivity.class);
 		intent.putExtra("ChildCount", this.Child_Count());
 		this.startActivity(intent);
 	}

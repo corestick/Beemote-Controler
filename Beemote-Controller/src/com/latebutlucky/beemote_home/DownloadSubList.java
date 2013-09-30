@@ -50,7 +50,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 		listview.setAdapter(adapter);
 		listview.setOnItemClickListener(this);
 		
-		String getText = getIntent().getStringExtra(Beemote_uploadpage.EXIST_NAME);
+		String getText = getIntent().getStringExtra(UpActivity.EXIST_NAME);
 
 		int groupPosition = Integer.parseInt(String.valueOf(getText.charAt(0)));
 		int childPosition =Integer.parseInt(String.valueOf(getText.charAt(2)));
