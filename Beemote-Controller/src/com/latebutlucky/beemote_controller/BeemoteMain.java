@@ -458,7 +458,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	@Override
 	public void onBackPressed() {
 		backPressCloseHandler.onBackPressed();
-
 	}
 
 	public class BackPressCloseHandler {

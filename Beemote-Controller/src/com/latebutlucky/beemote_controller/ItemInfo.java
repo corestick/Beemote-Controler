@@ -1,5 +1,7 @@
 package com.latebutlucky.beemote_controller;
 
+import android.graphics.Bitmap;
+
 public class ItemInfo {
 	
 	//화면
@@ -12,12 +14,13 @@ public class ItemInfo {
 	public int beemoteType = BGlobal.BEEBUTTON_TYPE_NONE;
 	
 	//채널번호
-	public String channelNo;
+	public String channelNo = "";
 	
 	//어플관련
-	public String appId = null;
-	public String appName = null;
-	public String contentId = null;
+	public String appId = "";
+	public String appName = "";
+	public String contentId = "";
+	public byte[] appImg = null;
 	
 	//검색어
 	public String keyWord;

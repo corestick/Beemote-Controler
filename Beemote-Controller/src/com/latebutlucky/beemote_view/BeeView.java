@@ -105,6 +105,7 @@ public class BeeView extends RelativeLayout {
 		case BGlobal.BEEBUTTON_TYPE_APP:
 			beeButton.setTextE(info.appName);
 			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
+			beeButton.setIcon(beeButton.byteArrayToBitmap(info.appImg));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_CH:
 			beeButton.setTextE("" + info.channelNo);

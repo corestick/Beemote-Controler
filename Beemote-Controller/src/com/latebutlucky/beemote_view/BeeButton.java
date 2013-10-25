@@ -1,8 +1,12 @@
 package com.latebutlucky.beemote_view;
 
+import java.io.ByteArrayOutputStream;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -67,6 +71,17 @@ public class BeeButton extends Button {
 
 	public void setIcon() {
 		super.setCompoundDrawables(null, null, null, null);
+	}
+	
+	public byte[] bitmapToByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
+	
+	public Bitmap byteArrayToBitmap(byte[] $byteArray) {
+		Bitmap bitmap = BitmapFactory.decodeByteArray($byteArray, 0, $byteArray.length);
+		return bitmap;
 	}
 	
 	public void setTextE(){

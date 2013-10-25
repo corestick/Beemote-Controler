@@ -100,6 +100,8 @@ public class InfoListDialog extends Dialog {
 					mBeebutton.itemInfo.appId = appInfoArry.get(position).auid;
 					mBeebutton.itemInfo.contentId = appInfoArry.get(position).cpid;
 					mBeebutton.setIcon(appInfoArry.get(position).appIcon);
+					mBeebutton.itemInfo.appImg = mBeebutton.bitmapToByteArray(appInfoArry.get(position).appIcon);
+					
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_APP);
 				}
 				else if (mType.equals("TvChannel")) {
