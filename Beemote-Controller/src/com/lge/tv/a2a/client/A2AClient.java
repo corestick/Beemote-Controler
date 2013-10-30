@@ -23,31 +23,6 @@ public abstract class A2AClient {
 	public ArrayList<TvAppInfo> TvAppList = new ArrayList<TvAppInfo>();
 	public ArrayList<TvChannelListInfo> TvChannelList = new ArrayList<TvChannelListInfo>();
 
-	public class QueryResultAppID {
-		A2ACmdError error;
-		long appId;
-
-		public A2ACmdError getError() {
-			return error;
-		}
-
-		public long getAppId() {
-			return appId;
-		}
-	}
-
-	public class QueryResultStatus {
-		A2ACmdError error;
-		A2AStatus status;
-
-		public A2ACmdError getError() {
-			return error;
-		}
-
-		public A2AStatus getA2AStatus() {
-			return status;
-		}
-	}
 
 	public enum A2ACmdError {
 		A2ACmdErrorOK, A2ACmdErrorBadRequest, A2ACmdErrorUnauthorized, A2ACmdErrorNotFound, A2ACmdErrorNotAcceptable, A2ACmdErrorRequestTimeout, A2ACmdErrorConflict, A2ACmdErrorInternalServerError, A2ACmdErrorServiceUnavailable, A2ACmdErrorNoCurrentTV, A2ACmdErrorUnknown,
@@ -147,49 +122,6 @@ public abstract class A2AClient {
 	 */
 	abstract public A2ACmdError disconnect() throws IOException;
 
-	abstract public QueryResultAppID queryAppId(String appName)
-			throws IOException;
-
-	abstract public QueryResultStatus queryAppStatus(long appId)
-			throws IOException;
-
-	/**
-	 * Send a char array message to the TV.
-	 * 
-	 * @param appId
-	 *            target TV application ID.
-	 * @param messageType
-	 *            the message type want to send to TV.
-	 * @param message
-	 *            the message want to send to TV.
-	 * @return command result
-	 * @throws IOException
-	 *             in case of a problem or the connection was aborted
-	 */
-	abstract public A2ACmdError sendMessage(long appId, int messageType,
-			String message) throws IOException;
-
-	/**
-	 * Execution an application.
-	 * 
-	 * @param appId
-	 *            TV Application ID.
-	 * @return command result
-	 * @throws IOException
-	 *             in case of a problem or the connection was aborted
-	 */
-	abstract public A2ACmdError executeApp(long appId) throws IOException;
-
-	/**
-	 * Terminate an application.
-	 * 
-	 * @param appId
-	 *            TV Application ID.
-	 * @return command result
-	 * @throws IOException
-	 *             in case of a problem or the connection was aborted
-	 */
-	abstract public A2ACmdError terminateApp(long appId) throws IOException;
 
 	abstract public void tvAppQuery() throws IOException;
 

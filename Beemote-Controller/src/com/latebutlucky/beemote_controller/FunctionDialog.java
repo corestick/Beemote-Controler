@@ -1,9 +1,5 @@
 package com.latebutlucky.beemote_controller;
 
-import java.io.IOException;
-
-import com.latebutlucky.beemote_view.BeeButton;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
@@ -12,13 +8,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class FuctionDialog extends Dialog {
+import com.latebutlucky.beemote_view.BeeButton;
+
+public class FunctionDialog extends Dialog {
 
 	String[] function = new String[] { "홈", "음소거", "녹화", "방송목록" };
 	Context mContext;
 	BeeButton mBeebutton;
 
-	public FuctionDialog(Context context, BeeButton beebutton) {
+	public FunctionDialog(Context context, BeeButton beebutton) {
 		super(context);
 		mContext = context;
 		mBeebutton = beebutton;
@@ -46,7 +44,7 @@ public class FuctionDialog extends Dialog {
 					
 				}
 				((BeemoteMain) mContext).updateInfo(BGlobal.BEEBUTTON_TYPE_FUNC);
-				FuctionDialog.this.dismiss();
+				FunctionDialog.this.dismiss();
 			}
 		});
 	}

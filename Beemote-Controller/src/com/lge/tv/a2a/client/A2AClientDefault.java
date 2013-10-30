@@ -352,12 +352,12 @@ public class A2AClientDefault extends A2AClient {
 															.getText();
 													nameType = "TextEdited";
 													Log.e("nameType", nameType);
+												} else if (parser
+														.getText()
+														.equals("CursorVisible")) {
+													nameType = "CursorVisible";
+													Log.e("nameType", nameType);
 												}
-												 else if (parser.getText()
-															.equals("CursorVisible")) {														
-														nameType = "CursorVisible";
-														Log.e("nameType", nameType);
-													}
 											}
 											if (inValue
 													&& (nameType
@@ -461,88 +461,6 @@ public class A2AClientDefault extends A2AClient {
 			return parseError(ret);
 		}
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
-	}
-
-	synchronized public QueryResultAppID queryAppId(String appName)
-			throws IOException {
-		QueryResultAppID queryResultAppID = new QueryResultAppID();
-		queryResultAppID.appId = 0l;
-
-		if (a2atvInfo != null) {
-			if (a2atvInfo.isConnected == false) {
-				queryResultAppID.error = A2ACmdError.A2ACmdErrorUnauthorized;
-				return queryResultAppID;
-			}
-			int statusCode = 0;
-
-			try {
-				URI uri = new URI("http://" + a2atvInfo.ipAddress + ":"
-						+ a2atvInfo.port + "/udap/api/apptoapp/data/"
-						+ URLEncoder.encode(appName));
-				HttpGet httpGet = new HttpGet(uri);
-				httpGet.setHeader("User-Agent", "UDAP/2.0");
-				httpGet.setHeader("Connection", "Close");
-
-				HttpResponse response = httpclient.execute(httpGet);
-				HttpEntity entity = response.getEntity();
-
-				statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == HttpURLConnection.HTTP_OK) {
-					queryResultAppID.appId = Long.parseLong(EntityUtils
-							.toString(entity));
-				}
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
-			queryResultAppID.error = parseError(statusCode);
-			return queryResultAppID;
-		}
-		queryResultAppID.error = A2ACmdError.A2ACmdErrorNoCurrentTV;
-		return queryResultAppID;
-	}
-
-	synchronized public QueryResultStatus queryAppStatus(long appId)
-			throws IOException {
-		QueryResultStatus queryResultAppID = new QueryResultStatus();
-		queryResultAppID.status = A2AStatus.A2AStatusUnknown;
-
-		if (a2atvInfo != null) {
-			if (a2atvInfo.isConnected == false) {
-				queryResultAppID.error = A2ACmdError.A2ACmdErrorUnauthorized;
-				return queryResultAppID;
-			}
-			int statusCode = 0;
-
-			try {
-				URI uri = new URI("http://" + a2atvInfo.ipAddress + ":"
-						+ a2atvInfo.port + "/udap/api/apptoapp/data/" + appId
-						+ "/status");
-				HttpGet httpGet = new HttpGet(uri);
-				httpGet.setHeader("User-Agent", "UDAP/2.0");
-
-				HttpResponse response = httpclient.execute(httpGet);
-
-				HttpEntity entity = response.getEntity();
-
-				statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == HttpURLConnection.HTTP_OK) {
-					String status = EntityUtils.toString(entity);
-					queryResultAppID.status = parseStatus(status);
-				}
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
-			queryResultAppID.error = parseError(statusCode);
-			return queryResultAppID;
-		}
-		queryResultAppID.error = A2ACmdError.A2ACmdErrorNoCurrentTV;
-		return queryResultAppID;
 	}
 
 	synchronized public A2ACmdError executeApp(long appId) throws IOException {
@@ -1026,7 +944,8 @@ public class A2AClientDefault extends A2AClient {
 		}
 	}
 
-	synchronized public void keywordSend(String state, String value) throws IOException {
+	synchronized public void keywordSend(String state, String value)
+			throws IOException {
 		URI uri = null;
 		int statusCode = 0;
 		if (a2atvInfo != null) {

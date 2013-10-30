@@ -231,7 +231,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					bButton.itemInfo.beemoteType = BGlobal.BEEBUTTON_TYPE_SEARCH;
 					break;
 				case R.id.selmenu_btn4:
-					FuctionDialog funcDial = new FuctionDialog(
+					FunctionDialog funcDial = new FunctionDialog(
 							BeemoteMain.this, bButton);
 					funcDial.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = funcDial

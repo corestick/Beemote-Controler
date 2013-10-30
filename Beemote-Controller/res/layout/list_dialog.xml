@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >   
 
-    <com.latebutlucky.beemote_controller.IndexableListView
+    <com.latebutlucky.beemote_controller.IndexableView
         android:id="@+id/applist_listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-    </com.latebutlucky.beemote_controller.IndexableListView>
+    </com.latebutlucky.beemote_controller.IndexableView>
 
 </LinearLayout>

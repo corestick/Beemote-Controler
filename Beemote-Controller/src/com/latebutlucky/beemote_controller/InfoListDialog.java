@@ -27,7 +27,7 @@ import com.lge.tv.a2a.client.A2AClientManager;
 
 public class InfoListDialog extends Dialog {
 
-	IndexableListView listview;
+	IndexableView listview;
 	App_Adapter App_Adapter;
 	Channel_Adapter channel_Adapter;
 	ArrayList<TvAppInfo> appInfoArry;
@@ -52,7 +52,7 @@ public class InfoListDialog extends Dialog {
 		// getWindow().setBackgroundDrawable(
 		// getResources().getDrawable(R.drawable.gridback));
 		mDialog = this;
-		listview = (IndexableListView) findViewById(R.id.applist_listview);
+		listview = (IndexableView) findViewById(R.id.applist_listview);
 
 		A2AClient mA2AClient = A2AClientManager.getDefaultClient();
 		if (mType.equals("TvApp")) {
