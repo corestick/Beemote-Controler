@@ -1,10 +1,6 @@
 package com.latebutlucky.beemote_view;
 
 
-import com.latebutlucky.beemote_controller.R;
-import com.latebutlucky.beemote_controller.R.drawable;
-
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,12 +8,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 import android.widget.Toast;
+
+import com.latebutlucky.beemote_controller.R;
 
 
 /* 여러 화면을 구현할때 여러개의 엑티비티가 붙는것아니라  

@@ -55,14 +55,14 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	String AppAction = null;
 	String AppDetail = null;
 
-	BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
+	// BackPressCloseHandler backPressCloseHandler; // back버튼 두번누를때 종료
 	public String TextState;
 	private static final int UPLOADPAGE = 0;
 	private static final int DOWNPAGE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		StrictMode.enableDefaults();
+		// StrictMode.enableDefaults();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 
@@ -77,7 +77,9 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		mA2AClient = A2AClientManager.getDefaultClient();
 		mA2AClient.setMessageListener(this);
 
-		backPressCloseHandler = new BackPressCloseHandler(this);
+		System.setProperty("http.keepAlive", "false");
+
+		// backPressCloseHandler = new BackPressCloseHandler(this);
 		for (int i = 0; i < slidingView.getChildCount(); i++) {
 			BeeView bView = (BeeView) slidingView.getChildAt(i);
 			bView.initBeeView(this, i);
@@ -153,9 +155,18 @@ public class BeemoteMain extends Activity implements OnClickListener,
 
 			try {
 				if (bButton.itemInfo.appId != null) {
+					// if (mA2AClient.app_Errstate.action != null
+					// && mA2AClient.app_Errstate.action.equals("Execute")) {
+					// mA2AClient.TvAppTerminate(bButton.itemInfo.appId,
+					// bButton.itemInfo.appName);
+					// return;
+					//
+					// } else {
+					Log.e("Exe", "exeApp");
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
 							bButton.itemInfo.appName,
 							bButton.itemInfo.contentId);
+					// }
 				} else if (bButton.itemInfo.channelNo != null) {
 					Log.e("Item", bButton.itemInfo.channelNo);
 
@@ -286,14 +297,14 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			mA2AClient.TvAppList.clear();
 
 			mA2AClient.tvAppQuery();
-			Bitmap bitmap;
+			// Bitmap bitmap;
 
-			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
-				bitmap = mA2AClient.tvAppIconQuery(
-						mA2AClient.TvAppList.get(i).auid,
-						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
-				mA2AClient.TvAppList.get(i).appIcon = bitmap;
-			}
+			// for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+			// bitmap = mA2AClient.tvAppIconQuery(
+			// mA2AClient.TvAppList.get(i).auid,
+			// URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+			// mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			// }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -390,7 +401,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					public void onClick(View v) {
 						try {
 							// if (TextState.equals("TextEdited"))
-							Log.e("eeee", "eeee");
 							mA2AClient.keywordSend("EditEnd", t.getText()
 									.toString());
 
@@ -450,6 +460,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			App_Errstate appErrstate = (App_Errstate) object;
 			AppAction = appErrstate.action;
 			AppDetail = appErrstate.detail;
+			Log.e("AppAction", AppAction);
+			Log.e("AppDetail", AppDetail);
 		}
 
 	}
@@ -470,11 +482,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		return false;
 	}
 
-	@Override
-	public void onBackPressed() {
-		backPressCloseHandler.onBackPressed();
-
-	}
+	// @Override
+	// public void onBackPressed() {
+	// this.finish();
+	// backPressCloseHandler.onBackPressed();
+	//
+	// }
 
 	public class BackPressCloseHandler {
 
@@ -495,6 +508,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				} else if (AppAction.equals("Execute")) {
 					try {
 						mA2AClient.KeyCodeSend(BGlobal.KEYCODE_REDO);
+						AppAction = null;
+						AppDetail = null;
 						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block

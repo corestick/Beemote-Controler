@@ -25,6 +25,8 @@ import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
+import android.util.Log;
+
 public class SimpleHttpServer {
 	int desirePort = 8080;
 	HttpRequestHandlerRegistry reqistry = null;
@@ -104,9 +106,7 @@ public class SimpleHttpServer {
 			httpproc.addInterceptor(new ResponseDate());
 	        httpproc.addInterceptor(new ResponseServer());
 	        httpproc.addInterceptor(new ResponseContent());
-	        httpproc.addInterceptor(new ResponseConnControl());
-			
-//			HttpRequestHandlerRegistry reqistry2 = new HttpRequestHandlerRegistry();			
+	        httpproc.addInterceptor(new ResponseConnControl());		
 
 			// Set up the HTTP service
 			httpService = new HttpService(httpproc,
@@ -182,7 +182,7 @@ public class SimpleHttpServer {
 			System.out.println("New connection thread");
 			HttpContext context = new BasicHttpContext(null);			
 			try {
-				while (!Thread.interrupted() && this.conn.isOpen()) {				
+				while (!Thread.interrupted() && this.conn.isOpen()) {					
 					this.httpservice.handleRequest(this.conn, context);
 				}
 			} catch (ConnectionClosedException ex) {

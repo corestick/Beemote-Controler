@@ -2,7 +2,6 @@ package com.latebutlucky.beemote_view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -64,7 +63,7 @@ public class BeeView extends RelativeLayout {
 		btnVolDown = (ImageButton) findViewById(R.id.vol_down);
 		btnMouse = (ImageButton) findViewById(R.id.bee_mouse);
 		btnKeybroad = (ImageButton) findViewById(R.id.bee_keyboard);
-		
+
 		btnChUp.setOnClickListener(bMain);
 		btnChDown.setOnClickListener(bMain);
 		btnVolUp.setOnClickListener(bMain);
@@ -77,16 +76,15 @@ public class BeeView extends RelativeLayout {
 		// TODO Auto-generated method stub
 
 		btnMenu.hideButtonMenu();
-		
+
 		ItemInfo info = beeButton.itemInfo;
 
 		switch (info.beemoteType) {
 		case BGlobal.BEEBUTTON_TYPE_NONE:
 			beeButton.setIcon();
 			beeButton.setTextE();
-			
-			switch(beeButton.itemInfo.beemoteIdx)
-			{
+
+			switch (beeButton.itemInfo.beemoteIdx) {
 			case 9:
 				break;
 			case 4:
@@ -105,6 +103,7 @@ public class BeeView extends RelativeLayout {
 		case BGlobal.BEEBUTTON_TYPE_APP:
 			beeButton.setTextE(info.appName);
 			beeButton.setBackgroundResource(R.drawable.btn_sky_hexagon);
+			beeButton.setIcon(beeButton.byteArrayToBitmap(info.appImg));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_CH:
 			beeButton.setTextE("" + info.channelNo);

@@ -1,8 +1,8 @@
 package com.latebutlucky.beemote_controller;
 
-import java.util.Locale;
 import java.util.Vector;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,19 +26,25 @@ public class BeemoteDB {
 
 	public void insert(ItemInfo info) {
 		SQLiteDatabase db;
-		String sql;
 
 		db = dbHelper.getWritableDatabase();
-		sql = String.format(Locale.US, "INSERT INTO " + TABLE_BEEMOTE
-				+ " VALUES (null, " + "%d" + ", " + "%d" + ", " + "%d"
-				+ ", " + "%s" + ", " + "'%s'" + ", " + "'%s'" + ", " + "'%s'"
-				+ ", " + "'%s'" + ", " + "'%s'" + ");", info.screenIdx,
-				info.beemoteIdx, info.beemoteType, info.channelNo, info.appId,
-				info.appName, info.contentId, info.keyWord, info.functionKey);
 		
-		Log.e("RRR", sql);
-		db.execSQL(sql);
+		ContentValues cv = new ContentValues();
+		cv.put(ColumnInfo.SCREEN_IDX, info.screenIdx);
+		cv.put(ColumnInfo.BEEMOTE_IDX, info.beemoteIdx);
+		cv.put(ColumnInfo.BEEMOTE_TYPE, info.beemoteType);
+		cv.put(ColumnInfo.CHANNEL_NUMBER, info.channelNo);
+		cv.put(ColumnInfo.APP_ID, info.appId);
+		cv.put(ColumnInfo.APP_NAME, info.appName);
+		cv.put(ColumnInfo.CONTENT_ID, info.contentId);
+		cv.put(ColumnInfo.APP_IMG, info.appImg);
+		cv.put(ColumnInfo.KEYWORD, info.keyWord);
+		cv.put(ColumnInfo.FUNCTION_KEY, info.functionKey);
+
+		db.insert(TABLE_BEEMOTE, null, cv);
 		
+		
+		Log.e("RRR", "Insert");
 		db.close();
 		dbHelper.close();
 	}
@@ -52,73 +58,84 @@ public class BeemoteDB {
 		sql = "DELETE FROM " + TABLE_BEEMOTE + " WHERE "
 				+ ColumnInfo.SCREEN_IDX + " = " + info.screenIdx + " AND "
 				+ ColumnInfo.BEEMOTE_IDX + " = " + info.beemoteIdx;
-		
+
 		Log.e("RRR", sql);
 		db.execSQL(sql);
-		
+
 		db.close();
 		dbHelper.close();
 	}
-	
+
 	public void update(ItemInfo info) {
 		SQLiteDatabase db;
-		String sql;
-		
+
 		db = dbHelper.getWritableDatabase();
 		
-		sql = "UPDATE " + TABLE_BEEMOTE + " SET " + ColumnInfo.BEEMOTE_TYPE + " = " + info.beemoteType + ", "
-				+ ColumnInfo.CHANNEL_NUMBER + " = " + info.channelNo + ", "
-				+ ColumnInfo.APP_ID + " = '" + info.appId + "', "
-				+ ColumnInfo.APP_NAME + " = '" + info.appName + "', "
-				+ ColumnInfo.CONTENT_ID + " = '" + info.contentId + "', "
-				+ ColumnInfo.KEYWORD + " = '" + info.keyWord + "', "
-				+ ColumnInfo.FUNCTION_KEY + " = '" + info.functionKey + "' "
-				+ " WHERE " + ColumnInfo.SCREEN_IDX + " = " + info.screenIdx
-				+ " AND " + ColumnInfo.BEEMOTE_IDX + " = " + info.beemoteIdx + "; ";
+		String strWhere = ColumnInfo.SCREEN_IDX
+				+ " = " + info.screenIdx + " AND " + ColumnInfo.BEEMOTE_IDX
+				+ " = " + info.beemoteIdx + "; ";
 		
-		Log.e("RRR", sql);
-		db.execSQL(sql);
+		ContentValues cv = new ContentValues();
+		cv.put(ColumnInfo.BEEMOTE_TYPE, info.beemoteType);
+		cv.put(ColumnInfo.CHANNEL_NUMBER, info.channelNo);
+		cv.put(ColumnInfo.APP_ID, info.appId);
+		cv.put(ColumnInfo.APP_NAME, info.appName);
+		cv.put(ColumnInfo.CONTENT_ID, info.contentId);
+		cv.put(ColumnInfo.APP_IMG, info.appImg);
+		cv.put(ColumnInfo.KEYWORD, info.keyWord);
+		cv.put(ColumnInfo.FUNCTION_KEY, info.functionKey);
+		
+		db.update(TABLE_BEEMOTE, cv, strWhere, null);
 		
 		db.close();
 		dbHelper.close();
 	}
-	
+
 	public Vector<ItemInfo> select() {
 		SQLiteDatabase db;
 		String sql;
 		Vector<ItemInfo> itemList = new Vector<ItemInfo>();
-		
+
 		db = dbHelper.getReadableDatabase();
 		sql = "SELECT * FROM " + TABLE_BEEMOTE;
-		
+
 		Cursor cursor = db.rawQuery(sql, null);
-		
-		if(cursor.getCount() > 0) {
-			while(cursor.moveToNext()) {
+
+		if (cursor.getCount() > 0) {
+			while (cursor.moveToNext()) {
 				ItemInfo info = new ItemInfo();
-				
-				info.screenIdx = cursor.getInt(cursor.getColumnIndex(ColumnInfo.SCREEN_IDX));
-				info.beemoteIdx = cursor.getInt(cursor.getColumnIndex(ColumnInfo.BEEMOTE_IDX));
-				info.beemoteType = cursor.getInt(cursor.getColumnIndex(ColumnInfo.BEEMOTE_TYPE));
-				info.channelNo = cursor.getString(cursor.getColumnIndex(ColumnInfo.CHANNEL_NUMBER));
-				info.appId = cursor.getString(cursor.getColumnIndex(ColumnInfo.APP_ID));
-				info.appName = cursor.getString(cursor.getColumnIndex(ColumnInfo.APP_NAME));
-				info.contentId = cursor.getString(cursor.getColumnIndex(ColumnInfo.CONTENT_ID));
-				info.keyWord = cursor.getString(cursor.getColumnIndex(ColumnInfo.KEYWORD));
-				info.functionKey = cursor.getString(cursor.getColumnIndex(ColumnInfo.FUNCTION_KEY));
-				
+
+				info.screenIdx = cursor.getInt(cursor
+						.getColumnIndex(ColumnInfo.SCREEN_IDX));
+				info.beemoteIdx = cursor.getInt(cursor
+						.getColumnIndex(ColumnInfo.BEEMOTE_IDX));
+				info.beemoteType = cursor.getInt(cursor
+						.getColumnIndex(ColumnInfo.BEEMOTE_TYPE));
+				info.channelNo = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.CHANNEL_NUMBER));
+				info.appId = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.APP_ID));
+				info.appName = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.APP_NAME));
+				info.contentId = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.CONTENT_ID));
+				info.appImg = cursor.getBlob(cursor
+						.getColumnIndex(ColumnInfo.APP_IMG));
+				info.keyWord = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.KEYWORD));
+				info.functionKey = cursor.getString(cursor
+						.getColumnIndex(ColumnInfo.FUNCTION_KEY));
+
 				itemList.add(info);
 			}
 		}
-		
+
 		cursor.close();
 		db.close();
 		dbHelper.close();
-		
+
 		return itemList;
 	}
-	
-	
 
 	public class DBHelper extends SQLiteOpenHelper {
 
@@ -140,8 +157,10 @@ public class BeemoteDB {
 					+ ColumnInfo.APP_ID + " TEXT " + ", "
 					+ ColumnInfo.APP_NAME + " TEXT " + ", "
 					+ ColumnInfo.CONTENT_ID + " TEXT " + ", "
+					+ ColumnInfo.APP_IMG + " BLOB " + ","
 					+ ColumnInfo.KEYWORD + " TEXT " + ", "
-					+ ColumnInfo.FUNCTION_KEY + " TEXT " + ");");
+					+ ColumnInfo.FUNCTION_KEY + " TEXT "
+					+ ");");
 		}
 
 		@Override

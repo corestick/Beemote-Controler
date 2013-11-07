@@ -68,8 +68,10 @@ public class TouchPad extends Activity {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			try {
-				A2Aclient.moveMouse((int) (event.getX() - x),
-						(int) (event.getY() - y));
+				if ((event.getX() - x > 5) || (event.getY() - y > 5)) {
+					A2Aclient.moveMouse((int) (event.getX() - x),
+							(int) (event.getY() - y));
+				}
 				x = event.getX();
 				y = event.getY();
 			} catch (IOException e) {
@@ -81,12 +83,4 @@ public class TouchPad extends Activity {
 		return super.onTouchEvent(event);
 
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.touch_pad, menu);
-		return true;
-	}
-
 }

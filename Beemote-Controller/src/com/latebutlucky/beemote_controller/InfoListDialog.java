@@ -1,5 +1,7 @@
 package com.latebutlucky.beemote_controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,28 +85,37 @@ public class InfoListDialog extends Dialog {
 				}
 			};
 			Collections.sort(ChannelInfoArry, myComparator);
-		}		
-		mBeebutton = beebutton;		
-		
+		}
+		mBeebutton = beebutton;
+
 		listview.setFastScrollEnabled(true);
 
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parentView, View view,
 
-			int position, long id) {			
-				// Log.e("RRRR", appInfoArry.get(position).appIcon);
-				// mBeebutton.setTextE(appInfoArry.get(position).name);
+			int position, long id) {
 				if (mType.equals("TvApp")) {
 					mBeebutton.itemInfo.appName = appInfoArry.get(position).name;
 					mBeebutton.itemInfo.appId = appInfoArry.get(position).auid;
 					mBeebutton.itemInfo.contentId = appInfoArry.get(position).cpid;
-					mBeebutton.setIcon(appInfoArry.get(position).appIcon);
+					try {
+
+						appInfoArry.get(position).appIcon = bMain.mA2AClient
+								.tvAppIconQuery(appInfoArry.get(position).auid,
+										URLEncoder.encode(appInfoArry
+												.get(position).name));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					mBeebutton.itemInfo.appImg = mBeebutton
+							.bitmapToByteArray(appInfoArry.get(position).appIcon);
 					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_APP);
-				}
-				else if (mType.equals("TvChannel")) {
-					mBeebutton.itemInfo.channelNo = ChannelInfoArry.get(position).Major;
-					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_CH);					
+				} else if (mType.equals("TvChannel")) {
+					mBeebutton.itemInfo.channelNo = ChannelInfoArry
+							.get(position).Major;
+					bMain.updateInfo(BGlobal.BEEBUTTON_TYPE_CH);
 				}
 				mDialog.dismiss();
 			}
@@ -150,15 +161,14 @@ public class InfoListDialog extends Dialog {
 				convertView = inflater.inflate(R.layout.app_list_layout,
 						parent, false);
 			}
-			image = (ImageView) convertView.findViewById(R.id.applist_image);
 			name = (TextView) convertView.findViewById(R.id.tv_name);
 
-			Bitmap bitmap = appInfoArry.get(position).appIcon;
-			Bitmap bit = Bitmap.createBitmap(bitmap);
-			Drawable drawable = new BitmapDrawable(bit);
-			Drawable icon = Utilities.createIconThumbnail(drawable,
-					getContext());
-			image.setImageDrawable(icon);
+			// Bitmap bitmap = appInfoArry.get(position).appIcon;
+			// Bitmap bit = Bitmap.createBitmap(bitmap);
+			// Drawable drawable = new BitmapDrawable(bit);
+			// Drawable icon = Utilities.createIconThumbnail(drawable,
+			// getContext());
+			// image.setImageDrawable(icon);
 			name.setText(appInfoArry.get(position).name);
 			return convertView;
 
@@ -203,8 +213,7 @@ public class InfoListDialog extends Dialog {
 			return sections;
 		}
 	}
-	
-	
+
 	public class Channel_Adapter extends BaseAdapter implements SectionIndexer {
 
 		private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -240,10 +249,10 @@ public class InfoListDialog extends Dialog {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.tvlist_layout,
-						parent, false);
+				convertView = inflater.inflate(R.layout.tvlist_layout, parent,
+						false);
 			}
-			
+
 			name = (TextView) convertView.findViewById(R.id.tv_name);
 			major = (TextView) convertView.findViewById(R.id.tv_major);
 			minor = (TextView) convertView.findViewById(R.id.tv_minor);
@@ -265,8 +274,8 @@ public class InfoListDialog extends Dialog {
 					if (i == 0) {
 						// For numeric section
 						for (int k = 0; k <= 9; k++) {
-							if (StringMatcher.matchInitial(
-									String.valueOf(ChannelInfoArry.get(j).chname),
+							if (StringMatcher.matchInitial(String
+									.valueOf(ChannelInfoArry.get(j).chname),
 									String.valueOf(k)))
 								return j;
 						}

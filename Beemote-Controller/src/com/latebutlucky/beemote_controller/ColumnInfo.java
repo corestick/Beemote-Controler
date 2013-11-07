@@ -8,7 +8,7 @@ public class ColumnInfo {
 	
 	static final String BEEMOTE_IDX = "idx";
 	
-	// Ã¤³Î, ¾îÇÃ, °Ë»ö¾î, Ãß°¡±â´É
+	// Ã¤ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½Ë»ï¿½ï¿½ï¿½, ï¿½ß°ï¿½ï¿½ï¿½ï¿½
 	static final String BEEMOTE_TYPE = "type";
 	
 	static final String CHANNEL_NUMBER = "channelNo";
@@ -20,4 +20,6 @@ public class ColumnInfo {
 	static final String KEYWORD = "keyWord";
 	
 	static final String FUNCTION_KEY = "functionKey";
+	
+	static final String APP_IMG = "appimg";
 }

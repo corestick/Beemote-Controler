@@ -22,6 +22,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -32,6 +33,7 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
@@ -46,6 +48,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
@@ -69,8 +72,14 @@ public class A2AClientDefault extends A2AClient {
 	Handler handler = null;
 	SimpleHttpServer httpServer = null;
 	Context context = null;
+	
 
-	public HttpClient httpclient = null;
+	public HttpClient httpclient = getThreadsafeClient();
+	public HttpResponse response = null;
+	public HttpEntity entity = null;
+	public String stringEn = null;
+	public String TvListEn = null;
+	public Bitmap AppIcon;
 
 	public A2AClientDefault() {
 		super();
@@ -82,6 +91,8 @@ public class A2AClientDefault extends A2AClient {
 		DefaultHttpClient client = new DefaultHttpClient();
 		ClientConnectionManager mgr = client.getConnectionManager();
 		HttpParams params = client.getParams();
+		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION,
+				HttpVersion.HTTP_1_1);
 		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
 				mgr.getSchemeRegistry()), params);
 
@@ -121,6 +132,10 @@ public class A2AClientDefault extends A2AClient {
 					HttpGet httpGet = new HttpGet(location);
 					httpGet.setHeader("User-Agent", "UDAP/2.0");
 					try {
+						// mGetClientAsyncTask = new ClientGetAsyncTask();
+						// mGetClientAsyncTask.execute(httpGet);
+						// waitThread waitth = new waitThread();
+						// waitth.run();
 						HttpResponse response = client.execute(httpGet);
 
 						HttpEntity entity = response.getEntity();
@@ -267,7 +282,7 @@ public class A2AClientDefault extends A2AClient {
 				String nameType = null;
 
 				KeyboardInfo keyboardInfo;
-				App_Errstate app_Errstate;
+				
 
 				@Override
 				public void handle(HttpRequest request, HttpResponse response,
@@ -332,8 +347,7 @@ public class A2AClientDefault extends A2AClient {
 													nameType = "KeyboardVisible";
 												} else if (parser
 														.getText()
-														.equals("Mobilehome_App_Errstate")) {
-													app_Errstate = new App_Errstate();
+														.equals("Mobilehome_App_Errstate")) {													
 													nameType = "AppErrstate";
 													Log.e("nameType", nameType);
 												} else if (parser.getText()
@@ -402,21 +416,7 @@ public class A2AClientDefault extends A2AClient {
 							} catch (XmlPullParserException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}
-							// if (contents.indexOf(MAGIC_STR) > 0) {
-							// try {
-							// msgType = Integer.parseInt(contents.substring(
-							// 0,
-							// contents.indexOf(MAGIC_STR)));
-							// contents = contents
-							// .substring(contents
-							// .indexOf(MAGIC_STR)
-							// + MAGIC_STR
-							// .length());
-							// } catch (Exception e) {
-							// }
-							// }
-							//
+							}						
 							if (messageListener != null) {
 								if (nameType.equals("KeyboardVisible")) {
 									messageListener.onRecieveMessage(
@@ -445,7 +445,7 @@ public class A2AClientDefault extends A2AClient {
 			}
 			return parseError(ret);
 		}
-
+		UDAPManager.mHttpAsyncTask.cancel(true);
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
 	}
 
@@ -478,10 +478,17 @@ public class A2AClientDefault extends A2AClient {
 				httpPost.setHeader("User-Agent", "UDAP/2.0");
 				httpPost.setHeader("Connection", "Close");
 
-				HttpResponse response = httpclient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(httpPost);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(httpPost);
+				// HttpEntity entity = response.getEntity();
 
-				Log.d("CSnopy", EntityUtils.toString(entity));
+				// Log.d("CSnopy", EntityUtils.toString(entity));
 
 				statusCode = response.getStatusLine().getStatusCode();
 			} catch (URISyntaxException e) {
@@ -489,9 +496,10 @@ public class A2AClientDefault extends A2AClient {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-
+			initValue();
 			return parseError(statusCode);
 		}
+		initValue();
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
 	}
 
@@ -510,51 +518,15 @@ public class A2AClientDefault extends A2AClient {
 				httpPost.setHeader("User-Agent", "UDAP/2.0");
 				httpPost.setHeader("Connection", "Close");
 
-				HttpResponse response = httpclient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-
-				Log.d("CSnopy", EntityUtils.toString(entity));
-
-				statusCode = response.getStatusLine().getStatusCode();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
-			return parseError(statusCode);
-		}
-		return A2ACmdError.A2ACmdErrorNoCurrentTV;
-	}
-
-	synchronized public A2ACmdError sendMessage(long appId, int messageType,
-			String message) throws IOException {
-		if (a2atvInfo != null) {
-			if (a2atvInfo.isConnected == false)
-				return A2ACmdError.A2ACmdErrorUnauthorized;
-			int statusCode = 0;
-
-			try {
-				URI uri = new URI("http://" + a2atvInfo.ipAddress + ":"
-						+ a2atvInfo.port + "/udap/api/apptoapp/command/"
-						+ appId + "/send");
-
-				HttpPost httpPost = new HttpPost(uri);
-				httpPost.setHeader("User-Agent", "UDAP/2.0");
-				if (messageType == 0)
-					httpPost.setEntity(new StringEntity(message, "UTF-8"));
-				else {
-					StringEntity entity = new StringEntity(messageType
-							+ "~*(a)$^$(a)*~" + message, "UTF-8");
-					Log.i("CSnopy", entity.getContentLength() + ","
-							+ messageType + "~*(a)$^$(a)*~" + message);
-					httpPost.setEntity(entity);
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(httpPost);
+				while (true) {
+					if (response != null)
+						break;
 				}
-
-				HttpResponse response = httpclient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-
-				Log.d("CSnopy", EntityUtils.toString(entity));
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(httpPost);
+				// Log.d("CSnopy", EntityUtils.toString(entity));
 
 				statusCode = response.getStatusLine().getStatusCode();
 			} catch (URISyntaxException e) {
@@ -562,9 +534,10 @@ public class A2AClientDefault extends A2AClient {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-
+			initValue();
 			return parseError(statusCode);
 		}
+		initValue();
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
 	}
 
@@ -591,10 +564,15 @@ public class A2AClientDefault extends A2AClient {
 					httpPost.setEntity(entity);
 				}
 
-				HttpResponse response = httpclient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-
-				Log.d("CSnopy", EntityUtils.toString(entity));
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(httpPost);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(httpPost);
+				// Log.d("CSnopy", EntityUtils.toString(entity));
 
 				statusCode = response.getStatusLine().getStatusCode();
 			} catch (URISyntaxException e) {
@@ -602,9 +580,10 @@ public class A2AClientDefault extends A2AClient {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-
+			initValue();
 			return parseError(statusCode);
 		}
+		initValue();
 		return A2ACmdError.A2ACmdErrorNoCurrentTV;
 	}
 
@@ -612,9 +591,9 @@ public class A2AClientDefault extends A2AClient {
 			throws IOException {
 		URI uri = null;
 		int statusCode = 0;
-		Bitmap bitmap = null;
 
 		if (a2atvInfo != null) {
+			AppIcon = null;
 			try {
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
 						+ a2atvInfo.port
@@ -628,18 +607,30 @@ public class A2AClientDefault extends A2AClient {
 			httpGet.setHeader("User-Agent", "UDAP/2.0");
 			httpGet.setHeader("Connection", "Keep-Alive");
 
-			HttpResponse response = httpclient.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				InputStream inStream = null;
-				inStream = entity.getContent();
-				bitmap = BitmapFactory.decodeStream(inStream);
-				if (response.getEntity() != null) {
-					response.getEntity().consumeContent();
-				}
+			AppIconAsyncTask mAppAsyncTask = new AppIconAsyncTask();
+			mAppAsyncTask.execute(httpGet);
+
+			while (true) {
+				if (AppIcon != null)
+					break;
 			}
+			mAppAsyncTask.cancel(true);
+			Log.e("RRRR", AppIcon.toString());
+
+			// mAppAsyncTask.cancel(true);
+
+			// HttpResponse response = httpclient.execute(httpGet);
+			// HttpEntity entity = response.getEntity();
+			// if (entity != null) {
+			// InputStream inStream = null;
+			// inStream = entity.getContent();
+			// bitmap = BitmapFactory.decodeStream(inStream);
+			// if (response.getEntity() != null) {
+			// response.getEntity().consumeContent();
+			// }
+			// }
 		}
-		return bitmap;
+		return AppIcon;
 	}
 
 	synchronized public void tvAppQuery() throws IOException {
@@ -659,9 +650,21 @@ public class A2AClientDefault extends A2AClient {
 			httpGet.setHeader("User-Agent", "UDAP/2.0");
 			httpGet.setHeader("Connection", "Close");
 
-			HttpResponse response = httpclient.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-
+			ClientGetAsyncTask mGetClientAsyncTask = new ClientGetAsyncTask();
+			mGetClientAsyncTask.execute(httpGet);
+			while (true) {
+				if (response != null) {
+					break;
+				}
+			}
+			while (true) {
+				if (stringEn != null) {
+					break;
+				}
+			}
+			mGetClientAsyncTask.cancel(true);
+			// HttpResponse response = httpclient.execute(httpGet);
+			// HttpEntity entity = response.getEntity();
 			boolean inEnvelope = false;
 			boolean inData = false;
 			boolean inAuid = false;
@@ -673,7 +676,7 @@ public class A2AClientDefault extends A2AClient {
 			try {
 				XmlPullParser parser = XmlPullParserFactory.newInstance()
 						.newPullParser();
-				parser.setInput(new StringReader(EntityUtils.toString(entity)));
+				parser.setInput(new StringReader(stringEn));
 				int eventType = parser.getEventType();
 				while (eventType != XmlPullParser.END_DOCUMENT) {
 					switch (eventType) {
@@ -756,6 +759,7 @@ public class A2AClientDefault extends A2AClient {
 			// System.out.println(sb);
 			// }
 		}
+		initValue();
 	}
 
 	synchronized public void tvListQuery() throws IOException {
@@ -773,8 +777,19 @@ public class A2AClientDefault extends A2AClient {
 			httpGet.setHeader("User-Agent", "UDAP/2.0");
 			httpGet.setHeader("Connection", "Close");
 
-			HttpResponse response = httpclient.execute(httpGet);
-			HttpEntity entity = response.getEntity();
+			TvListAsyncTask mTvListAsyncTask = new TvListAsyncTask();
+			mTvListAsyncTask.execute(httpGet);
+			while (true) {
+				if (response != null)
+					break;
+			}
+			while (true) {
+				if (TvListEn != null)
+					break;
+			}
+			mTvListAsyncTask.cancel(true);
+			// HttpResponse response = httpclient.execute(httpGet);
+			// HttpEntity entity = response.getEntity();
 
 			// statusCode = response.getStatusLine().getStatusCode();
 			// if (statusCode == HttpURLConnection.HTTP_OK) {
@@ -801,7 +816,7 @@ public class A2AClientDefault extends A2AClient {
 			try {
 				XmlPullParser parser = XmlPullParserFactory.newInstance()
 						.newPullParser();
-				parser.setInput(new StringReader(EntityUtils.toString(entity)));
+				parser.setInput(new StringReader(TvListEn));
 				int eventType = parser.getEventType();
 				while (eventType != XmlPullParser.END_DOCUMENT) {
 					switch (eventType) {
@@ -881,6 +896,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -888,7 +904,7 @@ public class A2AClientDefault extends A2AClient {
 			String contentId) throws IOException {
 		URI uri = null;
 		if (a2atvInfo != null) {
-			try {
+			try {				
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
 						+ a2atvInfo.port + "/udap/api/command");
 				HttpPost post = new HttpPost(uri);
@@ -907,11 +923,23 @@ public class A2AClientDefault extends A2AClient {
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);				
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
+				// httpclient.execute(post);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -936,11 +964,23 @@ public class A2AClientDefault extends A2AClient {
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				if (response.getEntity() != null) {
+					response.getEntity().consumeContent();
+				}
+				// httpclient.execute(post);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -965,7 +1005,16 @@ public class A2AClientDefault extends A2AClient {
 								+ "</value>" + "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(post);
+
 				statusCode = response.getStatusLine().getStatusCode();
 				if (statusCode == HttpURLConnection.HTTP_OK) {
 					BufferedReader in = new BufferedReader(
@@ -986,6 +1035,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -999,7 +1049,7 @@ public class A2AClientDefault extends A2AClient {
 				post.setHeader("Pragma", "no-cache");
 				post.setHeader("Cache-Control", "no-cache");
 				post.setHeader("User-Agent", "UDAP/2.0");
-				post.setHeader("Connection", "Close");
+				post.setHeader("Connection", "Keep-Alive");
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleKeyInput</name>"
 								+ "<value>"
@@ -1008,7 +1058,15 @@ public class A2AClientDefault extends A2AClient {
 								+ "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
 				}
@@ -1017,6 +1075,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -1041,7 +1100,15 @@ public class A2AClientDefault extends A2AClient {
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(post);
 
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
@@ -1050,6 +1117,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -1067,7 +1135,8 @@ public class A2AClientDefault extends A2AClient {
 				post.setHeader("Pragma", "no-cache");
 				post.setHeader("Cache-Control", "no-cache");
 				post.setHeader("User-Agent", "UDAP/2.0");
-				post.setHeader("Connection", "close");
+				post.setHeader("Connection", "Keep-Alive");
+				
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleTouchMove</name>"
 								+ "<x>"
@@ -1079,7 +1148,15 @@ public class A2AClientDefault extends A2AClient {
 								+ "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
 				}
@@ -1087,6 +1164,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -1107,7 +1185,15 @@ public class A2AClientDefault extends A2AClient {
 								+ "</api></envelope>", HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-				HttpResponse response = httpclient.execute(post);
+
+				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				mPostClientAsyncTask.execute(post);
+				while (true) {
+					if (response != null)
+						break;
+				}
+				mPostClientAsyncTask.cancel(true);
+				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
 				}
@@ -1115,6 +1201,7 @@ public class A2AClientDefault extends A2AClient {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			initValue();
 		}
 	}
 
@@ -1156,6 +1243,108 @@ public class A2AClientDefault extends A2AClient {
 
 		Log.d("CSnopy", error + "");
 		return error;
+	}
+
+	public class ClientPostAsyncTask extends AsyncTask<HttpPost, Void, Void> {
+
+		protected Void doInBackground(HttpPost... post) {
+			try {
+				response = httpclient.execute(post[0]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+	}
+
+	public class ClientGetAsyncTask extends AsyncTask<HttpGet, Void, Void> {
+
+		@Override
+		protected Void doInBackground(HttpGet... get) {
+			try {
+				response = httpclient.execute(get[0]);
+				entity = response.getEntity();
+				stringEn = EntityUtils.toString(entity);
+				Log.e("RRRR", response.toString());
+				Log.e("RRRR", entity.toString());
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
+
+	public class TvListAsyncTask extends AsyncTask<HttpGet, Void, Void> {
+
+		@Override
+		protected Void doInBackground(HttpGet... get) {
+			try {
+				response = httpclient.execute(get[0]);
+				entity = response.getEntity();
+				TvListEn = EntityUtils.toString(entity);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+	}
+
+	public class AppIconAsyncTask extends AsyncTask<HttpGet, Void, Void> {
+
+		@Override
+		protected Void doInBackground(HttpGet... get) {
+			try {
+				response = httpclient.execute(get[0]);
+				entity = response.getEntity();
+				if (entity != null) {
+					InputStream inStream = null;
+					try {
+						inStream = entity.getContent();
+						AppIcon = BitmapFactory.decodeStream(inStream);
+						if (response.getEntity() != null) {
+							response.getEntity().consumeContent();
+						}
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+	}
+
+	public void initValue() {
+		response = null;
+		entity = null;
+		stringEn = null;
+		TvListEn = null;
 	}
 
 	static private A2AStatus parseStatus(String status) {

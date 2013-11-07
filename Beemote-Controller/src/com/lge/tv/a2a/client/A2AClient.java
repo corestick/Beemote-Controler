@@ -7,6 +7,7 @@ import java.util.Vector;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.latebutlucky.beemote_controller.App_Errstate;
 import com.latebutlucky.beemote_controller.TvAppInfo;
 import com.latebutlucky.beemote_controller.TvChannelListInfo;
 
@@ -20,6 +21,7 @@ public abstract class A2AClient {
 	A2AEventListener eventListener = null;
 	A2AMessageListener messageListener = null;
 	A2ATVInfo a2atvInfo = null;
+	public App_Errstate app_Errstate = new App_Errstate();
 	public ArrayList<TvAppInfo> TvAppList = new ArrayList<TvAppInfo>();
 	public ArrayList<TvChannelListInfo> TvChannelList = new ArrayList<TvChannelListInfo>();
 

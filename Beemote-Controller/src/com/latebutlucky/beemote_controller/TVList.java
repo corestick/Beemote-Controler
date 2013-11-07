@@ -32,6 +32,7 @@ import com.lge.tv.a2a.client.A2AClientManager;
 import com.lge.tv.a2a.client.A2AEventListener;
 import com.lge.tv.a2a.client.A2AMessageListener;
 import com.lge.tv.a2a.client.A2ATVInfo;
+import com.lge.tvlab.udap2.UDAPManager;
 
 public class TVList extends Activity {
 
@@ -103,20 +104,21 @@ public class TVList extends Activity {
 								
 								
 								//자동 페어링 (임시)
-//								if (info != null && info instanceof A2ATVInfo) {
-//									mA2AClient.setCurrentTV((A2ATVInfo) info);
-//									
-//									A2ACmdError ret = null;
-//									try {
-//										ret = A2AClientManager.getDefaultClient().connect("591855");
-//										refreshTVAppList();
-//									} catch (IOException e) {
-//										// TODO Auto-generated catch block
-//										e.printStackTrace();
-//									}
-//									Log.e("RRR", "�� ��� : " + ret);
-//									TVList.this.finish();
-//								}
+								if (info != null && info instanceof A2ATVInfo) {
+									mA2AClient.setCurrentTV((A2ATVInfo) info);
+
+									A2ACmdError ret = null;
+									try {
+										ret = A2AClientManager
+												.getDefaultClient().connect(
+														"591855");
+										refreshTVAppList();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}									
+									TVList.this.finish();
+								}
 							}
 
 							mTVListView.requestLayout();
@@ -143,7 +145,7 @@ public class TVList extends Activity {
 				mTVListView.requestLayout();
 
 				//�� ���
-				mProgressDialog.show();
+//				mProgressDialog.show();
 				
 				boolean result = mA2AClient.searchTV(TVList.this);
 				if (!result) {
@@ -154,8 +156,7 @@ public class TVList extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}
 			}
-		});
-
+		});		
 	}
 	
 	private void refreshTVAppList() {
@@ -164,12 +165,12 @@ public class TVList extends Activity {
 			mA2AClient.tvAppQuery();
 			Bitmap bitmap;
 
-			for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
-				bitmap = mA2AClient.tvAppIconQuery(
-						mA2AClient.TvAppList.get(i).auid,
-						URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
-				mA2AClient.TvAppList.get(i).appIcon = bitmap;
-			}
+			// for (int i = 0; i < mA2AClient.TvAppList.size(); i++) {
+			// bitmap = mA2AClient.tvAppIconQuery(
+			// mA2AClient.TvAppList.get(i).auid,
+			// URLEncoder.encode(mA2AClient.TvAppList.get(i).name));
+			// mA2AClient.TvAppList.get(i).appIcon = bitmap;
+			// }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
