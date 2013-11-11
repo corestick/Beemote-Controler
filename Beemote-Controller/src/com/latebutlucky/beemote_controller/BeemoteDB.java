@@ -1,7 +1,13 @@
 package com.latebutlucky.beemote_controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,6 +24,8 @@ public class BeemoteDB {
 
 	private static final String TABLE_BEEMOTE = "beemote";
 
+	final String serverUrl = "http://beemote-controller.appspot.com/servlettest";
+
 	DBHelper dbHelper;
 
 	public BeemoteDB(Context context) {
@@ -28,7 +36,7 @@ public class BeemoteDB {
 		SQLiteDatabase db;
 
 		db = dbHelper.getWritableDatabase();
-		
+
 		ContentValues cv = new ContentValues();
 		cv.put(ColumnInfo.SCREEN_IDX, info.screenIdx);
 		cv.put(ColumnInfo.BEEMOTE_IDX, info.beemoteIdx);
@@ -42,8 +50,7 @@ public class BeemoteDB {
 		cv.put(ColumnInfo.FUNCTION_KEY, info.functionKey);
 
 		db.insert(TABLE_BEEMOTE, null, cv);
-		
-		
+
 		Log.e("RRR", "Insert");
 		db.close();
 		dbHelper.close();
@@ -70,11 +77,11 @@ public class BeemoteDB {
 		SQLiteDatabase db;
 
 		db = dbHelper.getWritableDatabase();
-		
-		String strWhere = ColumnInfo.SCREEN_IDX
-				+ " = " + info.screenIdx + " AND " + ColumnInfo.BEEMOTE_IDX
-				+ " = " + info.beemoteIdx + "; ";
-		
+
+		String strWhere = ColumnInfo.SCREEN_IDX + " = " + info.screenIdx
+				+ " AND " + ColumnInfo.BEEMOTE_IDX + " = " + info.beemoteIdx
+				+ "; ";
+
 		ContentValues cv = new ContentValues();
 		cv.put(ColumnInfo.BEEMOTE_TYPE, info.beemoteType);
 		cv.put(ColumnInfo.CHANNEL_NUMBER, info.channelNo);
@@ -84,9 +91,9 @@ public class BeemoteDB {
 		cv.put(ColumnInfo.APP_IMG, info.appImg);
 		cv.put(ColumnInfo.KEYWORD, info.keyWord);
 		cv.put(ColumnInfo.FUNCTION_KEY, info.functionKey);
-		
+
 		db.update(TABLE_BEEMOTE, cv, strWhere, null);
-		
+
 		db.close();
 		dbHelper.close();
 	}
@@ -154,12 +161,10 @@ public class BeemoteDB {
 					+ ColumnInfo.BEEMOTE_IDX + " INTEGER " + ", "
 					+ ColumnInfo.BEEMOTE_TYPE + " INTEGER " + ", "
 					+ ColumnInfo.CHANNEL_NUMBER + " TEXT " + ", "
-					+ ColumnInfo.APP_ID + " TEXT " + ", "
-					+ ColumnInfo.APP_NAME + " TEXT " + ", "
-					+ ColumnInfo.CONTENT_ID + " TEXT " + ", "
-					+ ColumnInfo.APP_IMG + " BLOB " + ","
-					+ ColumnInfo.KEYWORD + " TEXT " + ", "
-					+ ColumnInfo.FUNCTION_KEY + " TEXT "
+					+ ColumnInfo.APP_ID + " TEXT " + ", " + ColumnInfo.APP_NAME
+					+ " TEXT " + ", " + ColumnInfo.CONTENT_ID + " TEXT " + ", "
+					+ ColumnInfo.APP_IMG + " BLOB " + "," + ColumnInfo.KEYWORD
+					+ " TEXT " + ", " + ColumnInfo.FUNCTION_KEY + " TEXT "
 					+ ");");
 		}
 
@@ -169,5 +174,131 @@ public class BeemoteDB {
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_BEEMOTE);
 			onCreate(db);
 		}
+	}
+
+	public void write_DB() {
+		SQLiteDatabase db;
+		String sql;
+
+		int screenIdx = -1;
+
+		db = dbHelper.getWritableDatabase();
+
+		sql = "DELETE FROM " + TABLE_BEEMOTE + " WHERE "
+				+ ColumnInfo.SCREEN_IDX + " = " + screenIdx;
+
+		Log.e("RRR", sql);
+		db.execSQL(sql);
+
+		final ContentValues cv = new ContentValues();
+
+		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(0));
+
+		String[] jsonArr = getJSONString(str);
+
+		try {
+			for (int i = 0; i < jsonArr.length; i++) {
+				if (jsonArr[i] == null) {
+					break;
+				}
+				JSONObject json = new JSONObject(jsonArr[i]);
+				cv.put(ColumnInfo.SCREEN_IDX, json.getString("screenIdx"));
+				cv.put(ColumnInfo.BEEMOTE_IDX, json.getString("beemoteIdx"));
+				cv.put(ColumnInfo.BEEMOTE_TYPE, json.getString("beemoteType"));
+				cv.put(ColumnInfo.CHANNEL_NUMBER, json.getString("channelNo"));
+				cv.put(ColumnInfo.APP_ID, json.getString("appId"));
+				cv.put(ColumnInfo.APP_NAME, json.getString("appName"));
+				cv.put(ColumnInfo.CONTENT_ID, json.getString("contentId"));
+				cv.put(ColumnInfo.APP_IMG,json.getString("appImg"));
+				cv.put(ColumnInfo.KEYWORD, json.getString("keyWord"));
+				cv.put(ColumnInfo.FUNCTION_KEY, json.getString("functionKey"));
+				db.insert(TABLE_BEEMOTE, null, cv);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.close();
+		dbHelper.close();
+	}
+
+	public String[] getJSONString(String str) {
+		int bracketCnt = 0;
+		int arrCnt = 0;
+		int tmpCnt = 0;
+		String[] strArr = new String[100];
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '{') {
+				bracketCnt++;
+			}
+			if (str.charAt(i) == '}') {
+				bracketCnt--;
+				if (bracketCnt == 0) {
+					strArr[arrCnt] = str.substring(tmpCnt, i + 1);
+					arrCnt++;
+					tmpCnt = i + 1;
+				}
+			}
+		}
+		return strArr;
+	}
+
+	public void get_DB() {
+		// 핸드폰 번호 읽어오기
+		// TelephonyManager telManager =
+		// (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		// phoneNum = telManager.getLine1Number();
+		Log.e("DBIN", "dbin");
+		SQLiteDatabase db;
+		String sql;
+
+		db = dbHelper.getReadableDatabase();
+		sql = "SELECT * FROM " + TABLE_BEEMOTE;
+
+		final Cursor c = db.rawQuery(sql, null);
+
+		final int idIndex = c.getColumnIndexOrThrow("id");
+		final int screenIndex = c.getColumnIndexOrThrow("screen");
+		final int idxIndex = c.getColumnIndexOrThrow("idx");
+		final int typeIndex = c.getColumnIndexOrThrow("type");
+		final int channelNoIndex = c.getColumnIndexOrThrow("channelNo");
+		final int appIdIndex = c.getColumnIndexOrThrow("appId");
+		final int appNameIndex = c.getColumnIndexOrThrow("appName");
+		final int contentIdIndex = c.getColumnIndexOrThrow("contentId");
+		final int keyWordIndex = c.getColumnIndexOrThrow("keyWord");
+		final int functionKeyIndex = c.getColumnIndexOrThrow("functionKey");
+
+		while (c.moveToNext()) {
+
+			String id = c.getString(idIndex);
+			String screen = c.getString(screenIndex);
+			String idx = c.getString(idxIndex);
+			String type = c.getString(typeIndex);
+			String channelNo = c.getString(channelNoIndex);
+			String appId = c.getString(appIdIndex);
+			String appName = c.getString(appNameIndex);
+			String contentId = c.getString(contentIdIndex);
+			String keyWord = c.getString(keyWordIndex);
+			String functionKey = c.getString(functionKeyIndex);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			map.put("user", "1");
+
+			map.put("id", id);
+			map.put("screen", screen);
+			map.put("idx", idx);
+			map.put("type", type);
+			map.put("channelNo", channelNo);
+			map.put("appId", appId);
+			map.put("appName", appName);
+			map.put("contentId", contentId);
+			map.put("keyWord", keyWord);
+			map.put("functionKey", functionKey);
+
+			JSONfunctions.postSONfromURL(serverUrl, map);
+			Log.e("DBout", "dbout");
+		}
+		c.close();
 	}
 }
