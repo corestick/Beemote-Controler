@@ -61,6 +61,13 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	private static final int DOWNPAGE = 1;
 
 	@Override
+	protected void onStart() {
+		Log.e("RESTART", "RESTART");
+		setDB();
+		super.onStart();
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// StrictMode.enableDefaults();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -85,6 +92,11 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			bView.initBeeView(this, i);
 		}
 
+		setContentView(slidingView);
+		setDB();
+	}
+
+	public void setDB() {
 		// DB정보 불러오기
 		beeInfo = beemoteDB.select();
 
@@ -102,7 +114,6 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			}
 		}
 
-		setContentView(slidingView);
 	}
 
 	@Override
