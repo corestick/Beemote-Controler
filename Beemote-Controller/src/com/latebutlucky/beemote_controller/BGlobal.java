@@ -19,4 +19,8 @@ public final class BGlobal {
 	public static final String KEYCODE_REC ="40";
 	public static final String KEYCODE_BRODLIST ="40";
 	
+	public static final String FUNC_HOME = "홈";
+	public static final String FUNC_MUTE ="음소거";
+	public static final String FUNC_REC ="녹화";
+	public static final String FUNC_BRODLIST ="방송목록";
 }

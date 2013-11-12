@@ -26,5 +26,4 @@ public class ItemInfo {
 	
 	//기능키
 	public String functionKey;
-	
 }

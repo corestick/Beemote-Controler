@@ -12,7 +12,7 @@ import com.latebutlucky.beemote_view.BeeButton;
 
 public class FunctionDialog extends Dialog {
 
-	String[] function = new String[] { "홈", "음소거", "녹화", "방송목록" };
+	String[] function = new String[] { BGlobal.FUNC_HOME, BGlobal.FUNC_MUTE };
 	Context mContext;
 	BeeButton mBeebutton;
 
@@ -33,16 +33,12 @@ public class FunctionDialog extends Dialog {
 
 				if (position == 0) {
 					mBeebutton.itemInfo.functionKey = BGlobal.KEYCODE_HOME;
-					mBeebutton.setTextE("홈");				
+					mBeebutton.setTextE(BGlobal.FUNC_HOME);
 				} else if (position == 1) {
 					mBeebutton.itemInfo.functionKey = BGlobal.KEYCODE_MUTE;
-					mBeebutton.setTextE("음소거");
-				} else if (position == 2) {					
-					
-				} else if (position == 3) {
-				
-					
+					mBeebutton.setTextE(BGlobal.FUNC_MUTE);
 				}
+				
 				((BeemoteMain) mContext).updateInfo(BGlobal.BEEBUTTON_TYPE_FUNC);
 				FunctionDialog.this.dismiss();
 			}

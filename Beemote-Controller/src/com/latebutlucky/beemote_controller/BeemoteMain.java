@@ -160,6 +160,8 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
+			
+			Log.e("RRR", "-->" + v.getId());
 
 			if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
 				bView.btnMenu.showButtonMenu(bButton);
