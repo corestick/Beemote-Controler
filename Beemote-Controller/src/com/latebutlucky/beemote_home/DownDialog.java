@@ -41,6 +41,7 @@ public class DownDialog extends Dialog implements android.view.View.OnClickListe
 		if(v == donwBtn){
 			BeemoteMain.DownLoad = true;
 			beeDB.write_DB(2);
+			dismiss();
 		}
 		else if(v == cancleBtn){
 			dismiss();

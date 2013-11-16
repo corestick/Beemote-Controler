@@ -98,7 +98,14 @@ public class InfoListDialog extends Dialog {
 				if (mType.equals("TvApp")) {
 					mBeebutton.itemInfo.appName = appInfoArry.get(position).name;
 					mBeebutton.itemInfo.appId = appInfoArry.get(position).auid;
-					mBeebutton.itemInfo.contentId = appInfoArry.get(position).cpid;
+					if (appInfoArry.get(position).cpid == null)
+						mBeebutton.itemInfo.contentId = "-";
+					else
+						mBeebutton.itemInfo.contentId = appInfoArry
+								.get(position).cpid;
+					Log.e("app", mBeebutton.itemInfo.appName);
+					Log.e("app", mBeebutton.itemInfo.appId);
+					Log.e("app", mBeebutton.itemInfo.contentId);
 					try {
 
 						appInfoArry.get(position).appIcon = bMain.mA2AClient

@@ -292,5 +292,6 @@ public class BeemoteDB {
 			Log.e("DBout", "dbout");
 		}
 		c.close();
+		db.close();
 	}
 }
