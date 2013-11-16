@@ -23,7 +23,7 @@ import com.latebutlucky.beemote_controller.BeemoteDB;
 import com.latebutlucky.beemote_controller.R;
 
 public class UploadPage extends Activity implements
-		android.view.View.OnClickListener , OnCheckedChangeListener{
+		android.view.View.OnClickListener, OnCheckedChangeListener {
 
 	private String sdcard = Environment.getExternalStorageDirectory()
 			.getAbsolutePath(); // sdcard 경로
@@ -41,7 +41,7 @@ public class UploadPage extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.upload_page);
-		
+
 		Button upBtn = (Button) findViewById(R.id.upload);
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
 		rb0 = (RadioButton) findViewById(R.id.radio0);
@@ -49,7 +49,7 @@ public class UploadPage extends Activity implements
 		rb2 = (RadioButton) findViewById(R.id.radio2);
 		radioGroup.setOnCheckedChangeListener(this);
 		upBtn.setOnClickListener(this);
-		
+
 		beeDB = new BeemoteDB(this);
 
 		ImageView imgScreen1 = (ImageView) findViewById(R.id.up_screen1);
@@ -64,41 +64,22 @@ public class UploadPage extends Activity implements
 	@Override
 	public void onClick(View arg0) {
 		if (radioGroup.getCheckedRadioButtonId() == R.id.radio0) {
-        	screenNum = 0;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.radio1) {
-        	screenNum = 1;
-        } else {
-        	screenNum = 2;
-        }
-		upThreadAndDialog();
+			screenNum = 0;
+		} else if (radioGroup.getCheckedRadioButtonId() == R.id.radio1) {
+			screenNum = 1;
+		} else {
+			screenNum = 2;
+		}
+		beeDB.get_DB(screenNum);
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
+
+
+
 	
-	private ProgressDialog loagindDialog; // Loading Dialog
-
-	void upThreadAndDialog() {
-		/* ProgressDialog */
-		loagindDialog = ProgressDialog.show(this, "uploading",
-				"Please wait...", true, false);
-		
-		Thread thread = new Thread(new Runnable() {
-			public void run() {
-				beeDB.get_DB(screenNum);
-				handler.sendEmptyMessage(0);
-			}
-		});
-		thread.start();
-	}
-
-	private Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
-			loagindDialog.dismiss(); // ���̾�α� ����
-			// View����
-		}
-	};
 
 }
