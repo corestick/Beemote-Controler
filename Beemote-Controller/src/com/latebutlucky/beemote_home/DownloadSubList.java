@@ -24,7 +24,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 	ArrayList<String> alist;
 	ListData listdata;
 	ArrayList<String[][]> subList;
-	HomeDialog homeDialog;
+	DownDialog homeDialog;
 
 
 	// private int[] mImageID = {
@@ -35,7 +35,7 @@ public class DownloadSubList extends Activity implements OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sublist);
-		homeDialog = new HomeDialog(this);
+		homeDialog = new DownDialog(this);
 		listview = (ListView) findViewById(R.id.sub_listview);
 		listdata = new ListData();
 

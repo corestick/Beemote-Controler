@@ -68,8 +68,6 @@ public class Beemote_downloadpage extends Activity {
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);
 				
-		        Toast awesomeToast = Toast.makeText(Beemote_downloadpage.this, "hello", Toast.LENGTH_SHORT);		
-		        awesomeToast.show();
 				return false;
 			}
 		});

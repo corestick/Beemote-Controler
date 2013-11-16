@@ -182,7 +182,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 				bView.btnMenu.showButtonMenu(bButton);
 
 			try {
-				if (!bButton.itemInfo.appId.equals("") ) {
+				if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_APP) {
 					// if (mA2AClient.app_Errstate.action != null
 					// && mA2AClient.app_Errstate.action.equals("Execute")) {
 					// mA2AClient.TvAppTerminate(bButton.itemInfo.appId,
@@ -191,11 +191,14 @@ public class BeemoteMain extends Activity implements OnClickListener,
 					//
 					// } else {
 					Log.e("Exe", "exeApp");
+					Log.e("iofo", bButton.itemInfo.appId);
+					Log.e("iofo", bButton.itemInfo.appName);
 					mA2AClient.TvAppExe(bButton.itemInfo.appId,
 							bButton.itemInfo.appName,
 							bButton.itemInfo.contentId);
+					return;
 					// }
-				} else if (!bButton.itemInfo.channelNo.equals("")) {
+				} else if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_CH) {
 					Log.e("Item", bButton.itemInfo.channelNo);
 
 					if (bButton.itemInfo.channelNo.length() > 1) {
@@ -227,9 +230,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						Log.e("ChannelNUM", ChannelNum + "");
 						mA2AClient.KeyCodeSend(String.valueOf(ChannelNum));
 					}
-
-				} else if (!bButton.itemInfo.functionKey.equals("")) {
+					return;
+				} else if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_FUNC) {
 					mA2AClient.KeyCodeSend(bButton.itemInfo.functionKey);
+					return;
+				} else if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_SEARCH) {
+					Toast.makeText(this, "미완성기능입니다", Toast.LENGTH_SHORT).show();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

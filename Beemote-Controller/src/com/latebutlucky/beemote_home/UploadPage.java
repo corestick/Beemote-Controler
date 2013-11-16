@@ -3,10 +3,13 @@ package com.latebutlucky.beemote_home;
 import java.io.File;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Gallery;
@@ -29,6 +32,7 @@ public class UploadPage extends Activity implements
 	RadioButton rb0;
 	RadioButton rb1;
 	RadioButton rb2;
+	int screenNum;
 
 	// private int[] mImageID = {
 	private String[] mImagePath = { sdcard + "/Beemote/screen0.jpg",
@@ -59,22 +63,42 @@ public class UploadPage extends Activity implements
 
 	@Override
 	public void onClick(View arg0) {
-		int screenNum;
-        if (radioGroup.getCheckedRadioButtonId() == R.id.radio0) {
+		if (radioGroup.getCheckedRadioButtonId() == R.id.radio0) {
         	screenNum = 0;
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.radio1) {
         	screenNum = 1;
         } else {
         	screenNum = 2;
         }
-        
-		beeDB.get_DB(screenNum);
+		upThreadAndDialog();
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
+	
+	private ProgressDialog loagindDialog; // Loading Dialog
+
+	void upThreadAndDialog() {
+		/* ProgressDialog */
+		loagindDialog = ProgressDialog.show(this, "uploading",
+				"Please wait...", true, false);
+		
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				beeDB.get_DB(screenNum);
+				handler.sendEmptyMessage(0);
+			}
+		});
+		thread.start();
+	}
+
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			loagindDialog.dismiss(); // ���̾�α� ����
+			// View����
+		}
+	};
 
 }

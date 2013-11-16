@@ -67,9 +67,6 @@ public class Beemote_uploadpage extends Activity {
 				String tmp = groupPosition + "-" + childPosition;
 				i.putExtra(EXIST_NAME, tmp);
 				startActivityForResult(i, 0);
-				
-		        Toast awesomeToast = Toast.makeText(Beemote_uploadpage.this, "hello", Toast.LENGTH_SHORT);		
-		        awesomeToast.show();
 				return false;
 			}
 		});

@@ -483,6 +483,7 @@ public class A2AClientDefault extends A2AClient {
 						break;
 				}
 				mPostClientAsyncTask.cancel(true);
+				response = null;
 				// HttpResponse response = httpclient.execute(httpPost);
 				// HttpEntity entity = response.getEntity();
 
@@ -522,7 +523,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(httpPost);
 				// Log.d("CSnopy", EntityUtils.toString(entity));
 
@@ -612,9 +613,9 @@ public class A2AClientDefault extends A2AClient {
 				if (AppIcon != null)
 					break;
 			}
-			mAppAsyncTask.cancel(true);
+			mAppAsyncTask.cancel(true);			
 			Log.e("RRRR", AppIcon.toString());
-
+			initValue();
 			// mAppAsyncTask.cancel(true);
 
 			// HttpResponse response = httpclient.execute(httpGet);
@@ -660,7 +661,7 @@ public class A2AClientDefault extends A2AClient {
 					break;
 				}
 			}
-			mGetClientAsyncTask.cancel(true);
+			mGetClientAsyncTask.cancel(true);			
 			// HttpResponse response = httpclient.execute(httpGet);
 			// HttpEntity entity = response.getEntity();
 			boolean inEnvelope = false;
@@ -786,6 +787,7 @@ public class A2AClientDefault extends A2AClient {
 					break;
 			}
 			mTvListAsyncTask.cancel(true);
+			
 			// HttpResponse response = httpclient.execute(httpGet);
 			// HttpEntity entity = response.getEntity();
 
@@ -921,17 +923,18 @@ public class A2AClientDefault extends A2AClient {
 						HTTP.UTF_8);
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
-
+				Log.e("IN", "exeIn");
 				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
 				mPostClientAsyncTask.execute(post);
 				while (true) {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				Log.e("IN", "exeOut");
+				mPostClientAsyncTask.cancel(true);				
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
-				}
+				}				
 				// httpclient.execute(post);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
@@ -969,7 +972,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
 				}
@@ -1010,7 +1013,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(post);
 
 				statusCode = response.getStatusLine().getStatusCode();
@@ -1063,7 +1066,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
@@ -1105,7 +1108,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(post);
 
 				if (response.getEntity() != null) {
@@ -1153,7 +1156,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
@@ -1190,7 +1193,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);
+				mPostClientAsyncTask.cancel(true);				
 				// HttpResponse response = httpclient.execute(post);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
