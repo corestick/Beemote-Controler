@@ -59,11 +59,14 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	public String TextState;
 	private static final int UPLOADPAGE = 0;
 	private static final int DOWNPAGE = 1;
+	public static boolean DownLoad = false;
 
 	@Override
 	protected void onStart() {
 		Log.e("RESTART", "RESTART");
-		setDB();
+		if (DownLoad == true) {
+			setDB();
+		}
 		super.onStart();
 	}
 
@@ -99,14 +102,28 @@ public class BeemoteMain extends Activity implements OnClickListener,
 	public void setDB() {
 		// DB정보 불러오기
 		beeInfo = beemoteDB.select();
-
 		// DB정보 적용
 		for (int i = 0; i < beeInfo.size(); i++) {
 			ItemInfo info = beeInfo.get(i);
+			if ((!info.appName.equals("")) && DownLoad == true) {
+				if (mA2AClient == null) {
+					Toast.makeText(BeemoteMain.this, "먼저 TV와 연결하세요.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				try {
+					info.appImg = BeeButton.bitmapToByteArray(mA2AClient
+							.tvAppIconQuery(info.appId,
+									URLEncoder.encode(info.appName)));
+					beemoteDB.update(info);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 
 			if (info.screenIdx > -1
 					&& info.screenIdx < slidingView.getChildCount()) {
-
 				BeeView bView = (BeeView) slidingView
 						.getChildAt(info.screenIdx);
 				bView.btnBee[info.beemoteIdx].itemInfo = info;
@@ -160,14 +177,12 @@ public class BeemoteMain extends Activity implements OnClickListener,
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
-			
-			Log.e("RRR", "-->" + v.getId());
 
 			if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
 				bView.btnMenu.showButtonMenu(bButton);
 
 			try {
-				if (bButton.itemInfo.appId != null) {
+				if (!bButton.itemInfo.appId.equals("") ) {
 					// if (mA2AClient.app_Errstate.action != null
 					// && mA2AClient.app_Errstate.action.equals("Execute")) {
 					// mA2AClient.TvAppTerminate(bButton.itemInfo.appId,
@@ -180,7 +195,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 							bButton.itemInfo.appName,
 							bButton.itemInfo.contentId);
 					// }
-				} else if (bButton.itemInfo.channelNo != null) {
+				} else if (!bButton.itemInfo.channelNo.equals("")) {
 					Log.e("Item", bButton.itemInfo.channelNo);
 
 					if (bButton.itemInfo.channelNo.length() > 1) {
@@ -213,7 +228,7 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						mA2AClient.KeyCodeSend(String.valueOf(ChannelNum));
 					}
 
-				} else if (bButton.itemInfo.functionKey != null) {
+				} else if (!bButton.itemInfo.functionKey.equals("")) {
 					mA2AClient.KeyCodeSend(bButton.itemInfo.functionKey);
 				}
 			} catch (IOException e) {

@@ -24,7 +24,7 @@ public class BeemoteDB {
 
 	private static final String TABLE_BEEMOTE = "beemote";
 
-	final String serverUrl = "http://beemote-controller.appspot.com/servlettest";
+	final String serverUrl = "http://beemote-controller.appspot.com/beemoteservlet";	
 
 	DBHelper dbHelper;
 
@@ -176,11 +176,9 @@ public class BeemoteDB {
 		}
 	}
 
-	public void write_DB() {
+	public void write_DB(int screenIdx) {
 		SQLiteDatabase db;
 		String sql;
-
-		int screenIdx = -1;
 
 		db = dbHelper.getWritableDatabase();
 
@@ -192,7 +190,7 @@ public class BeemoteDB {
 
 		final ContentValues cv = new ContentValues();
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(0));
+		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(1));
 
 		String[] jsonArr = getJSONString(str);
 
@@ -202,14 +200,13 @@ public class BeemoteDB {
 					break;
 				}
 				JSONObject json = new JSONObject(jsonArr[i]);
-				cv.put(ColumnInfo.SCREEN_IDX, json.getString("screenIdx"));
-				cv.put(ColumnInfo.BEEMOTE_IDX, json.getString("beemoteIdx"));
-				cv.put(ColumnInfo.BEEMOTE_TYPE, json.getString("beemoteType"));
+				cv.put(ColumnInfo.SCREEN_IDX, screenIdx);
+				cv.put(ColumnInfo.BEEMOTE_IDX, json.getString("idx"));
+				cv.put(ColumnInfo.BEEMOTE_TYPE, json.getString("type"));
 				cv.put(ColumnInfo.CHANNEL_NUMBER, json.getString("channelNo"));
 				cv.put(ColumnInfo.APP_ID, json.getString("appId"));
 				cv.put(ColumnInfo.APP_NAME, json.getString("appName"));
 				cv.put(ColumnInfo.CONTENT_ID, json.getString("contentId"));
-				cv.put(ColumnInfo.APP_IMG,json.getString("appImg"));
 				cv.put(ColumnInfo.KEYWORD, json.getString("keyWord"));
 				cv.put(ColumnInfo.FUNCTION_KEY, json.getString("functionKey"));
 				db.insert(TABLE_BEEMOTE, null, cv);
@@ -243,7 +240,7 @@ public class BeemoteDB {
 		return strArr;
 	}
 
-	public void get_DB() {
+	public void get_DB(int screenIdx) {
 		// 핸드폰 번호 읽어오기
 		// TelephonyManager telManager =
 		// (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
@@ -253,12 +250,11 @@ public class BeemoteDB {
 		String sql;
 
 		db = dbHelper.getReadableDatabase();
-		sql = "SELECT * FROM " + TABLE_BEEMOTE;
+		sql = "SELECT * FROM " + TABLE_BEEMOTE + " WHERE "
+				+ ColumnInfo.SCREEN_IDX + " = " + screenIdx;
 
 		final Cursor c = db.rawQuery(sql, null);
 
-		final int idIndex = c.getColumnIndexOrThrow("id");
-		final int screenIndex = c.getColumnIndexOrThrow("screen");
 		final int idxIndex = c.getColumnIndexOrThrow("idx");
 		final int typeIndex = c.getColumnIndexOrThrow("type");
 		final int channelNoIndex = c.getColumnIndexOrThrow("channelNo");
@@ -270,8 +266,6 @@ public class BeemoteDB {
 
 		while (c.moveToNext()) {
 
-			String id = c.getString(idIndex);
-			String screen = c.getString(screenIndex);
 			String idx = c.getString(idxIndex);
 			String type = c.getString(typeIndex);
 			String channelNo = c.getString(channelNoIndex);
@@ -285,8 +279,6 @@ public class BeemoteDB {
 
 			map.put("user", "1");
 
-			map.put("id", id);
-			map.put("screen", screen);
 			map.put("idx", idx);
 			map.put("type", type);
 			map.put("channelNo", channelNo);

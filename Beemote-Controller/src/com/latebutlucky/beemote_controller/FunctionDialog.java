@@ -37,9 +37,13 @@ public class FunctionDialog extends Dialog {
 				} else if (position == 1) {
 					mBeebutton.itemInfo.functionKey = BGlobal.KEYCODE_MUTE;
 					mBeebutton.setTextE(BGlobal.FUNC_MUTE);
+				} else if (position == 2) {
+
+				} else if (position == 3) {
+
 				}
-				
-				((BeemoteMain) mContext).updateInfo(BGlobal.BEEBUTTON_TYPE_FUNC);
+				((BeemoteMain) mContext)
+						.updateInfo(BGlobal.BEEBUTTON_TYPE_FUNC);
 				FunctionDialog.this.dismiss();
 			}
 		});

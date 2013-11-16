@@ -73,13 +73,13 @@ public class BeeButton extends Button {
 		super.setCompoundDrawables(null, null, null, null);
 	}
 
-	public byte[] bitmapToByteArray(Bitmap bitmap) {
+	public static byte[] bitmapToByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
 		return outputStream.toByteArray();
 	}
 
-	public Bitmap byteArrayToBitmap(byte[] $byteArray) {
+	public static Bitmap byteArrayToBitmap(byte[] $byteArray) {
 		Bitmap bitmap = BitmapFactory.decodeByteArray($byteArray, 0,
 				$byteArray.length);
 		return bitmap;

@@ -72,7 +72,6 @@ public class A2AClientDefault extends A2AClient {
 	Handler handler = null;
 	SimpleHttpServer httpServer = null;
 	Context context = null;
-	
 
 	public HttpClient httpclient = getThreadsafeClient();
 	public HttpResponse response = null;
@@ -282,7 +281,6 @@ public class A2AClientDefault extends A2AClient {
 				String nameType = null;
 
 				KeyboardInfo keyboardInfo;
-				
 
 				@Override
 				public void handle(HttpRequest request, HttpResponse response,
@@ -347,7 +345,7 @@ public class A2AClientDefault extends A2AClient {
 													nameType = "KeyboardVisible";
 												} else if (parser
 														.getText()
-														.equals("Mobilehome_App_Errstate")) {													
+														.equals("Mobilehome_App_Errstate")) {
 													nameType = "AppErrstate";
 													Log.e("nameType", nameType);
 												} else if (parser.getText()
@@ -416,7 +414,7 @@ public class A2AClientDefault extends A2AClient {
 							} catch (XmlPullParserException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}						
+							}
 							if (messageListener != null) {
 								if (nameType.equals("KeyboardVisible")) {
 									messageListener.onRecieveMessage(
@@ -904,7 +902,7 @@ public class A2AClientDefault extends A2AClient {
 			String contentId) throws IOException {
 		URI uri = null;
 		if (a2atvInfo != null) {
-			try {				
+			try {
 				uri = new URI("http://" + a2atvInfo.ipAddress + ":"
 						+ a2atvInfo.port + "/udap/api/command");
 				HttpPost post = new HttpPost(uri);
@@ -930,7 +928,7 @@ public class A2AClientDefault extends A2AClient {
 					if (response != null)
 						break;
 				}
-				mPostClientAsyncTask.cancel(true);				
+				mPostClientAsyncTask.cancel(true);
 				if (response.getEntity() != null) {
 					response.getEntity().consumeContent();
 				}
@@ -1059,7 +1057,7 @@ public class A2AClientDefault extends A2AClient {
 				entity.setContentType("text/xml; charset=UTF-8");
 				post.setEntity(entity);
 
-				ClientPostAsyncTask mPostClientAsyncTask = new ClientPostAsyncTask();
+				KeyCodePostAsyncTask mPostClientAsyncTask = new KeyCodePostAsyncTask();
 				mPostClientAsyncTask.execute(post);
 				while (true) {
 					if (response != null)
@@ -1136,7 +1134,7 @@ public class A2AClientDefault extends A2AClient {
 				post.setHeader("Cache-Control", "no-cache");
 				post.setHeader("User-Agent", "UDAP/2.0");
 				post.setHeader("Connection", "Keep-Alive");
-				
+
 				StringEntity entity = new StringEntity(
 						"<?xml version=\"1.0\" encoding=\"utf-8\"?><envelope><api type=\"command\"><name>HandleTouchMove</name>"
 								+ "<x>"
@@ -1246,6 +1244,27 @@ public class A2AClientDefault extends A2AClient {
 	}
 
 	public class ClientPostAsyncTask extends AsyncTask<HttpPost, Void, Void> {
+
+		protected Void doInBackground(HttpPost... post) {
+			try {
+				response = httpclient.execute(post[0]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		protected void onCancelled() {
+			super.onCancelled();
+		}
+
+	}
+
+	public class KeyCodePostAsyncTask extends AsyncTask<HttpPost, Void, Void> {
 
 		protected Void doInBackground(HttpPost... post) {
 			try {

@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewGroup;
@@ -129,11 +128,8 @@ public class SlidingView extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.e(TAG, "SV : event Action : " + event.getAction());
+//		Log.d(TAG, "event Action : " + event.getAction());
 
-		
-		
-		
 		// 메뉴 버튼 감추기
 		BeeView bView = (BeeView) this.getChildAt(this.getCurrentPage());
 		bView.btnMenu.hideButtonMenu();

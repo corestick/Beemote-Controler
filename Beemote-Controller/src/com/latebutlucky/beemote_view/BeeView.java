@@ -2,7 +2,6 @@ package com.latebutlucky.beemote_view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -117,11 +116,10 @@ public class BeeView extends RelativeLayout {
 			beeButton.setIcon(getResources().getDrawable(R.drawable.serach));
 			break;
 		case BGlobal.BEEBUTTON_TYPE_FUNC:
-			if(beeButton.itemInfo.functionKey.equals(BGlobal.KEYCODE_HOME))
-			{
+			if (beeButton.itemInfo.functionKey.equals(BGlobal.KEYCODE_HOME)) {
 				beeButton.setTextE(BGlobal.FUNC_HOME);
-			}
-			else if (beeButton.itemInfo.functionKey.equals(BGlobal.KEYCODE_MUTE))
+			} else if (beeButton.itemInfo.functionKey
+					.equals(BGlobal.KEYCODE_MUTE))
 				beeButton.setTextE(BGlobal.FUNC_MUTE);
 			beeButton.setBackgroundResource(R.drawable.btn_yellow_hexagon);
 			beeButton.setIcon(getResources().getDrawable(R.drawable.func));

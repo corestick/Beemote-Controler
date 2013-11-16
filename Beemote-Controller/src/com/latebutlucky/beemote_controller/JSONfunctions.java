@@ -30,6 +30,7 @@ import android.util.Log;
 
 public class JSONfunctions {
 	static HttpClient httpclient;
+	static HttpEntity entity;
 
 	public static DefaultHttpClient getThreadsafeClient() {
 		DefaultHttpClient client = new DefaultHttpClient();
@@ -50,9 +51,16 @@ public class JSONfunctions {
 			httpclient = getThreadsafeClient();
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setHeader("phone", PhoneNum);
-			HttpResponse response = httpclient.execute(httpGet);
 
-			HttpEntity entity = response.getEntity();
+			JsonGetAsyncTask mclientGetAsyncTask = new JsonGetAsyncTask();
+			mclientGetAsyncTask.execute(httpGet);
+			// HttpResponse response = httpclient.execute(httpGet);
+
+			// HttpEntity entity = response.getEntity();
+			while (true) {
+				if (entity != null)
+					break;
+			}
 			is = entity.getContent();
 		} catch (Exception e) {
 			Log.e("kim", "1" + e);
@@ -154,6 +162,24 @@ public class JSONfunctions {
 		protected Void doInBackground(HttpPost... post) {
 			try {
 				httpclient.execute(post[0]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+	}
+
+	public static class JsonGetAsyncTask extends AsyncTask<HttpGet, Void, Void> {
+
+		protected Void doInBackground(HttpGet... get) {
+			try {
+				HttpResponse response = httpclient.execute(get[0]);
+				entity = response.getEntity();
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

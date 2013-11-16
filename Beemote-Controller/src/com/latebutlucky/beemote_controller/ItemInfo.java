@@ -22,8 +22,9 @@ public class ItemInfo {
 	public byte[] appImg = null;
 	
 	//검색어
-	public String keyWord;
+	public String keyWord="";
 	
 	//기능키
-	public String functionKey;
+	public String functionKey="";
+	
 }

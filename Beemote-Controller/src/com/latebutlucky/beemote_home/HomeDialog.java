@@ -35,8 +35,9 @@ public class HomeDialog extends Dialog implements android.view.View.OnClickListe
 
 	@Override
 	public void onClick(View v) {
-		if(v == donwBtn){
-			beeDB.get_DB();
+		if(v == donwBtn){	
+			BeemoteMain.DownLoad = true;
+			beeDB.write_DB(2);
 			donwBtn.setText("ok");
 		}
 		else if(v == cancleBtn){
