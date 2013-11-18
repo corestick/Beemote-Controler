@@ -156,33 +156,36 @@ public class BeemoteMain extends Activity implements OnClickListener,
 		final BeeButton bButton;
 		// bee버튼
 		if (v instanceof BeeButton) {
-
+			
 			bButton = (BeeButton) v;
 			BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 					.getCurrentPage());
 			
-			Log.e("RRR", "-->" + v.getId());
-
-			if (bButton.itemInfo.beemoteType == BGlobal.BEEBUTTON_TYPE_NONE)
-				bView.btnMenu.showButtonMenu(bButton);
+			Log.e("RRR",  "==>" + bButton.itemInfo.beemoteIdx);
 
 			try {
-				if (bButton.itemInfo.appId != null) {
-					// if (mA2AClient.app_Errstate.action != null
-					// && mA2AClient.app_Errstate.action.equals("Execute")) {
-					// mA2AClient.TvAppTerminate(bButton.itemInfo.appId,
-					// bButton.itemInfo.appName);
-					// return;
-					//
-					// } else {
-					Log.e("Exe", "exeApp");
-					mA2AClient.TvAppExe(bButton.itemInfo.appId,
-							bButton.itemInfo.appName,
-							bButton.itemInfo.contentId);
-					// }
-				} else if (bButton.itemInfo.channelNo != null) {
-					Log.e("Item", bButton.itemInfo.channelNo);
-
+				switch (bButton.itemInfo.beemoteType) {
+				case BGlobal.BEEBUTTON_TYPE_NONE:
+					bView.btnMenu.showButtonMenu(bButton);
+					break;
+				case BGlobal.BEEBUTTON_TYPE_APP:
+					if (bButton.itemInfo.appId.length() > 0) {
+						// if (mA2AClient.app_Errstate.action != null
+						// && mA2AClient.app_Errstate.action.equals("Execute"))
+						// {
+						// mA2AClient.TvAppTerminate(bButton.itemInfo.appId,
+						// bButton.itemInfo.appName);
+						// return;
+						//
+						// } else {
+						Log.e("Exe", "exeApp");
+						mA2AClient.TvAppExe(bButton.itemInfo.appId,
+								bButton.itemInfo.appName,
+								bButton.itemInfo.contentId);
+						// }
+					}
+					break;
+				case BGlobal.BEEBUTTON_TYPE_CH:
 					if (bButton.itemInfo.channelNo.length() > 1) {
 						final Handler handler = new Handler();
 						handler.postDelayed(new Runnable() {
@@ -212,22 +215,18 @@ public class BeemoteMain extends Activity implements OnClickListener,
 						Log.e("ChannelNUM", ChannelNum + "");
 						mA2AClient.KeyCodeSend(String.valueOf(ChannelNum));
 					}
-
-				} else if (bButton.itemInfo.functionKey != null) {
+					break;
+				case BGlobal.BEEBUTTON_TYPE_FUNC:
 					mA2AClient.KeyCodeSend(bButton.itemInfo.functionKey);
+					break;
+				case BGlobal.BEEBUTTON_TYPE_SEARCH:
+					break;
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// Toast.makeText(
-			// BeemoteMain.this,
-			// "스크린 : " + bButton.itemInfo.screenIdx + "\n 버튼 : "
-			// + bButton.itemInfo.beemoteIdx + "\n 타입 : "
-			// + bButton.itemInfo.beemoteType, Toast.LENGTH_SHORT)
-			// .show();
 		} else {
-
 			if (v instanceof Button) {
 				BeeView bView = (BeeView) slidingView.getChildAt(slidingView
 						.getCurrentPage());
